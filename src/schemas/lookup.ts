@@ -153,3 +153,40 @@ export const SuffixSchema = z.object({
     })
   ),
 });
+
+export const DglSchema = z.object({
+  subsystem: z.literal("DGL"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  type: z.record(z.string(), z.object({ labelDe: z.string(), labelEn: z.string() })),
+  connection: z.record(z.string(), z.object({ labelDe: z.string(), labelEn: z.string() })),
+  pressure: z.record(
+    z.string(),
+    z.object({
+      labelDe: z.string(),
+      labelEn: z.string(),
+      bar: z.number().nullable(),
+    })
+  ),
+  size: z.record(z.string(), z.object({ label: z.string(), dn: z.number() })),
+  material: z.record(z.string(), z.object({ labelDe: z.string(), labelEn: z.string() })),
+  rubric: z.record(z.string(), z.unknown()),
+});
+
+export const BsKitSchema = z.object({
+  subsystem: z.literal("BS-Kit"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  _variantNote: z.string().optional(),
+  prefix: z.record(z.string(), z.object({ labelDe: z.string(), labelEn: z.string() })),
+  size: z.record(z.string(), z.object({ labelDe: z.string(), labelEn: z.string() })),
+  material: z.record(z.string(), z.object({ labelDe: z.string(), labelEn: z.string() })),
+  variant: z.record(
+    z.string(),
+    z.object({
+      labelDe: z.string(),
+      labelEn: z.string(),
+      tolerance: z.string().optional(),
+    })
+  ),
+});

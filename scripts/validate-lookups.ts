@@ -11,6 +11,8 @@ import {
   Pos12Schema,
   Pos1316Schema,
   SuffixSchema,
+  DglSchema,
+  BsKitSchema,
 } from "../src/schemas/lookup";
 
 const here = (rel: string) =>
@@ -27,6 +29,8 @@ const files: Array<{ path: string; schema: { parse: (data: unknown) => unknown }
   { path: "../data/lookups/position-12.json", schema: Pos12Schema },
   { path: "../data/lookups/position-13-16.json", schema: Pos1316Schema },
   { path: "../data/lookups/suffixes.json", schema: SuffixSchema },
+  { path: "../data/lookups/dgl.json", schema: DglSchema },
+  { path: "../data/lookups/bskit.json", schema: BsKitSchema },
 ];
 
 let failures = 0;

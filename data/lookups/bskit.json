@@ -1,0 +1,35 @@
+{
+  "subsystem": "BS-Kit",
+  "fieldDe": "Berstscheiben-Kit (Bersteinheit)",
+  "fieldEn": "Burst disk kit (rupture-disc assembly)",
+  "_comment": "Burst-disk kits use a special format: <prefix>.<size>.<material>/<burstpressure><variant>. Example: 44201.10.5/xx001. Source: ENS-System WV-SV-Kombinationen.xlsx, sheet BS-Kit.",
+  "prefix": {
+    "44201": { "labelDe": "Bersteinheit (Aufnahmeeinheit + KUB-Berstscheibe + Überwachungsanschluss)", "labelEn": "Burst-disc assembly (housing + KUB disc + monitoring connection G1/4\" + G1/8\")" },
+    "44202": { "labelDe": "Geschraubte Berstscheibe (Berstscheibe + Flachdichtungen + Spannmuffe R/L)", "labelEn": "Screwed burst disc (disc + flat gaskets + clamping sleeve LH/RH)" }
+  },
+  "size": {
+    "10": { "labelDe": "Standard-Aufnahme PS40", "labelEn": "standard housing PS40" },
+    "15": { "labelDe": "Sondervariante (z.B. Wacker-Chemie)", "labelEn": "special variant (e.g. Wacker-Chemie)" }
+  },
+  "material": {
+    "5": { "labelDe": "C-Stahl, PS40", "labelEn": "carbon steel, PS40" },
+    "8": { "labelDe": "NIRO (Edelstahl), PS40", "labelEn": "stainless (NIRO), PS40" }
+  },
+  "_variantNote": "After the slash: <burst-pressure-or-XX><variant-3chars>. 'XX' = burst pressure to be specified. Numeric forms vary in length, so the variant is matched as the trailing 3 chars.",
+  "variant": {
+    "001": { "labelDe": "Aufnahmeeinheit, KUB +/-10%, mit Schrauben/Muttern/Dichtungen", "labelEn": "Housing, KUB ±10%, with screws/nuts/gaskets", "tolerance": "±10%" },
+    "011": { "labelDe": "KUB-Berstscheibe +/-5%", "labelEn": "KUB burst disc ±5%", "tolerance": "±5%" },
+    "021": { "labelDe": "Aufnahme für Flansch EN 1092-1, KUB +/-5%", "labelEn": "Housing for EN 1092-1 flange, KUB ±5%", "tolerance": "±5%" },
+    "031": { "labelDe": "Aufnahme für DIN-Flansch Form C DIN 2526, KUB +/-10%", "labelEn": "Housing for DIN flange form C DIN 2526, KUB ±10%", "tolerance": "±10%" },
+    "041": { "labelDe": "Aufnahme für ANSI-Flansch 300lb RF, KUB +/-10%, metr. Schrauben", "labelEn": "Housing for ANSI 300lb RF flange, KUB ±10%, metric screws", "tolerance": "±10%" },
+    "051": { "labelDe": "Aufnahme für Flansch EN 1092-1, KUB -0/+10%", "labelEn": "Housing for EN 1092-1 flange, KUB -0/+10%", "tolerance": "-0/+10%" },
+    "061": { "labelDe": "Aufnahme für Flansch EN 1092-1, KUB +/-10%", "labelEn": "Housing for EN 1092-1 flange, KUB ±10%", "tolerance": "±10%" },
+    "071": { "labelDe": "Aufnahme für DIN 2635, KUB +/-10%", "labelEn": "Housing for DIN 2635, KUB ±10%", "tolerance": "±10%" },
+    "081": { "labelDe": "Aufnahme für ANSI-Flansch 150lb RF, KUB +/-10%", "labelEn": "Housing for ANSI 150lb RF flange, KUB ±10%", "tolerance": "±10%" },
+    "091": { "labelDe": "Aufnahme für Flansch EN 1092-1 Form B1, KUB -0/+10%", "labelEn": "Housing for EN 1092-1 form B1 flange, KUB -0/+10%", "tolerance": "-0/+10%" },
+    "0A1": { "labelDe": "Aufnahme für ANSI 300lb RF, KUB +/-5%", "labelEn": "Housing for ANSI 300lb RF flange, KUB ±5%", "tolerance": "±5%" },
+    "0B1": { "labelDe": "Aufnahme für EN 1092-1, KUB -0/+10%, Schrauben 5.6, Muttern 5", "labelEn": "Housing for EN 1092-1 flange, KUB -0/+10%, screws 5.6 / nuts 5", "tolerance": "-0/+10%" },
+    "W01": { "labelDe": "Sondervariante Wacker-Chemie (Stiftschrauben)", "labelEn": "Wacker-Chemie special variant (stud bolts)" },
+    "W11": { "labelDe": "Sondervariante Wacker-Chemie NIRO", "labelEn": "Wacker-Chemie special variant NIRO" }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "subsystem": "DGL",
+  "fieldDe": "Druckgasleitung",
+  "fieldEn": "Pressure gas line",
+  "_comment": "DGL codes have a different shape from the standard 16-character ENS. Example: 018-84-.-15-.-5-/-00-R11. Source: ENS-System Druckgasleitung.xlsx + DGL-Ausführungsvorgaben PDF.",
+  "type": {
+    "018": { "labelDe": "Druckgasleitung", "labelEn": "Pressure gas line" }
+  },
+  "connection": {
+    "84": { "labelDe": "Anschweißenden an den AVR", "labelEn": "Welding ends to the AVR" }
+  },
+  "pressure": {
+    ".": { "labelDe": "PS25 oder PS40", "labelEn": "PS25 or PS40", "bar": null },
+    "D": { "labelDe": "PS40", "labelEn": "PS40", "bar": 40 },
+    "F": { "labelDe": "PS64", "labelEn": "PS64", "bar": 64 }
+  },
+  "size": {
+    "15": { "label": "DN 50", "dn": 50 },
+    "17": { "label": "DN 65", "dn": 65 },
+    "18": { "label": "DN 80", "dn": 80 },
+    "19": { "label": "DN 100", "dn": 100 },
+    "20": { "label": "DN 125", "dn": 125 },
+    "21": { "label": "DN 150", "dn": 150 },
+    "23": { "label": "DN 200", "dn": 200 }
+  },
+  "material": {
+    "5": { "labelDe": "St (Stahl)", "labelEn": "St (steel)" },
+    "7": { "labelDe": "TT (Tieftemperatur)", "labelEn": "TT (low-temperature)" },
+    "8": { "labelDe": "NIRO (Edelstahl)", "labelEn": "NIRO (stainless)" }
+  },
+  "rubric": {
+    "_comment": "Rubrik (R-number) refers to drawing reference 1-35 from the DGL-Ausführungsvorgaben PDF.",
+    "format": "R<n>",
+    "range": "R1 to R35"
+  }
+}

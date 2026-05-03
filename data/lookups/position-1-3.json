@@ -63,7 +63,24 @@
     "523": { "family": "SS", "labelDe": "SS - Schmutzsammler, Deckel geflanscht, Durchgangsform", "labelEn": "SS - strainer, cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "12.11" },
     "524": { "family": "SS", "labelDe": "SS - Schmutzsammler, Deckel geflanscht, Eckform", "labelEn": "SS - strainer, cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "12.15" },
 
-    "157": { "family": "FlangeKit", "labelDe": "Flanschsatz für Sicherheitsventil-Kombination", "labelEn": "Flange kit for safety valve combination", "register": null }
+    "157": { "family": "FlangeKit", "labelDe": "Flanschsatz für Sicherheitsventil-Kombination (DIN-/AWP-Flansche)", "labelEn": "Flange kit for safety valve combination (DIN / AWP flanges)", "register": null },
+    "152": { "family": "FlangeKit", "labelDe": "Flanschsatz für Sicherheitsventil-Kombination (Variante)", "labelEn": "Flange kit for safety valve combination (variant)", "register": null },
+    "452": { "family": "FlangeKit", "labelDe": "Eintritts-/Austrittsflanschsatz Einzel-SV", "labelEn": "Inlet / outlet flange kit, single SV", "register": null },
+
+    "025": { "family": "HRS", "labelDe": "HRS - Handregelventil Durchgangsform", "labelEn": "HRS - hand regulating valve, globe type", "register": null },
+    "026": { "family": "HRS", "labelDe": "HRS - Handregelventil Eckform", "labelEn": "HRS - hand regulating valve, angle type", "register": null },
+    "02A": { "family": "HRS", "labelDe": "HRS Durchgangsform mit Prüfanschluß + Entlüftung", "labelEn": "HRS globe type with test port + vent", "register": null },
+    "02B": { "family": "HRS", "labelDe": "HRS Eckform mit Prüfanschluß + Entlüftung", "labelEn": "HRS angle type with test port + vent", "register": null },
+    "02C": { "family": "HRS", "labelDe": "HRS Durchgangsform mit Metallbalg", "labelEn": "HRS globe type with metal bellow", "register": null },
+    "02D": { "family": "HRS", "labelDe": "HRS Eckform mit Metallbalg", "labelEn": "HRS angle type with metal bellow", "register": null },
+    "02F": { "family": "HRS", "labelDe": "HRS Durchgangsform mit Prüfanschluß; ohne Entlüftung", "labelEn": "HRS globe type with test port; no vent", "register": null },
+    "02G": { "family": "HRS", "labelDe": "HRS Eckform mit Prüfanschluß; ohne Entlüftung (TAH4C)", "labelEn": "HRS angle type with test port; no vent (TAH4C)", "register": null },
+    "02I": { "family": "HRS", "labelDe": "HRS Eckform mit Prüfanschluß + Entlüftung (Anschluss-Tabelle B)", "labelEn": "HRS angle type with test port + vent (connection table B)", "register": null },
+    "02J": { "family": "HRS", "labelDe": "HRS Durchgangsform mit Gewinde M24 am Gehäusehals", "labelEn": "HRS globe type with M24 thread on body neck", "register": null },
+    "02K": { "family": "HRSN", "labelDe": "HRSN - Nadelventil Durchgangsform", "labelEn": "HRSN - needle valve, globe type", "register": null },
+    "02L": { "family": "HRSN", "labelDe": "HRSN - Nadelventil Eckform", "labelEn": "HRSN - needle valve, angle type", "register": null },
+
+    "018": { "family": "DGL", "labelDe": "Druckgasleitung", "labelEn": "Pressure gas line (DGL)", "register": null }
   },
   "castIronVariants": {
     "_comment": "G-suffix variants. The third character 'G' marks Gusseisen (cast iron) housing. The first two digits identify the product family.",

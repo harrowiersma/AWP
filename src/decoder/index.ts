@@ -1,5 +1,5 @@
 import type { DecodedNumber, FieldResult } from "./types";
-import { tokenize } from "./tokenize";
+import { normalize, tokenize } from "./tokenize";
 import {
   lookupBodyMaterial,
   lookupConnectionDetails,
@@ -13,6 +13,8 @@ import {
   lookupSuffix,
   lookups,
 } from "./lookup";
+import { isDgl, decodeDgl } from "./subsystems/dgl";
+import { isBsKit, decodeBsKit } from "./subsystems/bskit";
 
 export type { DecodedNumber, FieldResult } from "./types";
 export { lookups } from "./lookup";
@@ -35,6 +37,18 @@ function unknownField(
 }
 
 export function decode(input: string): DecodedNumber {
+  // Try sub-system formats first (DGL, BS-Kit) — they don't fit the standard
+  // 16-character backbone shape.
+  const probe = normalize(input);
+  if (isBsKit(probe)) {
+    const result = decodeBsKit(input, probe);
+    if (result) return result;
+  }
+  if (isDgl(probe)) {
+    const result = decodeDgl(input, probe);
+    if (result) return result;
+  }
+
   const tokenResult = tokenize(input);
 
   if (!tokenResult.ok) {

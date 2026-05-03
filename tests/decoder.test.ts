@@ -200,3 +200,73 @@ describe("decode() — Phase 2: SonderKürzel suffixes", () => {
     expect(r.errors).toEqual([]);
   });
 });
+
+describe("decode() — Phase 3: HRS family codes", () => {
+  it("decodes 025 as HRS globe type", () => {
+    const r = decode("02560D10A5A30000");
+    expect(r.fields.productType.found).toBe(true);
+    expect(r.fields.productType.extra?.family).toBe("HRS");
+    expect(r.fields.productType.valueEn).toMatch(/HRS - hand regulating valve, globe/);
+  });
+
+  it("decodes 02K as HRSN needle valve", () => {
+    const r = decode("02K60D10A5A30000");
+    expect(r.fields.productType.extra?.family).toBe("HRSN");
+  });
+
+  it("decodes flange-kit prefix 152", () => {
+    const r = decode("15252D10A5A30000");
+    expect(r.fields.productType.extra?.family).toBe("FlangeKit");
+  });
+});
+
+describe("decode() — Phase 3: DGL pressure-gas-line sub-system", () => {
+  it("decodes the canonical DGL example 01884.15.5/00R11", () => {
+    const r = decode("01884.15.5/00R11");
+    expect(r.valid).toBe(true);
+    expect(r.fields.productType.extra?.family).toBe("DGL");
+    expect(r.fields.connectionType.valueEn).toMatch(/Welding ends to the AVR/);
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(50);
+    expect(r.fields.bodyMaterial.valueEn).toMatch(/St \(steel\)/);
+    expect(r.fields.connectionDetails.valueEn).toMatch(/R11/);
+  });
+
+  it("DGL with size DN200 NIRO", () => {
+    const r = decode("01884.23.8/9AR35");
+    expect(r.valid).toBe(true);
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(200);
+    expect(r.fields.bodyMaterial.valueEn).toMatch(/NIRO/);
+  });
+});
+
+describe("decode() — Phase 3: BS-Kit burst-disc sub-system", () => {
+  it("decodes the canonical BS-Kit example 44201.10.5/xx001", () => {
+    const r = decode("44201.10.5/xx001");
+    expect(r.valid).toBe(true);
+    expect(r.fields.productType.extra?.family).toBe("BS-Kit");
+    expect(r.fields.bodyMaterial.valueEn).toMatch(/carbon steel/);
+    expect(r.fields.handwheelCap.valueEn).toMatch(/to be specified/);
+    expect((r.fields.connectionDetails.extra as { tolerance?: string })?.tolerance).toBe("±10%");
+  });
+
+  it("decodes 44201.10.5/12501 — burst pressure encoded numerically", () => {
+    const r = decode("44201.10.5/12501");
+    expect(r.valid).toBe(true);
+    // Burst pressure parses as the leading digits — exact bar value depends on
+    // unit convention which varies in the source data; we just require that the
+    // numeric burst-pressure parsing succeeded.
+    expect(r.fields.handwheelCap.found).toBe(true);
+    expect(r.fields.handwheelCap.rawCode).toBe("12");
+  });
+
+  it("decodes 44201.10.8/xx011 — NIRO PS40 with ±5% tolerance", () => {
+    const r = decode("44201.10.8/xx011");
+    expect(r.fields.bodyMaterial.valueEn).toMatch(/stainless/);
+    expect((r.fields.connectionDetails.extra as { tolerance?: string })?.tolerance).toBe("±5%");
+  });
+
+  it("decodes 44202.10.5/xx001 — screwed burst disc", () => {
+    const r = decode("44202.10.5/xx001");
+    expect(r.fields.productType.valueEn).toMatch(/Screwed burst disc/);
+  });
+});

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type { DecodedNumber, FieldResult } from "@/decoder";
 
 const FIELD_ORDER: Array<keyof DecodedNumber["fields"]> = [
@@ -12,6 +15,15 @@ const FIELD_ORDER: Array<keyof DecodedNumber["fields"]> = [
   "connectionDetails",
   "suffix",
 ];
+
+function detectSubsystem(result: DecodedNumber): string | null {
+  const family = result.fields.productType.extra?.family as string | undefined;
+  if (family === "DGL") return "DGL — Pressure gas line";
+  if (family === "BS-Kit") return "BS-Kit — Burst-disc assembly";
+  if (family === "HRS" || family === "HRSN") return "HRS — Hand regulating valve";
+  if (family === "FlangeKit") return "Flange kit (WV-SV combination)";
+  return null;
+}
 
 function Row({ field }: { field: FieldResult }) {
   return (
@@ -41,6 +53,34 @@ function Row({ field }: { field: FieldResult }) {
 }
 
 export default function DecodeResult({ result }: { result: DecodedNumber }) {
+  const [copied, setCopied] = useState<"url" | "json" | null>(null);
+  const subsystem = detectSubsystem(result);
+
+  function copyUrl() {
+    if (typeof window === "undefined") return;
+    const url = `${window.location.origin}/api/decode?code=${encodeURIComponent(
+      result.normalized || result.input
+    )}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied("url");
+      setTimeout(() => setCopied(null), 1500);
+    });
+  }
+
+  function downloadJson() {
+    const blob = new Blob([JSON.stringify(result, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${(result.normalized || "decode").slice(0, 20)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
   return (
     <section className="card">
       {result.errors.length > 0 ? (
@@ -62,10 +102,26 @@ export default function DecodeResult({ result }: { result: DecodedNumber }) {
         </div>
       )}
 
-      {result.normalized && (
-        <p>
-          Normalised: <span className="normalized">{result.normalized}</span>
+      {subsystem && (
+        <p style={{ marginTop: "-0.5rem", marginBottom: "0.75rem" }}>
+          <span className="subsystem-tag">{subsystem}</span>
         </p>
+      )}
+
+      {result.normalized && (
+        <div className="normalized-row">
+          <div>
+            Normalised: <span className="normalized">{result.normalized}</span>
+          </div>
+          <div className="action-buttons">
+            <button type="button" className="ghost" onClick={copyUrl}>
+              {copied === "url" ? "Copied ✓" : "Copy API URL"}
+            </button>
+            <button type="button" className="ghost" onClick={downloadJson}>
+              Download JSON
+            </button>
+          </div>
+        </div>
       )}
 
       {result.errors.length === 0 && (
