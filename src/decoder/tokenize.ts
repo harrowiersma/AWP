@@ -7,8 +7,10 @@ export type TokenizeResult =
 const NORMAL_LENGTH = 16;
 
 export function normalize(input: string): string {
-  // Drop spaces and SAP-style separator dots (e.g. "26300.00.C19A5A30000" → "2630000C19A5A30000")
-  return input.replace(/[\s.]+/g, "").toUpperCase();
+  // Drop common visual separators that aren't part of any code: spaces, SAP-style
+  // dots, hyphens, and underscores. Slashes are kept because they're part of the
+  // sub-system formats (DGL, BS-Kit, kits).
+  return input.replace(/[\s._-]+/g, "").toUpperCase();
 }
 
 export function tokenize(input: string): TokenizeResult {

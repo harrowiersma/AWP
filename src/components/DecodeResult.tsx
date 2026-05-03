@@ -177,9 +177,20 @@ export default function DecodeResult({ result }: { result: DecodedNumber }) {
             </tr>
           </thead>
           <tbody>
-            {FIELD_ORDER.map((key) => (
-              <Row key={key} field={result.fields[key]} />
-            ))}
+            {FIELD_ORDER.map((key) => {
+              const f = result.fields[key];
+              // Hide the suffix row when there's no suffix and the result is a
+              // standard valve (suffix=`(none)`). Sub-system rows that mark
+              // suffix as "(not applicable in DGL)" etc. also hide.
+              if (
+                key === "suffix" &&
+                !f.rawCode &&
+                (f.valueEn === "(none)" || f.valueEn?.startsWith("(not applicable"))
+              ) {
+                return null;
+              }
+              return <Row key={key} field={f} />;
+            })}
           </tbody>
         </table>
       )}

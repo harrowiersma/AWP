@@ -1,5 +1,13 @@
 import hrsData from "@data/lookups/hrs.json";
+import hrsConnections from "@data/lookups/hrs-connections.json";
 import type { FieldResult } from "../types";
+
+const connections = hrsConnections as unknown as {
+  thread: Record<string, { spec: string; labelEn: string }>;
+  weldingDimension: Record<string, { dn: string; spec: string; labelEn: string }>;
+  flange: Record<string, { dn: string; spec: string; labelEn: string }>;
+  fittings: Record<string, { labelDe: string; labelEn: string }>;
+};
 
 const data = hrsData as unknown as {
   pos45: Record<string, { labelDe: string; labelEn: string }>;
@@ -39,6 +47,40 @@ function override(
   };
 }
 
+// Scan a string for any 2-character substring that's a known thread / welding /
+// flange code; return the matching reference rows. Used to surface likely
+// connection meanings within the variable HRS Pos 9-16 zone.
+export function scanHrsConnectionCodes(s: string): Array<{
+  code: string;
+  kind: "thread" | "weldingDimension" | "flange";
+  labelEn: string;
+}> {
+  const hits: Array<{
+    code: string;
+    kind: "thread" | "weldingDimension" | "flange";
+    labelEn: string;
+  }> = [];
+  for (let i = 0; i < s.length - 1; i++) {
+    const slice = s.slice(i, i + 2).toUpperCase();
+    if (connections.thread[slice]) {
+      hits.push({ code: slice, kind: "thread", labelEn: connections.thread[slice].spec });
+    } else if (connections.weldingDimension[slice]) {
+      hits.push({
+        code: slice,
+        kind: "weldingDimension",
+        labelEn: connections.weldingDimension[slice].labelEn,
+      });
+    } else if (connections.flange[slice]) {
+      hits.push({
+        code: slice,
+        kind: "flange",
+        labelEn: connections.flange[slice].labelEn,
+      });
+    }
+  }
+  return hits;
+}
+
 export function applyHrsOverrides(
   fields: {
     connectionType: FieldResult;
@@ -49,7 +91,8 @@ export function applyHrsOverrides(
     handwheelCap: FieldResult;
     connectionDetails: FieldResult;
   },
-  pos1316: string
+  pos1316: string,
+  pos9to16: string
 ): typeof fields {
   // Pos 4-5 family table is mostly identical to the standard one but with the
   // 6A code added — only override if the standard lookup didn't find it.
@@ -149,6 +192,18 @@ export function applyHrsOverrides(
   );
 
   const found = !!inletAcc && !!outletAcc && !!testAcc;
+
+  // Reference scan: surface any thread / welding / flange code embedded in Pos 9-16
+  const refHits = scanHrsConnectionCodes(pos9to16);
+  if (refHits.length) {
+    const dedup = Array.from(new Map(refHits.map((h) => [h.code, h])).values());
+    const note = dedup
+      .map((h) => `${h.code}=${h.labelEn} (${h.kind})`)
+      .join(" · ");
+    summaryEn.push(`Anschlusscodierung-Treffer: ${note}`);
+    summaryDe.push(`Anschlusscodierung-Treffer: ${note}`);
+  }
+
   const connectionDetails: FieldResult = {
     ...fields.connectionDetails,
     fieldDe: "HRS Pos 13-16 Zubehör",
@@ -156,7 +211,11 @@ export function applyHrsOverrides(
     found,
     valueDe: summaryDe.length ? summaryDe.join(" · ") : fields.connectionDetails.valueDe,
     valueEn: summaryEn.length ? summaryEn.join(" · ") : fields.connectionDetails.valueEn,
-    extra: { perPosition, hrsOverride: true },
+    extra: {
+      perPosition,
+      hrsOverride: true,
+      connectionCodeReference: refHits.length ? refHits : undefined,
+    },
   };
 
   return {

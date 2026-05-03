@@ -15,6 +15,7 @@ import {
   BsKitSchema,
   KitsSchema,
   HrsSchema,
+  HrsConnectionsSchema,
   SafetyValveSchema,
 } from "../src/schemas/lookup";
 
@@ -37,6 +38,7 @@ const files: Array<{ path: string; schema: { parse: (data: unknown) => unknown }
   { path: "../data/lookups/kits.json", schema: KitsSchema },
   { path: "../data/lookups/hrs.json", schema: HrsSchema },
   { path: "../data/lookups/safety-valves.json", schema: SafetyValveSchema },
+  { path: "../data/lookups/hrs-connections.json", schema: HrsConnectionsSchema },
 ];
 
 let failures = 0;

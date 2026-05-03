@@ -1,17 +1,16 @@
 import dglData from "@data/lookups/dgl.json";
 import type { DecodedNumber, FieldResult } from "../types";
 
-// Match either the dotted SAP form (e.g. "01884.15.5/00R11") or the joined form
-// after dots/spaces have been stripped. The compact backbone is:
-//   018 | 84 | 15 | . | 5 | / | 00 | R<n>
-// The "." in pos 9 and "/" in pos 11 are intentional separators in the spec; they
-// disappear when normalize() strips dots, so we accept both shapes.
-//
-// Allowed example after normalize():
-//   "01884155/00R11"   (slash kept — only dots/whitespace are stripped)
-//
-// We anchor on prefix "018" + size code starting at index 5 to detect DGL.
-const DGL_RE = /^018(?<conn>\d{2})(?<size>\d{2})(?<mat>[578])\/?(?<seq>[0-9A-Z]{2})(?<rubric>R\d{1,2})$/i;
+// Match either the dotted SAP form (e.g. "01884.15.5/00R11" or
+// "01884D15.5/00R11") or the joined form after dots/spaces are stripped.
+// Compact backbone after normalize:
+//   018 + connection(2) + [optional pressure-letter D|F] + size(2) + material(1)
+//        + [optional /] + seq(2) + R<n>
+// Pressure column is `.` in the canonical PS25/40-ambiguous case (which our
+// normalize strips), and `D` (PS40) or `F` (PS64) when explicit. The slash is
+// kept by normalize so we use it as an anchor when present.
+const DGL_RE =
+  /^018(?<conn>\d{2})(?<press>[DF])?(?<size>\d{2})(?<mat>[578])\/?(?<seq>[0-9A-Z]{2})(?<rubric>R\d{1,2})$/i;
 
 type Field = {
   position: string;
@@ -59,8 +58,9 @@ export function decodeDgl(input: string, normalized: string): DecodedNumber | nu
   const m = DGL_RE.exec(normalized);
   if (!m || !m.groups) return null;
 
-  const { conn, size, mat, seq, rubric } = m.groups as {
+  const { conn, press, size, mat, seq, rubric } = m.groups as {
     conn: string;
+    press?: string;
     size: string;
     mat: string;
     seq: string;
@@ -128,6 +128,16 @@ export function decodeDgl(input: string, normalized: string): DecodedNumber | nu
     valueEn: "(not applicable in DGL)",
   });
 
+  // Pressure column: explicit D / F or implicit "." (which was stripped by normalize)
+  const pr = press ? lookup.pressure[press.toUpperCase()] : lookup.pressure["."];
+  const pressureField = field(
+    "6",
+    "Nenndruck",
+    "Nominal pressure",
+    press ?? ".",
+    pr ? { de: pr.labelDe, en: pr.labelEn, extra: pr.bar !== null ? { bar: pr.bar } : undefined } : undefined
+  );
+
   return {
     input,
     normalized,
@@ -138,7 +148,7 @@ export function decodeDgl(input: string, normalized: string): DecodedNumber | nu
     fields: {
       productType,
       connectionType,
-      pressure: na("6", "Nenndruck", "Nominal pressure"),
+      pressure: pressureField,
       size: sz,
       screwMaterial: na("9", "Schraubenwerkstoff", "Screw material"),
       bodyMaterial: material,

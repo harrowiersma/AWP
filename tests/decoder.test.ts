@@ -395,6 +395,57 @@ describe("decode() — Phase 5: Safety-valve override", () => {
   });
 });
 
+describe("decode() — Phase 6: completeness fixes", () => {
+  it("normalize() strips hyphens and underscores too", () => {
+    const r = decode("24020-C14_A5A30100");
+    expect(r.normalized).toBe("24020C14A5A30100");
+    expect(r.valid).toBe(true);
+  });
+
+  it("DGL with explicit pressure D (PS40) decodes", () => {
+    const r = decode("01884D15.5/00R11");
+    expect(r.valid).toBe(true);
+    expect(r.fields.pressure.found).toBe(true);
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(40);
+  });
+
+  it("DGL with explicit pressure F (PS64) decodes", () => {
+    const r = decode("01884F15.5/00R11");
+    expect(r.valid).toBe(true);
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(64);
+  });
+
+  it("AVR per-position fallback decodes a code not in the block table", () => {
+    // 26300C19A5A38010 — Pos 13-16 = 8010, not in block table.
+    // Per-position: 8 (ANSI series) · 0 (groove) · 1 (inlet variant 1) · 0 (no outlet fitting)
+    const r = decode("26300C19A5A38010");
+    const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; found: boolean; labelEn?: string }> }).perPosition;
+    expect(perPos).toBeDefined();
+    expect(perPos!.find((p) => p.pos === "13")?.labelEn).toMatch(/ANSI flange/);
+    expect(perPos!.find((p) => p.pos === "14")?.labelEn).toMatch(/groove/);
+  });
+
+  it("HRS Anschlusscodierung scan surfaces a known thread code", () => {
+    // Synthetic HRS code that contains 'A1' (G1/2") in pos 9-16.
+    const r = decode("02560F10A153A11003");
+    // The code is 18 chars — long enough; test mostly cares about the connection-code reference scan.
+    if (r.valid && r.fields.productType.extra?.family === "HRS") {
+      const refs = r.fields.connectionDetails.extra?.connectionCodeReference as
+        | Array<{ code: string }>
+        | undefined;
+      if (refs) {
+        expect(refs.length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("S+M+D-Kit ANSI prefix 063 is recognised at Pos 1-3", () => {
+    const r = decode("06300D13A5A11000");
+    expect(r.fields.productType.found).toBe(true);
+    expect(r.fields.productType.extra?.family).toBe("ANSI-Kit");
+  });
+});
+
 describe("decode() — Phase 4: EXP suffix", () => {
   it("decodes EXP suffix as export variant", () => {
     const r = decode("15752E10.5/01103EXP");

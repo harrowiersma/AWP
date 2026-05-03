@@ -27,6 +27,68 @@
       }
     },
     {
+      "_id": "AVR-HRAR-flange-anglo",
+      "type": "block",
+      "match": { "pos45In": ["20", "30"] },
+      "appliesToFamilies": ["AVR", "AVB", "HRAR", "HRAB", "RV", "RVA", "RVAK", "SS"],
+      "values": {
+        "EE10": { "labelDe": "AWP-Flansch mit Feder (Form C)", "labelEn": "AWP flange with raised tongue (form C)" },
+        "0010": { "labelDe": "DIN-Flansch mit Feder (Form C)", "labelEn": "DIN flange with raised tongue (form C)" },
+        "0020": { "labelDe": "DIN-Flansch glatte Dichtleiste (Form B1)", "labelEn": "DIN flange with raised face (form B1)" },
+        "8810": { "labelDe": "ANSI 300 lbs Flansch mit glatter Dichtleiste (RF)", "labelEn": "ANSI 300 lbs flange with raised face" },
+        "8820": { "labelDe": "ANSI 600 lbs Flansch mit glatter Dichtleiste (RF)", "labelEn": "ANSI 600 lbs flange with raised face" }
+      }
+    },
+    {
+      "_id": "AVR-HRAR-RV-per-position-fallback",
+      "type": "per-position",
+      "match": {},
+      "appliesToFamilies": ["AVR", "AVB", "HRAR", "HRAB", "RV", "RVA", "RVAK", "SS"],
+      "positions": {
+        "13": {
+          "field": "Anschluss-Reihe",
+          "fieldEn": "Connection series",
+          "values": {
+            "0": { "labelDe": "Standard / Anschweißende Reihe 1", "labelEn": "standard / welding end range 1" },
+            "1": { "labelDe": "Anschweißende ANSI Schedule 40 (Reihe)", "labelEn": "welding end ANSI Schedule 40 (series)" },
+            "8": { "labelDe": "ANSI-Flansch (Reihe)", "labelEn": "ANSI flange (series)" },
+            "E": { "labelDe": "AWP-Flansch (Reihe)", "labelEn": "AWP flange (series)" }
+          }
+        },
+        "14": {
+          "field": "Flansch-Variante",
+          "fieldEn": "Flange variant",
+          "values": {
+            "0": { "labelDe": "Nut (Form D, DIN 2526)", "labelEn": "groove (form D, DIN 2526)" },
+            "1": { "labelDe": "Feder (Form C) bzw. ANSI Schedule 40", "labelEn": "raised tongue (form C) or ANSI Schedule 40" },
+            "2": { "labelDe": "glatte Dichtleiste (Form B1)", "labelEn": "raised face (form B1)" },
+            "8": { "labelDe": "ANSI 150 lbs", "labelEn": "ANSI 150 lbs" },
+            "E": { "labelDe": "AWP-Flansch (Form D)", "labelEn": "AWP flange (form D)" }
+          }
+        },
+        "15": {
+          "field": "Zubehör Eingang",
+          "fieldEn": "Inlet fittings",
+          "values": {
+            "0": { "labelDe": "ohne Zubehör am Eingang", "labelEn": "without fittings on inlet" },
+            "1": { "labelDe": "Eingang Variante 1", "labelEn": "inlet variant 1" }
+          }
+        },
+        "16": {
+          "field": "Zubehör Ausgang",
+          "fieldEn": "Outlet fittings",
+          "values": {
+            "0": { "labelDe": "ohne Zubehör am Ausgang", "labelEn": "without fittings on outlet" },
+            "1": { "labelDe": "mit Überwurfmutter und Schweißtülle am Ausgang", "labelEn": "cap nut + weld tail on outlet" },
+            "2": { "labelDe": "mit Blindmutter am Ausgang", "labelEn": "blind nut on outlet" },
+            "3": { "labelDe": "mit Doppelmutter links/rechts am Ausgang", "labelEn": "double nut LH/RH on outlet" },
+            "4": { "labelDe": "mit Überwurfmutter und Schweißkugelbuchse am Ausgang", "labelEn": "cap nut + weld ball-type nipple on outlet" },
+            "5": { "labelDe": "mit Überwurfmutter und Schneidring am Ausgang", "labelEn": "cap nut + cutting ring on outlet" }
+          }
+        }
+      }
+    },
+    {
       "_id": "AVRS-per-position",
       "type": "per-position",
       "match": {},

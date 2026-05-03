@@ -373,6 +373,8 @@ export function decode(input: string): DecodedNumber {
     suffix,
   };
   if (family === "HRS" || family === "HRSN") {
+    const pos9to16 =
+      t.pos9 + t.pos10 + t.pos11 + t.pos12 + t.pos13to16;
     const overridden = applyHrsOverrides(
       {
         connectionType,
@@ -383,7 +385,8 @@ export function decode(input: string): DecodedNumber {
         handwheelCap,
         connectionDetails,
       },
-      t.pos13to16
+      t.pos13to16,
+      pos9to16
     );
     finalFields = { ...finalFields, ...overridden };
   } else if (isSafetyValveFamily(family, t.pos1to3)) {

@@ -212,6 +212,25 @@ export const SafetyValveSchema = z.object({
   }).passthrough(),
 });
 
+export const HrsConnectionsSchema = z.object({
+  subsystem: z.literal("HRS-Connections"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  thread: z.record(
+    z.string(),
+    z.object({ spec: z.string(), labelEn: z.string() })
+  ),
+  weldingDimension: z.record(
+    z.string(),
+    z.object({ dn: z.string(), spec: z.string(), labelEn: z.string() })
+  ),
+  flange: z.record(
+    z.string(),
+    z.object({ dn: z.string(), spec: z.string(), labelEn: z.string() })
+  ),
+  fittings: kitTable,
+});
+
 export const HrsSchema = z.object({
   subsystem: z.literal("HRS"),
   fieldDe: z.string(),

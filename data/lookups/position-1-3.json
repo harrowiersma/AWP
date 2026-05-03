@@ -80,7 +80,9 @@
     "02K": { "family": "HRSN", "labelDe": "HRSN - Nadelventil Durchgangsform", "labelEn": "HRSN - needle valve, globe type", "register": null },
     "02L": { "family": "HRSN", "labelDe": "HRSN - Nadelventil Eckform", "labelEn": "HRSN - needle valve, angle type", "register": null },
 
-    "018": { "family": "DGL", "labelDe": "Druckgasleitung", "labelEn": "Pressure gas line (DGL)", "register": null }
+    "018": { "family": "DGL", "labelDe": "Druckgasleitung", "labelEn": "Pressure gas line (DGL)", "register": null },
+
+    "063": { "family": "ANSI-Kit", "labelDe": "ANSI-Flansch S+M+D-Kit (für AVR-Kombinationen)", "labelEn": "ANSI flange S+M+D kit (for AVR combinations)", "register": null }
   },
   "castIronVariants": {
     "_comment": "G-suffix variants. The third character 'G' marks Gusseisen (cast iron) housing. The first two digits identify the product family.",

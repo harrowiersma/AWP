@@ -40,10 +40,16 @@
     "V": { "labelDe": "Tabelle B, Rundring FEPM (HT)", "labelEn": "Table B, O-ring FEPM (high temperature)" }
   },
   "pos11_outletTable": {
-"1": { "labelDe": "Anschluss-Codierung Ausgang Variante 1", "labelEn": "outlet connection code variant 1" },
+    "0": { "labelDe": "Anschluss-Codierung Ausgang: keine Spezifikation", "labelEn": "outlet connection code: no specification" },
+    "1": { "labelDe": "Anschluss-Codierung Ausgang Variante 1", "labelEn": "outlet connection code variant 1" },
     "2": { "labelDe": "Anschluss-Codierung Ausgang Variante 2", "labelEn": "outlet connection code variant 2" },
     "3": { "labelDe": "Anschluss-Codierung Ausgang Variante 3 (Standard)", "labelEn": "outlet connection code variant 3 (standard)" },
-    "4": { "labelDe": "Anschluss-Codierung Ausgang Variante 4", "labelEn": "outlet connection code variant 4" }
+    "4": { "labelDe": "Anschluss-Codierung Ausgang Variante 4", "labelEn": "outlet connection code variant 4" },
+    "A": { "labelDe": "Anschluss-Tabelle A am Ausgang", "labelEn": "outlet connection table A" },
+    "B": { "labelDe": "Anschluss-Tabelle B am Ausgang", "labelEn": "outlet connection table B" },
+    "C": { "labelDe": "Anschluss-Tabelle C am Ausgang", "labelEn": "outlet connection table C" },
+    "L": { "labelDe": "Anschluss-Tabelle L (BASF) am Ausgang", "labelEn": "outlet connection table L (BASF)" },
+    "R": { "labelDe": "Anschluss-Tabelle R (BASF Variante) am Ausgang", "labelEn": "outlet connection table R (BASF variant)" }
   },
   "pos12_testPort": {
 "0": { "labelDe": "kein Prüfanschluss", "labelEn": "no test port" },
