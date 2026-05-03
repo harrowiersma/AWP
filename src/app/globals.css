@@ -1,0 +1,246 @@
+:root {
+  --fg: #1a1a1a;
+  --muted: #5b6770;
+  --bg: #f7f7f5;
+  --card: #ffffff;
+  --accent: #003b5c;
+  --accent-2: #00a3a1;
+  --warn: #b54708;
+  --err: #b42318;
+  --ok: #027a48;
+  --border: #e4e7ec;
+  --mono: ui-monospace, SFMono-Regular, "Menlo", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.site-header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+}
+.brand {
+  display: flex;
+  flex-direction: column;
+  color: var(--fg);
+}
+.brand-sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.site-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin: 0 0 0.25rem;
+}
+h2 {
+  font-size: 1.1rem;
+  margin: 1.5rem 0 0.5rem;
+}
+.lead {
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.field-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+input[type="text"],
+input[type="file"] {
+  flex: 1;
+  min-width: 16rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  background: white;
+}
+input[type="text"]:focus {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 1px;
+}
+
+button {
+  padding: 0.65rem 1rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+button:hover {
+  background: #002947;
+}
+button:disabled {
+  background: var(--muted);
+  cursor: not-allowed;
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.examples button {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+  font-weight: 400;
+}
+.examples button:hover {
+  background: var(--bg);
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.result-table th,
+.result-table td {
+  text-align: left;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+  vertical-align: top;
+}
+.result-table th {
+  background: var(--bg);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.code-cell {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  background: var(--bg);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+.unknown {
+  color: var(--warn);
+  font-style: italic;
+}
+
+.banner {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.92rem;
+}
+.banner-warn {
+  background: #fef0c7;
+  border: 1px solid #fdb022;
+  color: #93370d;
+}
+.banner-err {
+  background: #fee4e2;
+  border: 1px solid #fda29b;
+  color: #912018;
+}
+.banner-ok {
+  background: #d1fadf;
+  border: 1px solid #6ce9a6;
+  color: #054f31;
+}
+
+.normalized {
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  background: white;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.dropzone:hover,
+.dropzone.over {
+  border-color: var(--accent-2);
+  background: #f0fafa;
+}
+
+.progress {
+  margin-top: 1rem;
+}
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent-2);
+  transition: width 80ms ease;
+}

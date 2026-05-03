@@ -1,0 +1,11 @@
+{
+  "position": "10",
+  "field": "body_material",
+  "fieldDe": "Gehäusewerkstoff",
+  "fieldEn": "Body material",
+  "values": {
+    "5": { "labelDe": "1.0305 = St35.8I / 1.0488 = TStE285", "labelEn": "1.0305 St35.8I / 1.0488 TStE285", "materials": ["1.0305", "1.0488"] },
+    "7": { "labelDe": "1.0488 = TStE285 / 1.0356 = TTSt35", "labelEn": "1.0488 TStE285 / 1.0356 TTSt35", "materials": ["1.0488", "1.0356"] },
+    "8": { "labelDe": "1.4301 = X5CrNi1810 (Edelstahl)", "labelEn": "1.4301 X5CrNi1810 (stainless)", "materials": ["1.4301"] }
+  }
+}

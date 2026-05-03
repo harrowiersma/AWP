@@ -1,0 +1,11 @@
+{
+  "position": "9",
+  "field": "screw_material",
+  "fieldDe": "Schraubenwerkstoff",
+  "fieldEn": "Screw material",
+  "values": {
+    "A": { "label": "8.8", "labelEn": "carbon steel grade 8.8" },
+    "B": { "label": "A2-70", "labelEn": "stainless steel A2-70" },
+    "C": { "label": "5.6", "labelEn": "carbon steel grade 5.6" }
+  }
+}

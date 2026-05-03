@@ -1,0 +1,28 @@
+{
+  "position": "7-8",
+  "field": "size",
+  "fieldDe": "Nennweite",
+  "fieldEn": "Size (DN)",
+  "values": {
+    "06": { "label": "DN 6", "dn": 6 },
+    "07": { "label": "DN 8", "dn": 8 },
+    "08": { "label": "DN 10", "dn": 10 },
+    "10": { "label": "DN 15", "dn": 15 },
+    "11": { "label": "DN 20", "dn": 20 },
+    "12": { "label": "DN 25", "dn": 25 },
+    "13": { "label": "DN 32", "dn": 32 },
+    "14": { "label": "DN 40", "dn": 40 },
+    "15": { "label": "DN 50", "dn": 50 },
+    "17": { "label": "DN 65", "dn": 65 },
+    "18": { "label": "DN 80", "dn": 80 },
+    "19": { "label": "DN 100", "dn": 100 },
+    "20": { "label": "DN 125", "dn": 125 },
+    "21": { "label": "DN 150", "dn": 150 },
+    "23": { "label": "DN 200", "dn": 200 },
+    "24": { "label": "DN 250", "dn": 250 },
+    "25": { "label": "DN 300", "dn": 300 },
+    "26": { "label": "DN 350", "dn": 350 },
+    "27": { "label": "DN 400", "dn": 400 },
+    "28": { "label": "DN 500", "dn": 500 }
+  }
+}

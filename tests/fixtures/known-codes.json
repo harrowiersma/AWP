@@ -1,0 +1,83 @@
+[
+  {
+    "input": "24020C14A5A30100",
+    "source": "AW: GEA AWP - Decoding speaking numbers.pdf p.3",
+    "expected": {
+      "valid": true,
+      "productType": { "rawCode": "240", "family": "WVR" },
+      "connectionType": { "rawCode": "20", "inlet": "FL", "outlet": "FL" },
+      "pressure": { "rawCode": "C", "bar": 25 },
+      "size": { "rawCode": "14", "dn": 40 },
+      "screwMaterial": { "rawCode": "A", "label": "8.8" },
+      "bodyMaterial": { "rawCode": "5", "isCastIron": false },
+      "medium": { "rawCode": "A" },
+      "handwheelCap": { "rawCode": "3", "valueEn": "with cap" }
+    }
+  },
+  {
+    "input": "26G00C15A5A30000",
+    "source": "AW: GEA AWP - Decoding speaking numbers.pdf p.3",
+    "expected": {
+      "valid": true,
+      "productType": { "rawCode": "26G", "family": "AVR/AVB", "isCastIron": true },
+      "connectionType": { "rawCode": "00", "inlet": "AE", "outlet": "AE" },
+      "pressure": { "rawCode": "C", "bar": 25 },
+      "size": { "rawCode": "15", "dn": 50 },
+      "screwMaterial": { "rawCode": "A", "label": "8.8" },
+      "bodyMaterial": { "rawCode": "5", "isCastIron": true },
+      "medium": { "rawCode": "A" },
+      "handwheelCap": { "rawCode": "3", "valueEn": "with cap" }
+    }
+  },
+  {
+    "input": "45828D10A5A10000",
+    "source": "AW: GEA AWP - Decoding speaking numbers.pdf p.3",
+    "expected": {
+      "valid": true,
+      "productType": { "rawCode": "458", "family": "SVU" },
+      "connectionType": { "rawCode": "28", "inlet": null, "outlet": null, "_note": "Code 28 is not in the standard AVR pos 4-5 table; expected to be unknown for safety valves under MVP" },
+      "pressure": { "rawCode": "D", "bar": 40 },
+      "size": { "rawCode": "10", "dn": 15 },
+      "screwMaterial": { "rawCode": "A", "label": "8.8" },
+      "bodyMaterial": { "rawCode": "5", "isCastIron": false },
+      "medium": { "rawCode": "A" },
+      "handwheelCap": { "rawCode": "1", "valueEn": "without handwheel and cap" }
+    }
+  },
+  {
+    "input": "06162C10A5A30202",
+    "source": "Example part number definition AWP.pdf p.18.1.1",
+    "expected": {
+      "valid": true,
+      "productType": { "rawCode": "061", "family": "AVRS" },
+      "connectionType": { "rawCode": "62", "inlet": "AE", "outlet": "SE" },
+      "pressure": { "rawCode": "C", "bar": 25 },
+      "size": { "rawCode": "10", "dn": 15 },
+      "screwMaterial": { "rawCode": "A", "label": "8.8" },
+      "bodyMaterial": { "rawCode": "5", "isCastIron": false },
+      "medium": { "rawCode": "A" },
+      "handwheelCap": { "rawCode": "3", "valueEn": "with cap" }
+    }
+  },
+  {
+    "input": "26300C19A5A30000",
+    "source": "Example part number definition AWP.pdf p.18.1.3",
+    "expected": {
+      "valid": true,
+      "productType": { "rawCode": "263", "family": "AVR" },
+      "connectionType": { "rawCode": "00", "inlet": "AE", "outlet": "AE" },
+      "pressure": { "rawCode": "C", "bar": 25 },
+      "size": { "rawCode": "19", "dn": 100 },
+      "bodyMaterial": { "rawCode": "5", "isCastIron": false }
+    }
+  },
+  {
+    "input": "52300C19A5A30000",
+    "source": "Example part number definition AWP.pdf p.18.7.1",
+    "expected": {
+      "valid": true,
+      "productType": { "rawCode": "523", "family": "SS" },
+      "handwheelCap": { "rawCode": "3", "valueEn": "500 µm" }
+    }
+  }
+]

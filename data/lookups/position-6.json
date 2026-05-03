@@ -1,0 +1,14 @@
+{
+  "position": "6",
+  "field": "nominal_pressure",
+  "fieldDe": "Nenndruck",
+  "fieldEn": "Nominal pressure",
+  "values": {
+    "A": { "label": "PS 10", "bar": 10 },
+    "B": { "label": "PS 16", "bar": 16 },
+    "C": { "label": "PS 25", "bar": 25 },
+    "D": { "label": "PS 40", "bar": 40 },
+    "E": { "label": "PS 63", "bar": 63 },
+    "F": { "label": "PS 63", "bar": 63 }
+  }
+}

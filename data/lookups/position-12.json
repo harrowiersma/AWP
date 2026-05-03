@@ -1,0 +1,40 @@
+{
+  "position": "12",
+  "field": "handwheel_cap",
+  "fieldDe": "Handrad / Kappe",
+  "fieldEn": "Handwheel / cap",
+  "values": {
+    "1": { "labelDe": "ohne Handrad und Kappe", "labelEn": "without handwheel and cap" },
+    "2": { "labelDe": "mit Handrad", "labelEn": "with handwheel" },
+    "3": { "labelDe": "mit Kappe", "labelEn": "with cap" },
+    "4": { "labelDe": "mit Handrad und Kappe", "labelEn": "with handwheel and cap" }
+  },
+  "familyOverrides": {
+    "_comment": "For strainers (SS, family 52x), position 12 encodes mesh size in µm instead of handwheel/cap.",
+    "SS": {
+      "field": "mesh_size",
+      "fieldDe": "Maschenweite",
+      "fieldEn": "Mesh size",
+      "values": {
+        "2": { "label": "1000 µm", "micrometers": 1000 },
+        "3": { "label": "500 µm", "micrometers": 500 },
+        "4": { "label": "200 µm", "micrometers": 200 },
+        "5": { "label": "150 µm", "micrometers": 150 },
+        "6": { "label": "135 µm", "micrometers": 135 },
+        "7": { "label": "100 µm", "micrometers": 100 },
+        "8": { "label": "80 µm", "micrometers": 80 },
+        "9": { "label": "63 µm", "micrometers": 63 },
+        "A": { "label": "40 µm", "micrometers": 40 },
+        "B": { "label": "25 µm", "micrometers": 25 },
+        "C": { "label": "120 µm", "micrometers": 120 },
+        "D": { "label": "250 µm", "micrometers": 250 }
+      }
+    },
+    "RV": {
+      "field": "not_specified",
+      "fieldDe": "nicht näher spezifiziert",
+      "fieldEn": "not further specified",
+      "values": {}
+    }
+  }
+}

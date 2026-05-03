@@ -1,0 +1,11 @@
+{
+  "sourceVersion": "AWP ENS catalog 18.1.x extracted 2025-12",
+  "ingestedAt": "2026-05-03",
+  "sources": [
+    "Example part number definition AWP.pdf (pages 18.0-18.7)",
+    "AW: GEA AWP - Decoding speaking numbers.pdf (email correspondence)",
+    "Auszug ENS Technischer Katalog AWP 21.08.2003.pdf"
+  ],
+  "phase": 1,
+  "notes": "Phase 1 covers positions 1-12 of the standard 16-character ENS code. Position 13-16 (connection details) require AWP follow-up and are deferred to Phase 2."
+}

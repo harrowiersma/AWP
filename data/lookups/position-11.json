@@ -1,0 +1,12 @@
+{
+  "position": "11",
+  "field": "medium",
+  "fieldDe": "Medium",
+  "fieldEn": "Medium",
+  "values": {
+    "A": { "labelDe": "allgemeine Kältemittel und Kühlsohlen z.B. NH3, CO2, R134a, R410A, R22 usw.", "labelEn": "general refrigerants and brines e.g. NH3, CO2, R134a, R410A, R22 and more" },
+    "B": { "labelDe": "Propan, Butan", "labelEn": "propane, butane" },
+    "C": { "labelDe": "Propylen", "labelEn": "propylene" },
+    "D": { "labelDe": "Helium", "labelEn": "helium" }
+  }
+}

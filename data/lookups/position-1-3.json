@@ -1,0 +1,78 @@
+{
+  "position": "1-3",
+  "field": "type_temperature",
+  "fieldDe": "Armaturentyp + Temperaturbereich",
+  "fieldEn": "Valve type + temperature range",
+  "values": {
+    "061": { "family": "AVRS", "labelDe": "AVRS - Deckel geschraubt, Durchgangsform", "labelEn": "AVRS - cover screwed, globe type", "tempRangeC": "-20 to +100", "register": "2.1" },
+    "062": { "family": "AVRS", "labelDe": "AVRS - Deckel geschraubt, Eckform", "labelEn": "AVRS - cover screwed, angle type", "tempRangeC": "-20 to +100", "register": "2.2" },
+
+    "361": { "family": "AVR", "labelDe": "AVR - Deckel geschraubt, Durchgangsform", "labelEn": "AVR - cover screwed, globe type", "tempRangeC": "-20 to +100", "register": "2.3" },
+    "363": { "family": "AVR", "labelDe": "AVR - Deckel geschraubt, Durchgangsform", "labelEn": "AVR - cover screwed, globe type", "tempRangeC": "-60 to +150", "register": "2.3" },
+    "362": { "family": "AVR", "labelDe": "AVR - Deckel geschraubt, Eckform", "labelEn": "AVR - cover screwed, angle type", "tempRangeC": "-20 to +100", "register": "2.4" },
+    "364": { "family": "AVR", "labelDe": "AVR - Deckel geschraubt, Eckform", "labelEn": "AVR - cover screwed, angle type", "tempRangeC": "-60 to +150", "register": "2.4" },
+    "963": { "family": "AVR", "labelDe": "AVR - Deckel geflanscht, Durchgangsform", "labelEn": "AVR - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "2.13" },
+    "263": { "family": "AVR", "labelDe": "AVR - Deckel geflanscht, Durchgangsform", "labelEn": "AVR - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "2.14" },
+    "964": { "family": "AVR", "labelDe": "AVR - Deckel geflanscht, Eckform", "labelEn": "AVR - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "2.15" },
+    "264": { "family": "AVR", "labelDe": "AVR - Deckel geflanscht, Eckform", "labelEn": "AVR - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "2.16" },
+    "163": { "family": "AVB", "labelDe": "AVB - Deckel geflanscht, Durchgangsform", "labelEn": "AVB - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "2.33" },
+    "164": { "family": "AVB", "labelDe": "AVB - Deckel geflanscht, Eckform", "labelEn": "AVB - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "2.37" },
+
+    "321": { "family": "HRAR", "labelDe": "HRAR - Deckel geschraubt, Durchgangsform", "labelEn": "HRAR - cover screwed, globe type", "tempRangeC": "-20 to +100", "register": "3.1" },
+    "323": { "family": "HRAR", "labelDe": "HRAR - Deckel geschraubt, Durchgangsform", "labelEn": "HRAR - cover screwed, globe type", "tempRangeC": "-60 to +150", "register": "3.1" },
+    "322": { "family": "HRAR", "labelDe": "HRAR - Deckel geschraubt, Eckform", "labelEn": "HRAR - cover screwed, angle type", "tempRangeC": "-20 to +100", "register": "3.2" },
+    "324": { "family": "HRAR", "labelDe": "HRAR - Deckel geschraubt, Eckform", "labelEn": "HRAR - cover screwed, angle type", "tempRangeC": "-60 to +150", "register": "3.2" },
+    "923": { "family": "HRAR", "labelDe": "HRAR - Deckel geflanscht, Durchgangsform", "labelEn": "HRAR - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "3.11" },
+    "223": { "family": "HRAR", "labelDe": "HRAR - Deckel geflanscht, Durchgangsform", "labelEn": "HRAR - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "3.12" },
+    "924": { "family": "HRAR", "labelDe": "HRAR - Deckel geflanscht, Eckform", "labelEn": "HRAR - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "3.13" },
+    "224": { "family": "HRAR", "labelDe": "HRAR - Deckel geflanscht, Eckform", "labelEn": "HRAR - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "3.14" },
+    "123": { "family": "HRAB", "labelDe": "HRAB - Deckel geflanscht, Durchgangsform", "labelEn": "HRAB - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "3.31" },
+    "124": { "family": "HRAB", "labelDe": "HRAB - Deckel geflanscht, Eckform", "labelEn": "HRAB - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "3.35" },
+
+    "983": { "family": "RV", "labelDe": "RV - Deckel geflanscht, Durchgangsform", "labelEn": "RV - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "4.1" },
+    "283": { "family": "RV", "labelDe": "RV - Deckel geflanscht, Durchgangsform", "labelEn": "RV - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "4.2" },
+    "984": { "family": "RV", "labelDe": "RV - Deckel geflanscht, Eckform", "labelEn": "RV - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "4.3" },
+    "284": { "family": "RV", "labelDe": "RV - Deckel geflanscht, Eckform", "labelEn": "RV - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "4.4" },
+
+    "391": { "family": "RVA", "labelDe": "RVA - Deckel geschraubt, Durchgangsform", "labelEn": "RVA - cover screwed, globe type", "tempRangeC": "-20 to +100", "register": "4.21" },
+    "393": { "family": "RVA", "labelDe": "RVA - Deckel geschraubt, Durchgangsform", "labelEn": "RVA - cover screwed, globe type", "tempRangeC": "-60 to +150", "register": "4.21" },
+    "293": { "family": "RVA", "labelDe": "RVA - Deckel geflanscht, Durchgangsform", "labelEn": "RVA - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "4.31" },
+    "392": { "family": "RVA", "labelDe": "RVA - Deckel geschraubt, Eckform", "labelEn": "RVA - cover screwed, angle type", "tempRangeC": "-20 to +100", "register": "4.26" },
+    "394": { "family": "RVA", "labelDe": "RVA - Deckel geschraubt, Eckform", "labelEn": "RVA - cover screwed, angle type", "tempRangeC": "-60 to +150", "register": "4.26" },
+    "294": { "family": "RVA", "labelDe": "RVA - Deckel geflanscht, Eckform", "labelEn": "RVA - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "4.35" },
+
+    "371": { "family": "RVAK", "labelDe": "RVAK - Deckel geschraubt, Durchgangsform", "labelEn": "RVAK - cover screwed, globe type", "tempRangeC": "-20 to +100", "register": "4.41" },
+    "373": { "family": "RVAK", "labelDe": "RVAK - Deckel geschraubt, Durchgangsform", "labelEn": "RVAK - cover screwed, globe type", "tempRangeC": "-60 to +150", "register": "4.41" },
+    "273": { "family": "RVAK", "labelDe": "RVAK - Deckel geflanscht, Durchgangsform", "labelEn": "RVAK - cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "4.51" },
+    "372": { "family": "RVAK", "labelDe": "RVAK - Deckel geschraubt, Eckform", "labelEn": "RVAK - cover screwed, angle type", "tempRangeC": "-20 to +100", "register": "4.46" },
+    "374": { "family": "RVAK", "labelDe": "RVAK - Deckel geschraubt, Eckform", "labelEn": "RVAK - cover screwed, angle type", "tempRangeC": "-60 to +150", "register": "4.46" },
+    "274": { "family": "RVAK", "labelDe": "RVAK - Deckel geflanscht, Eckform", "labelEn": "RVAK - cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "4.55" },
+
+    "240": { "family": "WVR", "labelDe": "WVR - Wechselventil mit PTFE-Ring (3-Wege-Ventil)", "labelEn": "WVR - 3-way valve with PTFE ring", "register": null },
+    "230": { "family": "WVB", "labelDe": "WVB - Wechselventil mit Metallbalg (3-Wege-Ventil)", "labelEn": "WVB - 3-way valve with metal bellow", "register": null },
+
+    "442": { "family": "SVA", "labelDe": "SVA - Sicherheitsventil", "labelEn": "SVA - safety valve", "register": null },
+    "444": { "family": "SVA", "labelDe": "SVA - Sicherheitsventil", "labelEn": "SVA - safety valve", "register": null },
+    "446": { "family": "SVA", "labelDe": "SVA - Sicherheitsventil", "labelEn": "SVA - safety valve", "register": null },
+    "448": { "family": "SVA", "labelDe": "SVA - Sicherheitsventil", "labelEn": "SVA - safety valve", "register": null },
+    "455": { "family": "SVU", "labelDe": "SVU - Sicherheitsventil", "labelEn": "SVU - safety valve", "register": null },
+    "456": { "family": "SVU", "labelDe": "SVU - Sicherheitsventil", "labelEn": "SVU - safety valve", "register": null },
+    "457": { "family": "SVU", "labelDe": "SVU - Sicherheitsventil", "labelEn": "SVU - safety valve", "register": null },
+    "458": { "family": "SVU", "labelDe": "SVU - Sicherheitsventil", "labelEn": "SVU - safety valve", "register": null },
+
+    "523": { "family": "SS", "labelDe": "SS - Schmutzsammler, Deckel geflanscht, Durchgangsform", "labelEn": "SS - strainer, cover flanged, globe type", "tempRangeC": "-60 to +150", "register": "12.11" },
+    "524": { "family": "SS", "labelDe": "SS - Schmutzsammler, Deckel geflanscht, Eckform", "labelEn": "SS - strainer, cover flanged, angle type", "tempRangeC": "-60 to +150", "register": "12.15" },
+
+    "157": { "family": "FlangeKit", "labelDe": "Flanschsatz für Sicherheitsventil-Kombination", "labelEn": "Flange kit for safety valve combination", "register": null }
+  },
+  "castIronVariants": {
+    "_comment": "G-suffix variants. The third character 'G' marks Gusseisen (cast iron) housing. The first two digits identify the product family.",
+    "16G": { "family": "AVR/HRAR", "labelDe": "AVR/HRAR mit Gussgehäuse", "labelEn": "AVR/HRAR with cast iron housing" },
+    "22G": { "family": "HRAR", "labelDe": "HRAR mit Gussgehäuse", "labelEn": "HRAR with cast iron housing" },
+    "26G": { "family": "AVR/AVB", "labelDe": "AVR/AVB mit Gussgehäuse", "labelEn": "AVR/AVB with cast iron housing" },
+    "27G": { "family": "RV/RVA/RVAK", "labelDe": "RV/RVA/RVAK mit Gussgehäuse", "labelEn": "RV/RVA/RVAK with cast iron housing" },
+    "28G": { "family": "RV/RVA/RVAK", "labelDe": "RV/RVA/RVAK mit Gussgehäuse", "labelEn": "RV/RVA/RVAK with cast iron housing" },
+    "29G": { "family": "RV/RVA/RVAK", "labelDe": "RV/RVA/RVAK mit Gussgehäuse", "labelEn": "RV/RVA/RVAK with cast iron housing" },
+    "52G": { "family": "SS", "labelDe": "Schmutzsammler mit Gussgehäuse", "labelEn": "Strainer with cast iron housing" }
+  }
+}
