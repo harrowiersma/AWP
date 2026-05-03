@@ -25,30 +25,72 @@ function detectSubsystem(result: DecodedNumber): string | null {
   return null;
 }
 
+type PerPositionEntry = {
+  pos: string;
+  code: string;
+  fieldDe?: string;
+  fieldEn?: string;
+  found: boolean;
+  labelDe?: string;
+  labelEn?: string;
+};
+
 function Row({ field }: { field: FieldResult }) {
+  const perPos = (field.extra as { perPosition?: PerPositionEntry[] } | undefined)
+    ?.perPosition;
+
   return (
-    <tr>
-      <td>{field.position}</td>
-      <td>
-        <div>{field.fieldEn}</div>
-        <div style={{ color: "var(--muted)", fontSize: "0.85rem" }}>{field.fieldDe}</div>
-      </td>
-      <td>
-        <span className="code-cell">{field.rawCode || "—"}</span>
-      </td>
-      <td>
-        {field.found ? (
-          <>
-            <div>{field.valueEn}</div>
-            {field.valueDe && field.valueDe !== field.valueEn && (
-              <div style={{ color: "var(--muted)", fontSize: "0.85rem" }}>{field.valueDe}</div>
-            )}
-          </>
-        ) : (
-          <span className="unknown">unknown</span>
-        )}
-      </td>
-    </tr>
+    <>
+      <tr>
+        <td>{field.position}</td>
+        <td>
+          <div>{field.fieldEn}</div>
+          <div style={{ color: "var(--muted)", fontSize: "0.85rem" }}>{field.fieldDe}</div>
+        </td>
+        <td>
+          <span className="code-cell">{field.rawCode || "—"}</span>
+        </td>
+        <td>
+          {field.found || field.valueEn ? (
+            <>
+              <div>{field.valueEn}</div>
+              {field.valueDe && field.valueDe !== field.valueEn && (
+                <div style={{ color: "var(--muted)", fontSize: "0.85rem" }}>{field.valueDe}</div>
+              )}
+            </>
+          ) : (
+            <span className="unknown">unknown</span>
+          )}
+        </td>
+      </tr>
+      {perPos && perPos.length > 0 && (
+        <tr>
+          <td colSpan={4} style={{ background: "var(--bg)", padding: "0.5rem 0.5rem 0.75rem" }}>
+            <div style={{ fontSize: "0.8rem", color: "var(--muted)", marginBottom: "0.35rem" }}>
+              Per-position breakdown:
+            </div>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <tbody>
+                {perPos.map((p) => (
+                  <tr key={p.pos}>
+                    <td style={{ width: "3rem", padding: "0.2rem 0.4rem", verticalAlign: "top" }}>
+                      Pos {p.pos}
+                    </td>
+                    <td style={{ width: "8rem", padding: "0.2rem 0.4rem", verticalAlign: "top" }}>
+                      <span className="code-cell">{p.code || "—"}</span>
+                    </td>
+                    <td style={{ padding: "0.2rem 0.4rem", verticalAlign: "top", fontSize: "0.85rem" }}>
+                      <strong>{p.fieldEn ?? p.fieldDe}:</strong>{" "}
+                      {p.found ? p.labelEn ?? p.labelDe : <span className="unknown">unknown</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
 

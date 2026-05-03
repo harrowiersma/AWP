@@ -125,6 +125,8 @@ export const Pos1316Schema = z.object({
   fieldEn: z.string(),
   rules: z.array(
     z.object({
+      _id: z.string().optional(),
+      type: z.enum(["block", "per-position"]).optional(),
       match: z
         .object({
           pos45In: z.array(z.string()).optional(),
@@ -132,10 +134,22 @@ export const Pos1316Schema = z.object({
         })
         .optional(),
       appliesToFamilies: z.array(z.string()).optional(),
-      values: z.record(
-        z.string(),
-        z.object({ labelDe: z.string(), labelEn: z.string() })
-      ),
+      values: z
+        .record(z.string(), z.object({ labelDe: z.string(), labelEn: z.string() }))
+        .optional(),
+      positions: z
+        .record(
+          z.string(),
+          z.object({
+            field: z.string(),
+            fieldEn: z.string(),
+            values: z.record(
+              z.string(),
+              z.object({ labelDe: z.string(), labelEn: z.string() })
+            ),
+          })
+        )
+        .optional(),
     })
   ),
 });
@@ -171,6 +185,48 @@ export const DglSchema = z.object({
   size: z.record(z.string(), z.object({ label: z.string(), dn: z.number() })),
   material: z.record(z.string(), z.object({ labelDe: z.string(), labelEn: z.string() })),
   rubric: z.record(z.string(), z.unknown()),
+});
+
+const kitTable = z.record(
+  z.string(),
+  z.object({ labelDe: z.string(), labelEn: z.string() })
+);
+
+export const HrsSchema = z.object({
+  subsystem: z.literal("HRS"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  pos45: kitTable,
+  pos6: z.record(
+    z.string(),
+    z.object({ label: z.string(), bar: z.number() })
+  ),
+  pos9_inletTable: kitTable,
+  pos10_ringMaterialTable: kitTable,
+  pos11_outletTable: kitTable,
+  pos12_testPort: kitTable,
+  pos13_inletAccessory: kitTable,
+  pos14_outletAccessory: kitTable,
+  pos1516_testPortAccessory: kitTable,
+});
+
+export const KitsSchema = z.object({
+  subsystem: z.literal("Kit"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  prefix: z.record(
+    z.string(),
+    z.object({ labelDe: z.string(), labelEn: z.string(), appliesTo: z.string() })
+  ),
+  pressure: z.record(
+    z.string(),
+    z.object({ label: z.string(), bar: z.number().nullable() })
+  ),
+  screwOrA2: kitTable,
+  outletDn: kitTable,
+  outletThread: kitTable,
+  flangeStandard: kitTable,
+  accessoryCode: kitTable,
 });
 
 export const BsKitSchema = z.object({

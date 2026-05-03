@@ -137,10 +137,19 @@ export function lookupHandwheelCap(code: string, family: string | undefined) {
   };
 }
 
+type Pos1316PositionTable = {
+  field: string;
+  fieldEn: string;
+  values: Record<string, { labelDe: string; labelEn: string }>;
+};
+
 type Pos1316Rule = {
+  _id?: string;
+  type?: "block" | "per-position";
   match?: { pos45In?: string[]; pos1to3?: string };
   appliesToFamilies?: string[];
-  values: Record<string, { labelDe: string; labelEn: string }>;
+  values?: Record<string, { labelDe: string; labelEn: string }>;
+  positions?: Record<string, Pos1316PositionTable>;
 };
 
 export function lookupConnectionDetails(
@@ -148,7 +157,21 @@ export function lookupConnectionDetails(
   pos45: string,
   pos1to3: string,
   family: string | undefined
-): { found: boolean; labelDe?: string; labelEn?: string; matchedRule?: string } {
+): {
+  found: boolean;
+  labelDe?: string;
+  labelEn?: string;
+  matchedRule?: string;
+  perPosition?: Array<{
+    pos: string;
+    code: string;
+    fieldDe: string;
+    fieldEn: string;
+    found: boolean;
+    labelDe?: string;
+    labelEn?: string;
+  }>;
+} {
   const rules = (pos1316Data.rules ?? []) as unknown as Pos1316Rule[];
   for (const rule of rules) {
     const m = rule.match ?? {};
@@ -157,14 +180,88 @@ export function lookupConnectionDetails(
     if (rule.appliesToFamilies && family && !rule.appliesToFamilies.includes(family)) {
       continue;
     }
-    const entry = rule.values[pos1316];
-    if (entry) {
-      return {
-        found: true,
-        labelDe: entry.labelDe,
-        labelEn: entry.labelEn,
-        matchedRule: m.pos45In ? `Pos 4-5 ∈ {${m.pos45In.join(",")}}` : `Pos 1-3 = ${m.pos1to3}`,
-      };
+    const ruleType = rule.type ?? "block";
+
+    if (ruleType === "block" && rule.values) {
+      const entry = rule.values[pos1316];
+      if (entry) {
+        return {
+          found: true,
+          labelDe: entry.labelDe,
+          labelEn: entry.labelEn,
+          matchedRule: m.pos45In
+            ? `Pos 4-5 ∈ {${m.pos45In.join(",")}}`
+            : `Pos 1-3 = ${m.pos1to3 ?? "*"}`,
+        };
+      }
+    }
+
+    if (ruleType === "per-position" && rule.positions) {
+      // pos1316 has 4 chars representing positions 13, 14, 15, 16
+      const chars = pos1316.split("");
+      const positions = ["13", "14", "15", "16"];
+      const perPosition: Array<{
+        pos: string;
+        code: string;
+        fieldDe: string;
+        fieldEn: string;
+        found: boolean;
+        labelDe?: string;
+        labelEn?: string;
+      }> = [];
+      const summaryDe: string[] = [];
+      const summaryEn: string[] = [];
+      let allFound = true;
+
+      for (let i = 0; i < 4; i++) {
+        const pos = positions[i];
+        const code = chars[i] ?? "";
+        const table = rule.positions[pos];
+        if (!table) {
+          perPosition.push({
+            pos,
+            code,
+            fieldDe: `Pos ${pos}`,
+            fieldEn: `Pos ${pos}`,
+            found: false,
+          });
+          allFound = false;
+          continue;
+        }
+        const entry = table.values[code];
+        if (entry) {
+          perPosition.push({
+            pos,
+            code,
+            fieldDe: table.field,
+            fieldEn: table.fieldEn,
+            found: true,
+            labelDe: entry.labelDe,
+            labelEn: entry.labelEn,
+          });
+          summaryDe.push(`${table.field}: ${entry.labelDe}`);
+          summaryEn.push(`${table.fieldEn}: ${entry.labelEn}`);
+        } else {
+          perPosition.push({
+            pos,
+            code,
+            fieldDe: table.field,
+            fieldEn: table.fieldEn,
+            found: false,
+          });
+          allFound = false;
+        }
+      }
+
+      if (perPosition.some((p) => p.found)) {
+        return {
+          found: allFound,
+          labelDe: summaryDe.join(" · "),
+          labelEn: summaryEn.join(" · "),
+          matchedRule: `family=${family} per-position`,
+          perPosition,
+        };
+      }
     }
   }
   return { found: false };

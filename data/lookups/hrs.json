@@ -1,0 +1,69 @@
+{
+  "subsystem": "HRS",
+  "fieldDe": "HRS-Spezifika",
+  "fieldEn": "HRS-specific encoding",
+  "_comment": "HRS / HRSN family overrides positions 9-16 of the standard 16-character ENS code. Source: ENS-System HRS_Anschlüsse und Zubehör.xlsx, sheet Sondernummern.",
+  "pos45": {
+    "00": { "labelDe": "Anschweißende Eingang/Ausgang", "labelEn": "welding ends inlet/outlet" },
+    "60": { "labelDe": "Gewindeanschluss Eingang/Ausgang", "labelEn": "threaded connection inlet/outlet" },
+    "62": { "labelDe": "Anschweißende Eingang, Gewindeanschluss Ausgang", "labelEn": "welding end inlet, threaded outlet" },
+    "64": { "labelDe": "Flanschende Eingang, Gewindeanschluss Ausgang", "labelEn": "flange inlet, threaded outlet" },
+    "6A": { "labelDe": "Gewinde Eingang/Ausgang, Kappe/Gehäuse verplombt", "labelEn": "threaded inlet/outlet, cap/body sealed" }
+  },
+  "pos6": {
+    "D": { "label": "PS40", "bar": 40 },
+    "F": { "label": "PS63", "bar": 63 },
+    "H": { "label": "PS120", "bar": 120 }
+  },
+  "pos9_inletTable": {
+"A": { "labelDe": "Standard Anschlusscodierung Eingang HRS (Tabelle A)", "labelEn": "Standard inlet connection table A" },
+    "L": { "labelDe": "Anschlusscodierung Eingang HRS (Tabelle B)", "labelEn": "HRS inlet connection table B" },
+    "R": { "labelDe": "Anschlusscodierung Eingang HRS BASF", "labelEn": "HRS inlet connection table BASF" }
+  },
+  "pos10_ringMaterialTable": {
+"A": { "labelDe": "Tabelle A, Rundring CR (Chloropren)", "labelEn": "Table A, O-ring CR (chloroprene)" },
+    "B": { "labelDe": "Tabelle B, Rundring CR", "labelEn": "Table B, O-ring CR" },
+    "C": { "labelDe": "Tabelle C, Rundring CR", "labelEn": "Table C, O-ring CR" },
+    "D": { "labelDe": "Tabelle A, Rundring FPM (Viton)", "labelEn": "Table A, O-ring FPM (Viton)" },
+    "E": { "labelDe": "Tabelle B, Rundring FPM", "labelEn": "Table B, O-ring FPM" },
+    "F": { "labelDe": "Tabelle C, Rundring FPM", "labelEn": "Table C, O-ring FPM" },
+    "G": { "labelDe": "Tabelle A, Rundring HNBR", "labelEn": "Table A, O-ring HNBR" },
+    "H": { "labelDe": "Tabelle B, Rundring HNBR", "labelEn": "Table B, O-ring HNBR" },
+    "J": { "labelDe": "Tabelle C, Rundring HNBR", "labelEn": "Table C, O-ring HNBR" },
+    "K": { "labelDe": "Tabelle A, Rundring EPDM", "labelEn": "Table A, O-ring EPDM" },
+    "L": { "labelDe": "Tabelle B, Rundring EPDM", "labelEn": "Table B, O-ring EPDM" },
+    "M": { "labelDe": "Tabelle C, Rundring EPDM", "labelEn": "Table C, O-ring EPDM" },
+    "N": { "labelDe": "Tabelle A, Rundring UHMWPE", "labelEn": "Table A, O-ring UHMWPE" },
+    "P": { "labelDe": "Tabelle B, Rundring UHMWPE", "labelEn": "Table B, O-ring UHMWPE" },
+    "Q": { "labelDe": "Tabelle C, Rundring UHMWPE", "labelEn": "Table C, O-ring UHMWPE" },
+    "U": { "labelDe": "Tabelle A, Rundring FEPM (HT)", "labelEn": "Table A, O-ring FEPM (high temperature)" },
+    "V": { "labelDe": "Tabelle B, Rundring FEPM (HT)", "labelEn": "Table B, O-ring FEPM (high temperature)" }
+  },
+  "pos11_outletTable": {
+"1": { "labelDe": "Anschluss-Codierung Ausgang Variante 1", "labelEn": "outlet connection code variant 1" },
+    "2": { "labelDe": "Anschluss-Codierung Ausgang Variante 2", "labelEn": "outlet connection code variant 2" },
+    "3": { "labelDe": "Anschluss-Codierung Ausgang Variante 3 (Standard)", "labelEn": "outlet connection code variant 3 (standard)" },
+    "4": { "labelDe": "Anschluss-Codierung Ausgang Variante 4", "labelEn": "outlet connection code variant 4" }
+  },
+  "pos12_testPort": {
+"0": { "labelDe": "kein Prüfanschluss", "labelEn": "no test port" },
+    "1": { "labelDe": "Prüfanschluss Standard", "labelEn": "standard test port" },
+    "2": { "labelDe": "Prüfanschluss Variante 2", "labelEn": "test port variant 2" }
+  },
+  "pos13_inletAccessory": {
+"0": { "labelDe": "ohne Zubehör Eingang", "labelEn": "no inlet accessory" },
+    "1": { "labelDe": "Zubehör Eingang Standard (ÜM+ST)", "labelEn": "inlet standard (cap nut + weld tail)" },
+    "2": { "labelDe": "Zubehör Eingang Blindmutter", "labelEn": "inlet blind nut" },
+    "3": { "labelDe": "Zubehör Eingang Doppelmutter", "labelEn": "inlet double nut" }
+  },
+  "pos14_outletAccessory": {
+"0": { "labelDe": "ohne Zubehör Ausgang", "labelEn": "no outlet accessory" },
+    "1": { "labelDe": "Zubehör Ausgang Standard (ÜM+ST)", "labelEn": "outlet standard (cap nut + weld tail)" },
+    "2": { "labelDe": "Zubehör Ausgang Blindmutter", "labelEn": "outlet blind nut" },
+    "3": { "labelDe": "Zubehör Ausgang Doppelmutter", "labelEn": "outlet double nut" }
+  },
+  "pos1516_testPortAccessory": {
+"00": { "labelDe": "ohne Prüfanschluss-Zubehör", "labelEn": "no test-port accessory" },
+    "03": { "labelDe": "Standard Prüfanschluss-Zubehör", "labelEn": "standard test-port accessory" }
+  }
+}

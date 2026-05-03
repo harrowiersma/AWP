@@ -15,6 +15,8 @@ import {
 } from "./lookup";
 import { isDgl, decodeDgl } from "./subsystems/dgl";
 import { isBsKit, decodeBsKit } from "./subsystems/bskit";
+import { isKit, decodeKit } from "./subsystems/kits";
+import { applyHrsOverrides } from "./subsystems/hrs-override";
 
 export type { DecodedNumber, FieldResult } from "./types";
 export { lookups } from "./lookup";
@@ -37,16 +39,57 @@ function unknownField(
 }
 
 export function decode(input: string): DecodedNumber {
-  // Try sub-system formats first (DGL, BS-Kit) — they don't fit the standard
-  // 16-character backbone shape.
+  // Try sub-system formats first (DGL, BS-Kit, kits) — they don't fit the
+  // standard 16-character backbone shape. Strip any known suffix first so kit
+  // codes with trailing approval/export markers (e.g. ...01103EXP) still match.
   const probe = normalize(input);
-  if (isBsKit(probe)) {
-    const result = decodeBsKit(input, probe);
-    if (result) return result;
+  let body = probe;
+  let suffixHit: string | undefined;
+  // Try to peel off a known suffix from the right.
+  const suffixKeys = Object.keys(lookups.suffix.values).sort(
+    (a, b) => b.length - a.length
+  );
+  for (const k of suffixKeys) {
+    const kU = k.toUpperCase();
+    if (probe.endsWith(kU) && probe.length > kU.length) {
+      body = probe.slice(0, probe.length - kU.length);
+      suffixHit = k;
+      break;
+    }
   }
-  if (isDgl(probe)) {
-    const result = decodeDgl(input, probe);
-    if (result) return result;
+
+  function attachSuffix(result: DecodedNumber): DecodedNumber {
+    if (!suffixHit) return result;
+    const entry = (lookups.suffix.values as Record<string, { labelDe: string; labelEn: string; addedCodes?: string }>)[suffixHit];
+    return {
+      ...result,
+      fields: {
+        ...result.fields,
+        suffix: {
+          position: "suffix",
+          fieldDe: lookups.suffix.fieldDe,
+          fieldEn: lookups.suffix.fieldEn,
+          rawCode: suffixHit,
+          found: true,
+          valueDe: `${suffixHit} — ${entry.labelDe}`,
+          valueEn: `${suffixHit} — ${entry.labelEn}`,
+          extra: { matched: suffixHit, addedCodes: entry.addedCodes },
+        },
+      },
+    };
+  }
+
+  if (isBsKit(body)) {
+    const result = decodeBsKit(input, body);
+    if (result) return attachSuffix(result);
+  }
+  if (isKit(body)) {
+    const result = decodeKit(input, body);
+    if (result) return attachSuffix(result);
+  }
+  if (isDgl(body)) {
+    const result = decodeDgl(input, body);
+    if (result) return attachSuffix(result);
   }
 
   const tokenResult = tokenize(input);
@@ -235,17 +278,25 @@ export function decode(input: string): DecodedNumber {
   // Pos 13-16: connection details (context-dependent on Pos 4-5 + family)
   const cd = lookupConnectionDetails(t.pos13to16, t.pos4to5, t.pos1to3, family);
   let connectionDetails: FieldResult;
-  if (cd.found) {
+  if (cd.found || cd.perPosition?.some((p) => p.found)) {
     connectionDetails = {
       position: "13-16",
       fieldDe: lookups.pos1316.fieldDe,
       fieldEn: lookups.pos1316.fieldEn,
       rawCode: t.pos13to16,
-      found: true,
+      found: cd.found,
       valueDe: cd.labelDe,
       valueEn: cd.labelEn,
-      extra: { matchedRule: cd.matchedRule },
+      extra: { matchedRule: cd.matchedRule, perPosition: cd.perPosition },
     };
+    if (!cd.found && cd.perPosition) {
+      warnings.push(
+        `Pos 13-16: partial decode — ${cd.perPosition
+          .filter((p) => !p.found)
+          .map((p) => `Pos ${p.pos}='${p.code}'`)
+          .join(", ")} unknown`
+      );
+    }
   } else {
     connectionDetails = {
       position: "13-16",
@@ -303,15 +354,46 @@ export function decode(input: string): DecodedNumber {
     warnings.push(`Unknown suffix: '${tokenResult.suffix}'`);
   }
 
+  // HRS / HRSN family override: positions 9-16 carry HRS-specific meanings
+  // (connection-table letter, ring-material × table, test-port codes, etc.)
+  let finalFields = {
+    productType,
+    connectionType,
+    pressure,
+    size,
+    screwMaterial,
+    bodyMaterial,
+    medium,
+    handwheelCap,
+    connectionDetails,
+    suffix,
+  };
+  if (family === "HRS" || family === "HRSN") {
+    const overridden = applyHrsOverrides(
+      {
+        connectionType,
+        pressure,
+        screwMaterial,
+        bodyMaterial,
+        medium,
+        handwheelCap,
+        connectionDetails,
+      },
+      t.pos13to16
+    );
+    finalFields = { ...finalFields, ...overridden };
+  }
+
+  const f = finalFields;
   const allFound =
-    productType.found &&
-    connectionType.found &&
-    pressure.found &&
-    size.found &&
-    screwMaterial.found &&
-    bodyMaterial.found &&
-    medium.found &&
-    (handwheelCap.found || familyKey === "RV");
+    f.productType.found &&
+    f.connectionType.found &&
+    f.pressure.found &&
+    f.size.found &&
+    f.screwMaterial.found &&
+    f.bodyMaterial.found &&
+    f.medium.found &&
+    (f.handwheelCap.found || familyKey === "RV");
 
   return {
     input,
@@ -319,17 +401,6 @@ export function decode(input: string): DecodedNumber {
     valid: allFound,
     warnings,
     errors,
-    fields: {
-      productType,
-      connectionType,
-      pressure,
-      size,
-      screwMaterial,
-      bodyMaterial,
-      medium,
-      handwheelCap,
-      connectionDetails,
-      suffix,
-    },
+    fields: finalFields,
   };
 }

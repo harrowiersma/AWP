@@ -13,6 +13,8 @@ import {
   SuffixSchema,
   DglSchema,
   BsKitSchema,
+  KitsSchema,
+  HrsSchema,
 } from "../src/schemas/lookup";
 
 const here = (rel: string) =>
@@ -31,6 +33,8 @@ const files: Array<{ path: string; schema: { parse: (data: unknown) => unknown }
   { path: "../data/lookups/suffixes.json", schema: SuffixSchema },
   { path: "../data/lookups/dgl.json", schema: DglSchema },
   { path: "../data/lookups/bskit.json", schema: BsKitSchema },
+  { path: "../data/lookups/kits.json", schema: KitsSchema },
+  { path: "../data/lookups/hrs.json", schema: HrsSchema },
 ];
 
 let failures = 0;

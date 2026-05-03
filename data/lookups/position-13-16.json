@@ -3,19 +3,23 @@
   "field": "connection_details",
   "fieldDe": "Spezifizierung der Anschlüsse",
   "fieldEn": "Connection specification",
-  "_comment": "Position 13-16 interpretation depends on Pos 4-5 (and product family). The PDF footers list only standard cases — full table is 'Details bitte bei AWP nachfragen'. We decode the documented standard cases and flag the rest as 'unknown — request from AWP'.",
+  "_comment": "Position 13-16 interpretation depends on Pos 4-5 and product family. Two rule modes are supported: 'block' matches the whole 4-character string against a table; 'per-position' decodes each of the four positions independently. Source: AWP catalog 18.1.x footers + page 18.1.1 (AVRS detail).",
   "rules": [
     {
+      "_id": "AVR-HRAR-welding-block",
+      "type": "block",
       "match": { "pos45In": ["00", "10"] },
-      "appliesToFamilies": ["AVRS", "AVR", "AVB", "HRAR", "HRAB", "RV", "RVA", "RVAK", "SS"],
+      "appliesToFamilies": ["AVR", "AVB", "HRAR", "HRAB", "RV", "RVA", "RVAK", "SS"],
       "values": {
         "0000": { "labelDe": "Anschweißende Reihe 1, ohne Zubehör", "labelEn": "welding end range 1, without fittings" },
         "1100": { "labelDe": "Anschweißende ANSI Schedule 40", "labelEn": "welding end ANSI Schedule 40" }
       }
     },
     {
+      "_id": "AVR-HRAR-flange-block",
+      "type": "block",
       "match": { "pos45In": ["20", "30"] },
-      "appliesToFamilies": ["AVRS", "AVR", "AVB", "HRAR", "HRAB", "RV", "RVA", "RVAK", "SS"],
+      "appliesToFamilies": ["AVR", "AVB", "HRAR", "HRAB", "RV", "RVA", "RVAK", "SS"],
       "values": {
         "0000": { "labelDe": "DIN-Flansch mit Nut", "labelEn": "DIN flange with groove" },
         "EE00": { "labelDe": "AWP-Flansch mit Nut", "labelEn": "AWP flange with groove" },
@@ -23,10 +27,49 @@
       }
     },
     {
-      "_comment": "AVRS p.18.1.1/2 — extended choices for screwed end variants",
-      "match": { "pos1to3": "061" },
-      "values": {
-        "0202": { "labelDe": "Anschweißende Reihe 1 am Eingang + Schraubende G1/2\" + Blindmutter am Ausgang", "labelEn": "welding end range 1 inlet + screwed G1/2\" + blind nut on outlet" }
+      "_id": "AVRS-per-position",
+      "type": "per-position",
+      "match": {},
+      "appliesToFamilies": ["AVRS"],
+      "positions": {
+        "13": {
+          "field": "Eingang",
+          "fieldEn": "Inlet",
+          "values": {
+            "0": { "labelDe": "Anschweißende Reihe 1 am Eingang", "labelEn": "welding end range 1 on inlet" }
+          }
+        },
+        "14": {
+          "field": "Ausgang Schraubende",
+          "fieldEn": "Outlet thread",
+          "values": {
+            "1": { "labelDe": "Schraubende G3/8\" am Ausgang", "labelEn": "screwed end G3/8\" on outlet" },
+            "2": { "labelDe": "Schraubende G1/2\" am Ausgang", "labelEn": "screwed end G1/2\" on outlet" },
+            "3": { "labelDe": "Schraubende G1/2\" Linksgewinde am Ausgang", "labelEn": "screwed end G1/2\" left-hand thread on outlet" },
+            "4": { "labelDe": "Schraubende G3/8\" Linksgewinde am Ausgang", "labelEn": "screwed end G3/8\" left-hand thread on outlet" },
+            "5": { "labelDe": "Schraubende G1/2\" Innengewinde am Ausgang", "labelEn": "screwed end G1/2\" female thread on outlet" },
+            "6": { "labelDe": "Schraubende G3/8\" Innengewinde am Ausgang", "labelEn": "screwed end G3/8\" female thread on outlet" }
+          }
+        },
+        "15": {
+          "field": "Zubehör Eingang",
+          "fieldEn": "Inlet fittings",
+          "values": {
+            "0": { "labelDe": "ohne Zubehör am Eingang", "labelEn": "without fittings on inlet" }
+          }
+        },
+        "16": {
+          "field": "Zubehör Ausgang",
+          "fieldEn": "Outlet fittings",
+          "values": {
+            "0": { "labelDe": "ohne Zubehör am Ausgang", "labelEn": "without fittings on outlet" },
+            "1": { "labelDe": "mit Überwurfmutter und Schweißtülle am Ausgang", "labelEn": "cap nut + weld tail on outlet" },
+            "2": { "labelDe": "mit Blindmutter am Ausgang", "labelEn": "blind nut on outlet" },
+            "3": { "labelDe": "mit Doppelmutter links/rechts am Ausgang", "labelEn": "double nut LH/RH on outlet" },
+            "4": { "labelDe": "mit Überwurfmutter und Schweißkugelbuchse am Ausgang", "labelEn": "cap nut + weld ball-type nipple on outlet" },
+            "5": { "labelDe": "mit Überwurfmutter und Schneidring am Ausgang", "labelEn": "cap nut + cutting ring on outlet" }
+          }
+        }
       }
     }
   ]

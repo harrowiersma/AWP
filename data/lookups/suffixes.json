@@ -27,6 +27,7 @@
     "CI": { "labelDe": "Kein Material aus China oder Indien", "labelEn": "No material from China or India" },
     "EU": { "labelDe": "Nur Material aus EU oder UK", "labelEn": "EU/UK material only" },
     "HT": { "labelDe": "High Temperature (+200°C bei Ventilen mit Spindel/PTFE; +180°C vorläufig bei SVA/SVU)", "labelEn": "High temperature (+200°C for spindle/PTFE valves; +180°C preliminary for SVA/SVU)" },
-    "P": { "labelDe": "Parker — Schweißnaht nach ASME", "labelEn": "Parker — weld seam per ASME" }
+    "P": { "labelDe": "Parker — Schweißnaht nach ASME", "labelEn": "Parker — weld seam per ASME" },
+    "EXP": { "labelDe": "Export-Variante / explosionsgeschützt (Anfrage AWP)", "labelEn": "Export variant / explosion-proof (request AWP for spec)" }
   }
 }

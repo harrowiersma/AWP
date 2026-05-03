@@ -1,0 +1,75 @@
+{
+  "subsystem": "Kit",
+  "fieldDe": "Verbindungs-/Zubehör-Kit",
+  "fieldEn": "Connection / accessory kit",
+  "_comment": "Multi-prefix kit format: <prefix5>.<size3>/<variant5>. Examples: 15752e12.5/04103, 45752e12.5/041e3, 15760e10.5/21001, 17760e10.5/11001, 44660e10.5/10001. Source: ENS-System WV-SV-Kombinationen.xlsx (G-FL-Kit, Schraubenden, Einzel-SV sheets).",
+  "prefix": {
+    "15752": {
+      "labelDe": "G-FL-Kit (WV+SV) — 1× Eintrittsflansch WV + 2× Austrittsflansch SV mit Schrauben/Muttern/Dichtungen",
+      "labelEn": "G-FL-Kit (WV+SV) — 1× WV inlet flange + 2× SV outlet flanges with screws/nuts/gaskets",
+      "appliesTo": "WV+SV combination"
+    },
+    "45752": {
+      "labelDe": "Einzel-SV-Flanschsatz — 1× Eintritts- + 1× Austrittsflansch mit Schrauben/Muttern/Dichtungen",
+      "labelEn": "Single-SV flange kit — 1× inlet + 1× outlet flange with screws/nuts/gaskets",
+      "appliesTo": "single SV"
+    },
+    "15760": {
+      "labelDe": "Schraubenden-Kit (WV+SV) — Zubehör Eingang + Ausgang mit Dichtungen",
+      "labelEn": "Screw-end kit (WV+SV) — inlet + outlet accessories with gaskets",
+      "appliesTo": "WV+SV with screwed connections"
+    },
+    "17760": {
+      "labelDe": "Schraubenden-Kit (WV+SV, SV Typ 446/448) — Zubehör Eingang + Ausgang mit Dichtungen",
+      "labelEn": "Screw-end kit (WV+SV, SV type 446/448) — inlet + outlet accessories with gaskets",
+      "appliesTo": "WV+SV type 446/448"
+    },
+    "44660": {
+      "labelDe": "Schraubenden-Kit (Einzel-SV oder HRS) — Zubehör mit Dichtungen",
+      "labelEn": "Screw-end kit (single SV or HRS) — accessories with gaskets",
+      "appliesTo": "single SV / HRS"
+    }
+  },
+  "pressure": {
+    "b": { "label": "PS25", "bar": 25 },
+    "c": { "label": "PS25", "bar": 25 },
+    "d": { "label": "PS40", "bar": 40 },
+    "e": { "label": "PS40", "bar": 40 },
+    "f": { "label": "PS40 / PS63", "bar": null },
+    "k": { "label": "PS63", "bar": 63 }
+  },
+  "screwOrA2": {
+    "0": { "labelDe": "Schrauben 8.8 (C-Stahl)", "labelEn": "screws 8.8 (carbon steel)" },
+    "1": { "labelDe": "Schrauben A2-70 (Edelstahl)", "labelEn": "screws A2-70 (stainless)" }
+  },
+  "outletDn": {
+    "0": { "labelDe": "kein Austritt-DN spezifiziert", "labelEn": "no outlet DN specified" },
+    "1": { "labelDe": "DN10 am Austritt SV", "labelEn": "DN10 at SV outlet" },
+    "2": { "labelDe": "DN15 am Austritt SV", "labelEn": "DN15 at SV outlet" },
+    "3": { "labelDe": "DN20 am Austritt SV", "labelEn": "DN20 at SV outlet" },
+    "4": { "labelDe": "DN40 am Austritt SV", "labelEn": "DN40 at SV outlet" },
+    "5": { "labelDe": "DN50 am Austritt SV", "labelEn": "DN50 at SV outlet" }
+  },
+  "outletThread": {
+    "0": { "labelDe": "Standardanschluss", "labelEn": "standard connection" },
+    "1": { "labelDe": "R1 (DIN 2999)", "labelEn": "R1 (DIN 2999)" },
+    "2": { "labelDe": "R2 (DIN 2999)", "labelEn": "R2 (DIN 2999)" },
+    "3": { "labelDe": "AE TGL-R2", "labelEn": "welding end TGL-R2" }
+  },
+  "flangeStandard": {
+    "0": { "labelDe": "DIN-Flansch (Standard)", "labelEn": "DIN flange (standard)" },
+    "1": { "labelDe": "ANSI-Flansch", "labelEn": "ANSI flange" },
+    "3": { "labelDe": "AE ANSI 40", "labelEn": "welding end ANSI 40" },
+    "e": { "labelDe": "AWP-Flansche", "labelEn": "AWP flanges" },
+    "t": { "labelDe": "Flansche nach EN 1092-1", "labelEn": "flanges per EN 1092-1" }
+  },
+  "accessoryCode": {
+    "0": { "labelDe": "ohne Zubehör", "labelEn": "without accessories" },
+    "1": { "labelDe": "Überwurfmutter mit Schweißtülle (ÜM+ST)", "labelEn": "cap nut with weld tail (ÜM+ST)" },
+    "2": { "labelDe": "Blindmutter (BM)", "labelEn": "blind nut (BM)" },
+    "3": { "labelDe": "Doppelmutter links/rechts (DM)", "labelEn": "double nut LH/RH (DM)" },
+    "4": { "labelDe": "Überwurfmutter mit Schweißkugelbuchse (ÜM+SKB)", "labelEn": "cap nut with weld ball-type nipple (ÜM+SKB)" },
+    "5": { "labelDe": "Überwurfmutter mit Schneidring (ÜM+SR)", "labelEn": "cap nut with cutting ring (ÜM+SR)" },
+    "6": { "labelDe": "Überwurfmutter mit Schlauchtülle (ÜM+SLT)", "labelEn": "cap nut with hose nipple (ÜM+SLT)" }
+  }
+}

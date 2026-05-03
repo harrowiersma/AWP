@@ -270,3 +270,95 @@ describe("decode() — Phase 3: BS-Kit burst-disc sub-system", () => {
     expect(r.fields.productType.valueEn).toMatch(/Screwed burst disc/);
   });
 });
+
+describe("decode() — Phase 4: Pos 13-16 per-position decoding for AVRS", () => {
+  it("decodes AVRS pos 13-16 per-position breakdown 0202", () => {
+    const r = decode("06162C10A5A30202");
+    expect(r.fields.connectionDetails.found).toBe(true);
+    const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; found: boolean; labelEn?: string }> }).perPosition;
+    expect(perPos).toBeDefined();
+    expect(perPos!.length).toBe(4);
+    // Pos 14 should decode to G1/2" thread
+    const pos14 = perPos!.find((p) => p.pos === "14");
+    expect(pos14?.labelEn).toMatch(/G1\/2/);
+    // Pos 16 should decode to blind nut
+    const pos16 = perPos!.find((p) => p.pos === "16");
+    expect(pos16?.labelEn).toMatch(/blind nut/);
+  });
+
+  it("AVRS pos 13-16 partial: known + unknown mixed", () => {
+    const r = decode("06162C10A5A30209");
+    const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ found: boolean }> }).perPosition;
+    expect(perPos).toBeDefined();
+    // Pos 16 = "9" is not in the table — should be unknown
+    const pos16 = perPos!.find((p) => (p as unknown as { pos: string }).pos === "16");
+    expect(pos16?.found).toBe(false);
+  });
+});
+
+describe("decode() — Phase 4: Kit sub-system", () => {
+  it("decodes 15752e12.5/04103 — G-FL-Kit DN25/40 PS40", () => {
+    const r = decode("15752e12.5/04103");
+    expect(r.valid).toBe(true);
+    expect(r.fields.productType.extra?.family).toBe("Kit");
+    expect(r.fields.productType.valueEn).toMatch(/G-FL-Kit/);
+    expect(r.fields.pressure.valueEn).toMatch(/PS40/);
+    // Variant: 0=screw 8.8, 4=DN40 outlet, 1=R1, 0=DIN, 3=DM
+    expect(r.fields.connectionDetails.valueEn).toMatch(/screws 8.8/);
+    expect(r.fields.connectionDetails.valueEn).toMatch(/DN40/);
+  });
+
+  it("decodes 45752e12.5/041e3 — single-SV with AWP flange", () => {
+    const r = decode("45752e12.5/041e3");
+    expect(r.valid).toBe(true);
+    expect(r.fields.productType.valueEn).toMatch(/Single-SV/);
+    expect(r.fields.connectionDetails.valueEn).toMatch(/AWP flanges/);
+  });
+
+  it("decodes 17760e10.5/11001 — screw-end kit for SV 446/448", () => {
+    const r = decode("17760e10.5/11001");
+    expect(r.valid).toBe(true);
+    expect(r.fields.productType.valueEn).toMatch(/SV type 446\/448/);
+  });
+
+  it("decodes 44660e10.5/10001 — single-SV/HRS screw-end kit", () => {
+    const r = decode("44660e10.5/10001");
+    expect(r.valid).toBe(true);
+    expect(r.fields.productType.valueEn).toMatch(/single SV or HRS/);
+  });
+});
+
+describe("decode() — Phase 4: HRS family override (Pos 9-16)", () => {
+  it("HRS code 02560F10LDA11103 decodes ring-material + accessory codes", () => {
+    // pos 1-3 = 025 (HRS), pos 4-5 = 60 (Gewinde Ein/Aus), pos 6 = F (PS63),
+    // pos 7-8 = 10 (DN15), pos 9 = L (inlet table B), pos 10 = D (table A FPM),
+    // pos 11 = A (outlet variant — via override), pos 12 = 1 (standard test port),
+    // pos 13-16 = 1103.
+    const r = decode("02560F10LDA11103");
+    expect(r.fields.productType.extra?.family).toBe("HRS");
+    expect(r.fields.pressure.valueEn).toMatch(/PS63/);
+    expect(r.fields.screwMaterial.fieldEn).toMatch(/Inlet connection table/);
+    expect(r.fields.screwMaterial.valueEn).toMatch(/table B/);
+    // Pos 10 = D — table A FPM
+    expect(r.fields.bodyMaterial.fieldEn).toMatch(/O-ring material/);
+    expect(r.fields.bodyMaterial.valueEn).toMatch(/FPM/);
+    // Pos 12 = 1 should be standard test-port
+    expect(r.fields.handwheelCap.fieldEn).toMatch(/Test-port/);
+    expect(r.fields.handwheelCap.valueEn).toMatch(/test port/i);
+  });
+
+  it("HRS code with PS120 (H) decodes correctly", () => {
+    const r = decode("02560H10A5A30000");
+    expect(r.fields.pressure.valueEn).toMatch(/PS120/);
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(120);
+  });
+});
+
+describe("decode() — Phase 4: EXP suffix", () => {
+  it("decodes EXP suffix as export variant", () => {
+    const r = decode("15752E10.5/01103EXP");
+    expect(r.fields.suffix.found).toBe(true);
+    expect(r.fields.suffix.extra?.matched).toBe("EXP");
+    expect(r.fields.suffix.valueEn).toMatch(/Export variant/);
+  });
+});
