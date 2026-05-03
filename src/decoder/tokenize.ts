@@ -19,9 +19,14 @@ export function tokenize(input: string): TokenizeResult {
   }
 
   if (normalized.length < NORMAL_LENGTH) {
+    const missing = NORMAL_LENGTH - normalized.length;
     return {
       ok: false,
-      error: `Expected at least ${NORMAL_LENGTH} characters, got ${normalized.length}`,
+      error:
+        `Expected ${NORMAL_LENGTH} characters in the standard ENS backbone, got ${normalized.length} after stripping spaces and dots. ` +
+        `${missing} character(s) appear to be missing — typical layout is: ` +
+        `<3-char type><2-char connection><1 pressure><2 size><1 screw><1 body><1 medium><1 option><4 detail>. ` +
+        `Sub-system formats (DGL, BS-Kit, kits) require their own separators.`,
       normalized,
     };
   }

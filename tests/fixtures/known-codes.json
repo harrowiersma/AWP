@@ -41,7 +41,7 @@
       "screwMaterial": { "rawCode": "A", "label": "8.8" },
       "bodyMaterial": { "rawCode": "5", "isCastIron": false },
       "medium": { "rawCode": "A" },
-      "handwheelCap": { "rawCode": "1", "valueEn": "without handwheel and cap" }
+      "handwheelCap": { "rawCode": "1" }
     }
   },
   {

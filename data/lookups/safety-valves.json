@@ -1,0 +1,41 @@
+{
+  "subsystem": "SafetyValve",
+  "fieldDe": "Sicherheits-/Überström-/Öldruckregelventile",
+  "fieldEn": "Safety / overflow / oil-pressure-control valves",
+  "_comment": "SVA/SVU/UVA/UVU/ORV families have a different position layout than standard valves. The 16-character backbone is the same but Pos 4-5 encodes the set pressure (Einstelldruck) instead of connection type, and Pos 12 encodes connection variants instead of handwheel/cap. Source: Example part number definition AWP.pdf, page 18.3 (safety valves SVA SVU / overflow valves UVA UVU / oil pressure control valves ORV).",
+  "appliesToFamilies": ["SVA", "SVU", "UVA", "UVU", "ORV"],
+  "appliesToPos1to3Prefixes": ["44", "45"],
+  "pos45_setPressure": {
+    "_doc": "Set pressure code at Pos 4-5. Most codes are interpreted directly as bar value (e.g. 28 = 28 bar set pressure). Special codes may exist; the decoder prints the numeric reading and notes 'set pressure'.",
+    "interpretation": "numeric-bar"
+  },
+  "pos12_connectionVariants": {
+    "_doc": "Connection variant code at Pos 12 for safety valves.",
+    "values": {
+      "0": { "labelDe": "Standardanschluss (ohne Sondervariante)", "labelEn": "standard connection (no special variant)" },
+      "1": { "labelDe": "Anschlussvariante 1 (Standard)", "labelEn": "connection variant 1 (standard)" },
+      "2": { "labelDe": "Anschlussvariante 2", "labelEn": "connection variant 2" },
+      "3": { "labelDe": "Anschlussvariante 3", "labelEn": "connection variant 3" },
+      "4": { "labelDe": "Anschlussvariante 4", "labelEn": "connection variant 4" }
+    }
+  },
+  "pos1316_inletOutletAccessories": {
+    "_doc": "Pos 13-16 split for safety valves: Pos 13 = inlet (Eingang), Pos 14 = outlet (Ausgang), Pos 15 = inlet fittings (Eingang Zubehör), Pos 16 = outlet fittings (Ausgang Zubehör).",
+    "pos13_inlet": {
+      "0": { "labelDe": "Standard Eingang", "labelEn": "standard inlet" },
+      "1": { "labelDe": "Eingang Variante 1", "labelEn": "inlet variant 1" }
+    },
+    "pos14_outlet": {
+      "0": { "labelDe": "Standard Ausgang", "labelEn": "standard outlet" },
+      "1": { "labelDe": "Ausgang Variante 1", "labelEn": "outlet variant 1" }
+    },
+    "pos15_inletFittings": {
+      "0": { "labelDe": "ohne Eingangs-Zubehör", "labelEn": "no inlet fittings" },
+      "1": { "labelDe": "mit Eingangs-Zubehör (ÜM+ST)", "labelEn": "with inlet fittings (cap nut + weld tail)" }
+    },
+    "pos16_outletFittings": {
+      "0": { "labelDe": "ohne Ausgangs-Zubehör", "labelEn": "no outlet fittings" },
+      "1": { "labelDe": "mit Ausgangs-Zubehör (ÜM+ST)", "labelEn": "with outlet fittings (cap nut + weld tail)" }
+    }
+  }
+}

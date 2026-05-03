@@ -17,6 +17,10 @@ import { isDgl, decodeDgl } from "./subsystems/dgl";
 import { isBsKit, decodeBsKit } from "./subsystems/bskit";
 import { isKit, decodeKit } from "./subsystems/kits";
 import { applyHrsOverrides } from "./subsystems/hrs-override";
+import {
+  applySafetyValveOverrides,
+  isSafetyValveFamily,
+} from "./subsystems/safety-valve-override";
 
 export type { DecodedNumber, FieldResult } from "./types";
 export { lookups } from "./lookup";
@@ -382,6 +386,21 @@ export function decode(input: string): DecodedNumber {
       t.pos13to16
     );
     finalFields = { ...finalFields, ...overridden };
+  } else if (isSafetyValveFamily(family, t.pos1to3)) {
+    // Safety valves (SVA/SVU/UVA/UVU/ORV) reinterpret Pos 4-5 as set pressure,
+    // Pos 12 as connection variant, and Pos 13-16 as inlet/outlet/fittings.
+    const overridden = applySafetyValveOverrides(
+      { connectionType, handwheelCap, connectionDetails },
+      t.pos4to5,
+      t.pos12,
+      t.pos13to16
+    );
+    finalFields = { ...finalFields, ...overridden };
+    // Drop the earlier "Unknown connection type code" warning since for safety
+    // valves Pos 4-5 isn't a connection code at all.
+    const drop = `Unknown connection type code: ${t.pos4to5}`;
+    const idx = warnings.indexOf(drop);
+    if (idx !== -1) warnings.splice(idx, 1);
   }
 
   const f = finalFields;

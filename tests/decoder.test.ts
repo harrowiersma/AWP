@@ -101,7 +101,15 @@ describe("decode() — error handling", () => {
   it("rejects too-short input", () => {
     const r = decode("123");
     expect(r.valid).toBe(false);
-    expect(r.errors[0]).toMatch(/at least 16/);
+    expect(r.errors[0]).toMatch(/Expected 16 characters/);
+  });
+
+  it("16300E18.511C041 (15 chars after strip) reports the right diagnostic", () => {
+    const r = decode("16300E18.511C041");
+    expect(r.valid).toBe(false);
+    // 16 chars including the dot, 15 after strip — should call out the missing char.
+    expect(r.errors[0]).toMatch(/got 15/);
+    expect(r.errors[0]).toMatch(/1 character\(s\) appear to be missing/);
   });
 
   it("normalizes whitespace and lowercase", () => {
@@ -351,6 +359,39 @@ describe("decode() — Phase 4: HRS family override (Pos 9-16)", () => {
     const r = decode("02560H10A5A30000");
     expect(r.fields.pressure.valueEn).toMatch(/PS120/);
     expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(120);
+  });
+});
+
+describe("decode() — Phase 5: Safety-valve override", () => {
+  it("decodes 45828D10A5A10000 with set-pressure 28 bar", () => {
+    const r = decode("45828D10A5A10000");
+    expect(r.fields.productType.extra?.family).toBe("SVU");
+    // Pos 4-5 = 28 → set pressure 28 bar (NOT unknown connection)
+    expect(r.fields.connectionType.fieldEn).toMatch(/Set pressure/);
+    expect(r.fields.connectionType.found).toBe(true);
+    expect((r.fields.connectionType.extra as { setPressureBar?: number })?.setPressureBar).toBe(28);
+    // Pos 12 = 1 → connection variant 1
+    expect(r.fields.handwheelCap.fieldEn).toMatch(/Connection variant/);
+    // Should not warn about unknown connection code
+    expect(r.warnings.find((w) => /Unknown connection type code: 28/.test(w))).toBeUndefined();
+  });
+
+  it("decodes 44210D10A5A10000 with set-pressure 10 bar (SVA family 442)", () => {
+    const r = decode("44210D10A5A10000");
+    expect(r.fields.productType.extra?.family).toBe("SVA");
+    // Pos 4-5 = 10 — would be AE/AE+DV in the standard table, but for SVA
+    // it's set pressure 10 bar. Override should win.
+    expect(r.fields.connectionType.fieldEn).toMatch(/Set pressure/);
+    expect((r.fields.connectionType.extra as { setPressureBar?: number })?.setPressureBar).toBe(10);
+  });
+
+  it("safety-valve Pos 13-16 decodes per-position inlet/outlet/fittings", () => {
+    const r = decode("45828D10A5A10000");
+    const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; found: boolean }> }).perPosition;
+    expect(perPos).toBeDefined();
+    expect(perPos!.length).toBe(4);
+    // 0000 → all standard
+    expect(perPos!.every((p) => p.found)).toBe(true);
   });
 });
 

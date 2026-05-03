@@ -192,6 +192,26 @@ const kitTable = z.record(
   z.object({ labelDe: z.string(), labelEn: z.string() })
 );
 
+export const SafetyValveSchema = z.object({
+  subsystem: z.literal("SafetyValve"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  appliesToFamilies: z.array(z.string()),
+  appliesToPos1to3Prefixes: z.array(z.string()),
+  pos45_setPressure: z.object({
+    interpretation: z.string(),
+  }).passthrough(),
+  pos12_connectionVariants: z.object({
+    values: kitTable,
+  }).passthrough(),
+  pos1316_inletOutletAccessories: z.object({
+    pos13_inlet: kitTable,
+    pos14_outlet: kitTable,
+    pos15_inletFittings: kitTable,
+    pos16_outletFittings: kitTable,
+  }).passthrough(),
+});
+
 export const HrsSchema = z.object({
   subsystem: z.literal("HRS"),
   fieldDe: z.string(),
