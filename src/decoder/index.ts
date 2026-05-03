@@ -2,6 +2,7 @@ import type { DecodedNumber, FieldResult } from "./types";
 import { tokenize } from "./tokenize";
 import {
   lookupBodyMaterial,
+  lookupConnectionDetails,
   lookupConnectionType,
   lookupHandwheelCap,
   lookupMedium,
@@ -9,6 +10,7 @@ import {
   lookupProductType,
   lookupScrewMaterial,
   lookupSize,
+  lookupSuffix,
   lookups,
 } from "./lookup";
 
@@ -45,6 +47,8 @@ export function decode(input: string): DecodedNumber {
       bodyMaterial: unknownField("10", "Gehäusewerkstoff", "Body material", ""),
       medium: unknownField("11", "Medium", "Medium", ""),
       handwheelCap: unknownField("12", "Handrad / Kappe", "Handwheel / cap", ""),
+      connectionDetails: unknownField("13-16", "Spezifizierung der Anschlüsse", "Connection specification", ""),
+      suffix: unknownField("suffix", "SonderKürzel", "Special suffix", ""),
     };
     return {
       input,
@@ -214,6 +218,77 @@ export function decode(input: string): DecodedNumber {
     if (familyKey !== "RV") warnings.push(`Unknown ${hw.fieldEn} code: ${t.pos12}`);
   }
 
+  // Pos 13-16: connection details (context-dependent on Pos 4-5 + family)
+  const cd = lookupConnectionDetails(t.pos13to16, t.pos4to5, t.pos1to3, family);
+  let connectionDetails: FieldResult;
+  if (cd.found) {
+    connectionDetails = {
+      position: "13-16",
+      fieldDe: lookups.pos1316.fieldDe,
+      fieldEn: lookups.pos1316.fieldEn,
+      rawCode: t.pos13to16,
+      found: true,
+      valueDe: cd.labelDe,
+      valueEn: cd.labelEn,
+      extra: { matchedRule: cd.matchedRule },
+    };
+  } else {
+    connectionDetails = {
+      position: "13-16",
+      fieldDe: lookups.pos1316.fieldDe,
+      fieldEn: lookups.pos1316.fieldEn,
+      rawCode: t.pos13to16,
+      found: false,
+      valueDe: "Details bitte bei AWP nachfragen",
+      valueEn: "Details please request from AWP",
+    };
+  }
+
+  // Suffix (SonderKürzel) — anything after the 16-character backbone
+  const sx = lookupSuffix(tokenResult.suffix);
+  let suffix: FieldResult;
+  if (!tokenResult.suffix) {
+    suffix = {
+      position: "suffix",
+      fieldDe: lookups.suffix.fieldDe,
+      fieldEn: lookups.suffix.fieldEn,
+      rawCode: "",
+      found: true,
+      valueDe: "(keiner)",
+      valueEn: "(none)",
+    };
+  } else if (sx.found && sx.entry && sx.matched) {
+    const remainderNote = sx.remainder
+      ? ` (+ unparsed: '${sx.remainder}')`
+      : "";
+    suffix = {
+      position: "suffix",
+      fieldDe: lookups.suffix.fieldDe,
+      fieldEn: lookups.suffix.fieldEn,
+      rawCode: tokenResult.suffix,
+      found: true,
+      valueDe: `${sx.matched} — ${sx.entry.labelDe}${remainderNote}`,
+      valueEn: `${sx.matched} — ${sx.entry.labelEn}${remainderNote}`,
+      extra: {
+        matched: sx.matched,
+        addedCodes: sx.entry.addedCodes,
+        remainder: sx.remainder ?? "",
+      },
+    };
+    if (sx.remainder) {
+      warnings.push(`Suffix has unparsed remainder: '${sx.remainder}'`);
+    }
+  } else {
+    suffix = {
+      position: "suffix",
+      fieldDe: lookups.suffix.fieldDe,
+      fieldEn: lookups.suffix.fieldEn,
+      rawCode: tokenResult.suffix,
+      found: false,
+    };
+    warnings.push(`Unknown suffix: '${tokenResult.suffix}'`);
+  }
+
   const allFound =
     productType.found &&
     connectionType.found &&
@@ -239,6 +314,8 @@ export function decode(input: string): DecodedNumber {
       bodyMaterial,
       medium,
       handwheelCap,
+      connectionDetails,
+      suffix,
     },
   };
 }

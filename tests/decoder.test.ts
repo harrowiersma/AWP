@@ -125,4 +125,78 @@ describe("decode() — error handling", () => {
     expect(r.fields.bodyMaterial.extra?.isCastIron).toBe(true);
     expect(r.warnings.some((w) => /[Cc]ast iron|Gusseisen/.test(w))).toBe(true);
   });
+
+  it("strips SAP-style separator dots", () => {
+    const r = decode("26300.00.C19A5A30000");
+    expect(r.normalized).toBe("2630000C19A5A30000");
+    expect(r.fields.productType.rawCode).toBe("263");
+    expect(r.fields.connectionType.rawCode).toBe("00");
+  });
+});
+
+describe("decode() — Phase 2: Pos 13-16 connection details", () => {
+  it("decodes welding-end standard 0000 for AVR with Pos 4-5 = 00", () => {
+    const r = decode("26300C19A5A30000");
+    expect(r.fields.connectionDetails.found).toBe(true);
+    expect(r.fields.connectionDetails.valueEn).toMatch(/welding end range 1/);
+  });
+
+  it("decodes ANSI Schedule 40 (1100) for welding ends", () => {
+    const r = decode("26300C19A5A31100");
+    expect(r.fields.connectionDetails.found).toBe(true);
+    expect(r.fields.connectionDetails.valueEn).toMatch(/ANSI Schedule 40/);
+  });
+
+  it("decodes DIN flange (0000) when Pos 4-5 = 20", () => {
+    const r = decode("26320C19A5A30000");
+    expect(r.fields.connectionDetails.found).toBe(true);
+    expect(r.fields.connectionDetails.valueEn).toMatch(/DIN flange/);
+  });
+
+  it("decodes ANSI 150 lbs flange (8800)", () => {
+    const r = decode("26320C19A5A38800");
+    expect(r.fields.connectionDetails.found).toBe(true);
+    expect(r.fields.connectionDetails.valueEn).toMatch(/ANSI 150 lbs/);
+  });
+
+  it("falls back to 'request from AWP' for undocumented details", () => {
+    const r = decode("26300C19A5A39999");
+    expect(r.fields.connectionDetails.found).toBe(false);
+    expect(r.fields.connectionDetails.valueEn).toMatch(/request from AWP/);
+  });
+});
+
+describe("decode() — Phase 2: SonderKürzel suffixes", () => {
+  it("decodes RM (RMRS approval)", () => {
+    const r = decode("26300C19A5A30000RM");
+    expect(r.fields.suffix.found).toBe(true);
+    expect(r.fields.suffix.valueEn).toMatch(/Russian Maritime Register/);
+    expect(r.fields.suffix.extra?.matched).toBe("RM");
+    expect(r.fields.suffix.extra?.addedCodes).toBe("+9200+9311+9312");
+  });
+
+  it("matches longer suffixes first (RMRS not RM)", () => {
+    const r = decode("26300C19A5A30000RMRS");
+    expect(r.fields.suffix.extra?.matched).toBe("RMRS");
+  });
+
+  it("decodes TÜV with Unicode characters", () => {
+    const r = decode("26300C19A5A30000TÜV");
+    expect(r.fields.suffix.extra?.matched).toBe("TÜV");
+    expect(r.fields.suffix.extra?.addedCodes).toBe("+9202");
+  });
+
+  it("returns '(none)' when no suffix is present", () => {
+    const r = decode("24020C14A5A30100");
+    expect(r.fields.suffix.found).toBe(true);
+    expect(r.fields.suffix.valueEn).toBe("(none)");
+    expect(r.fields.suffix.rawCode).toBe("");
+  });
+
+  it("flags an unknown suffix as a warning, not an error", () => {
+    const r = decode("24020C14A5A30100ZZZ");
+    expect(r.fields.suffix.found).toBe(false);
+    expect(r.warnings.some((w) => /Unknown suffix/.test(w))).toBe(true);
+    expect(r.errors).toEqual([]);
+  });
 });

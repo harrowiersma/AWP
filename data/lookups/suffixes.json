@@ -1,0 +1,32 @@
+{
+  "field": "approval_suffix",
+  "fieldDe": "SonderKürzel (Abnahme/Sonderanforderung)",
+  "fieldEn": "Special suffix (approval / special requirement)",
+  "_comment": "Suffix codes appended to the 16-character ENS backbone. Sources: ENS-System 16Steller mit SonderKürzel.xlsx",
+  "values": {
+    "RM": { "labelDe": "RMRS-Abnahme", "labelEn": "Russian Maritime Register approval", "addedCodes": "+9200+9311+9312" },
+    "RMRS": { "labelDe": "RMRS-Abnahme (drucktragende Teile mit Sonderanforderung)", "labelEn": "Russian Maritime Register approval (pressure parts under special requirement)" },
+    "CF": { "labelDe": "APZ 3.1 & Röntgen (bei Behälter doppelter Prüfdruck)", "labelEn": "Inspection cert 3.1 & X-ray (containers: doubled test pressure)", "addedCodes": "+9200+9750" },
+    "HR": { "labelDe": "APZ 3.1 & 100% Röntgen", "labelEn": "Inspection cert 3.1 & 100% X-ray", "addedCodes": "+9200+9750" },
+    "GR": { "labelDe": "APZ 3.1+Ch+MA & Röntgen & Modul G", "labelEn": "Cert 3.1+Ch+MA & X-ray & Module G", "addedCodes": "+9203+9701+9750" },
+    "TR": { "labelDe": "Russland-Abnahme", "labelEn": "Russia approval", "addedCodes": "+9200+9750+9690+9691+9402" },
+    "XR": { "labelDe": "Röntgen & ITP", "labelEn": "X-ray & Inspection Test Plan", "addedCodes": "+9750+9640" },
+    "TÜV": { "labelDe": "APZ 3.1 & TÜV", "labelEn": "Inspection cert 3.1 & TÜV", "addedCodes": "+9202" },
+    "TUV": { "labelDe": "APZ 3.1 & TÜV", "labelEn": "Inspection cert 3.1 & TÜV", "addedCodes": "+9202", "_alias": "ASCII spelling of TÜV" },
+    "NZ": { "labelDe": "New Zealand (Erdbeben- und Isolierungsanforderung)", "labelEn": "New Zealand approval (earthquake and insulation requirements)", "addedCodes": "+9203+9750" },
+    "ABS": { "labelDe": "ABS-Abnahme (American Bureau of Shipping)", "labelEn": "American Bureau of Shipping approval" },
+    "CCS": { "labelDe": "CCS-Abnahme (China Classification Society)", "labelEn": "China Classification Society approval" },
+    "KR": { "labelDe": "KR-Abnahme (Korean Register)", "labelEn": "Korean Register approval" },
+    "NK": { "labelDe": "NK-Abnahme (Nippon Kaiji Kyokai)", "labelEn": "Nippon Kaiji Kyokai approval" },
+    "DNV": { "labelDe": "DNV-Abnahme (Det Norske Veritas)", "labelEn": "Det Norske Veritas approval" },
+    "LR": { "labelDe": "LR-Abnahme (Lloyd's Register)", "labelEn": "Lloyd's Register approval" },
+    "AD": { "labelDe": "Alternativ Durchmesser (meist größerer DM)", "labelEn": "Alternative diameter (typically larger)" },
+    "AL": { "labelDe": "Alternativ Länge (meist größere Länge)", "labelEn": "Alternative length (typically longer)" },
+    "AM": { "labelDe": "Alternativ Material (ähnliches Material)", "labelEn": "Alternative material (similar material)" },
+    "DS": { "labelDe": "DOSH-Abnahme (Malaysia)", "labelEn": "DOSH approval (Malaysia)" },
+    "CI": { "labelDe": "Kein Material aus China oder Indien", "labelEn": "No material from China or India" },
+    "EU": { "labelDe": "Nur Material aus EU oder UK", "labelEn": "EU/UK material only" },
+    "HT": { "labelDe": "High Temperature (+200°C bei Ventilen mit Spindel/PTFE; +180°C vorläufig bei SVA/SVU)", "labelEn": "High temperature (+200°C for spindle/PTFE valves; +180°C preliminary for SVA/SVU)" },
+    "P": { "labelDe": "Parker — Schweißnaht nach ASME", "labelEn": "Parker — weld seam per ASME" }
+  }
+}

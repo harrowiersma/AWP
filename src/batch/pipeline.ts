@@ -40,6 +40,8 @@ export const APPENDED_COLUMNS = [
   "decoded_body_material",
   "decoded_medium",
   "decoded_handwheel_cap",
+  "decoded_connection_details",
+  "decoded_suffix",
   "decode_warnings",
 ];
 
@@ -79,6 +81,14 @@ export function decodedToColumns(d: DecodedNumber): Record<string, string> {
       d.fields.handwheelCap.rawCode,
       d.fields.handwheelCap.found
     ),
+    decoded_connection_details: fmt(
+      d.fields.connectionDetails.valueEn,
+      d.fields.connectionDetails.rawCode,
+      d.fields.connectionDetails.found
+    ),
+    decoded_suffix: d.fields.suffix.rawCode
+      ? fmt(d.fields.suffix.valueEn, d.fields.suffix.rawCode, d.fields.suffix.found)
+      : "",
     decode_warnings: [...d.errors, ...d.warnings].join("; "),
   };
 }

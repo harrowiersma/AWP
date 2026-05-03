@@ -117,3 +117,39 @@ export const Pos12Schema = z.object({
   ),
   familyOverrides: z.record(z.string(), z.unknown()).optional(),
 });
+
+export const Pos1316Schema = z.object({
+  position: z.literal("13-16"),
+  field: z.string(),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  rules: z.array(
+    z.object({
+      match: z
+        .object({
+          pos45In: z.array(z.string()).optional(),
+          pos1to3: z.string().optional(),
+        })
+        .optional(),
+      appliesToFamilies: z.array(z.string()).optional(),
+      values: z.record(
+        z.string(),
+        z.object({ labelDe: z.string(), labelEn: z.string() })
+      ),
+    })
+  ),
+});
+
+export const SuffixSchema = z.object({
+  field: z.string(),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  values: z.record(
+    z.string(),
+    z.object({
+      labelDe: z.string(),
+      labelEn: z.string(),
+      addedCodes: z.string().optional(),
+    })
+  ),
+});

@@ -24,6 +24,8 @@ export type DecodedNumber = {
     bodyMaterial: FieldResult;
     medium: FieldResult;
     handwheelCap: FieldResult;
+    connectionDetails: FieldResult;
+    suffix: FieldResult;
   };
 };
 

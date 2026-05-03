@@ -9,6 +9,8 @@ const FIELD_ORDER: Array<keyof DecodedNumber["fields"]> = [
   "bodyMaterial",
   "medium",
   "handwheelCap",
+  "connectionDetails",
+  "suffix",
 ];
 
 function Row({ field }: { field: FieldResult }) {

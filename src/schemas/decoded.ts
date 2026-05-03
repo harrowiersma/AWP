@@ -26,6 +26,8 @@ export const DecodedNumberSchema = z.object({
     bodyMaterial: FieldResultSchema,
     medium: FieldResultSchema,
     handwheelCap: FieldResultSchema,
+    connectionDetails: FieldResultSchema,
+    suffix: FieldResultSchema,
   }),
 });
 
