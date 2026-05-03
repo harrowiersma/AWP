@@ -1,15 +1,19 @@
 :root {
-  --fg: #1a1a1a;
-  --muted: #5b6770;
-  --bg: #f7f7f5;
+  --fg: #0f172a;
+  --fg-soft: #1e293b;
+  --muted: #64748b;
+  --bg: #f8fafc;
   --card: #ffffff;
-  --accent: #003b5c;
-  --accent-2: #00a3a1;
+  --accent: #0b5fff;
+  --accent-hover: #0848c4;
+  --accent-2: #0ea5a4;
   --warn: #b54708;
   --err: #b42318;
   --ok: #027a48;
-  --border: #e4e7ec;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
   --mono: ui-monospace, SFMono-Regular, "Menlo", monospace;
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
 }
 
 * {
@@ -23,7 +27,19 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  line-height: 1.5;
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main.container {
+  flex: 1 0 auto;
 }
 
 a {
@@ -35,11 +51,13 @@ a:hover {
 }
 
 .container {
-  max-width: 960px;
+  max-width: 1080px;
   margin: 0 auto;
+  width: 100%;
   padding: 1.5rem;
 }
 
+/* ----- Header ----- */
 .site-header {
   background: var(--card);
   border-bottom: 1px solid var(--border);
@@ -48,49 +66,144 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 0.9rem 1.5rem;
+  gap: 1rem;
 }
 .brand {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
   color: var(--fg);
 }
-.brand-sub {
+.brand:hover {
+  text-decoration: none;
+}
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  font-weight: 700;
   font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.brand-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.brand-sub {
+  font-size: 0.78rem;
   color: var(--muted);
 }
-nav {
+
+.primary-nav {
   display: flex;
-  gap: 1.25rem;
+  align-items: center;
+  gap: 1.4rem;
   font-size: 0.95rem;
 }
+.primary-nav a {
+  color: var(--fg-soft);
+  font-weight: 500;
+}
+.primary-nav a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
 
+.powered-by {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--border);
+}
+.powered-by .muted {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.xappo-logo {
+  height: 1.1rem;
+  width: auto;
+  display: block;
+}
+
+/* ----- Footer ----- */
 .site-footer {
-  margin-top: 3rem;
-  padding-top: 1rem;
+  background: var(--card);
   border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  flex-shrink: 0;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.footer-copy {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-copy strong {
+  color: var(--fg-soft);
+  font-weight: 600;
+}
+.footer-nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.85rem;
+}
+.footer-nav a {
   color: var(--muted);
 }
+.footer-nav a:hover {
+  color: var(--accent);
+}
 
+/* ----- Headings & lead ----- */
 h1 {
-  font-size: 1.6rem;
-  margin: 0 0 0.25rem;
+  font-size: 1.7rem;
+  margin: 0 0 0.4rem;
+  color: var(--fg);
+  letter-spacing: -0.01em;
 }
 h2 {
-  font-size: 1.1rem;
-  margin: 1.5rem 0 0.5rem;
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.6rem;
+  color: var(--fg-soft);
+}
+h3 {
+  font-size: 1rem;
+  margin: 1.25rem 0 0.5rem;
+  color: var(--fg-soft);
 }
 .lead {
   color: var(--muted);
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  max-width: 64ch;
 }
 
+/* ----- Card / Form ----- */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 1.25rem;
-  margin-bottom: 1.25rem;
+  border-radius: 10px;
+  padding: 1.4rem;
+  margin-bottom: 1.4rem;
+  box-shadow: var(--shadow);
 }
 
 .field-row {
@@ -104,30 +217,33 @@ input[type="text"],
 input[type="file"] {
   flex: 1;
   min-width: 16rem;
-  padding: 0.65rem 0.85rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
   font-family: var(--mono);
   font-size: 0.95rem;
   background: white;
+  color: var(--fg);
 }
 input[type="text"]:focus {
-  outline: 2px solid var(--accent-2);
+  outline: 2px solid var(--accent);
   outline-offset: 1px;
+  border-color: var(--accent);
 }
 
 button {
-  padding: 0.65rem 1rem;
+  padding: 0.7rem 1.1rem;
   border: 0;
-  border-radius: 6px;
+  border-radius: 7px;
   background: var(--accent);
   color: white;
   font-weight: 600;
   cursor: pointer;
   font-size: 0.95rem;
+  transition: background 100ms ease;
 }
 button:hover {
-  background: #002947;
+  background: var(--accent-hover);
 }
 button:disabled {
   background: var(--muted);
@@ -138,21 +254,23 @@ button:disabled {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
 }
 .examples button {
   background: transparent;
   color: var(--accent);
   border: 1px solid var(--border);
   font-family: var(--mono);
-  font-size: 0.85rem;
-  padding: 0.3rem 0.6rem;
-  font-weight: 400;
+  font-size: 0.82rem;
+  padding: 0.3rem 0.65rem;
+  font-weight: 500;
 }
 .examples button:hover {
-  background: var(--bg);
+  background: #eff6ff;
+  border-color: var(--accent);
 }
 
+/* ----- Result table ----- */
 .result-table {
   width: 100%;
   border-collapse: collapse;
@@ -160,7 +278,7 @@ button:disabled {
 .result-table th,
 .result-table td {
   text-align: left;
-  padding: 0.6rem 0.5rem;
+  padding: 0.65rem 0.55rem;
   border-bottom: 1px solid var(--border);
   font-size: 0.92rem;
   vertical-align: top;
@@ -169,26 +287,28 @@ button:disabled {
   background: var(--bg);
   color: var(--muted);
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 .code-cell {
   font-family: var(--mono);
   font-size: 0.9rem;
   background: var(--bg);
-  padding: 0.15rem 0.4rem;
+  padding: 0.18rem 0.4rem;
   border-radius: 4px;
   display: inline-block;
+  border: 1px solid var(--border);
 }
 .unknown {
   color: var(--warn);
   font-style: italic;
 }
 
+/* ----- Banners ----- */
 .banner {
   padding: 0.75rem 1rem;
-  border-radius: 6px;
+  border-radius: 7px;
   margin-bottom: 1rem;
   font-size: 0.92rem;
 }
@@ -211,13 +331,15 @@ button:disabled {
 .normalized {
   font-family: var(--mono);
   font-size: 1.05rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--accent);
+  font-weight: 500;
 }
 
+/* ----- Dropzone / Progress ----- */
 .dropzone {
-  border: 2px dashed var(--border);
-  border-radius: 8px;
+  border: 2px dashed var(--border-strong);
+  border-radius: 10px;
   padding: 2.5rem 1rem;
   text-align: center;
   background: white;
@@ -226,8 +348,8 @@ button:disabled {
 }
 .dropzone:hover,
 .dropzone.over {
-  border-color: var(--accent-2);
-  background: #f0fafa;
+  border-color: var(--accent);
+  background: #eff6ff;
 }
 
 .progress {
@@ -241,19 +363,19 @@ button:disabled {
 }
 .progress-bar-fill {
   height: 100%;
-  background: var(--accent-2);
+  background: var(--accent);
   transition: width 80ms ease;
 }
 
 .subsystem-tag {
   display: inline-block;
-  background: var(--accent-2);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: white;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 0.2rem 0.55rem;
+  padding: 0.2rem 0.65rem;
   border-radius: 999px;
 }
 
@@ -274,11 +396,52 @@ button:disabled {
 button.ghost {
   background: transparent;
   color: var(--accent);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   font-weight: 500;
   font-size: 0.85rem;
-  padding: 0.35rem 0.7rem;
+  padding: 0.35rem 0.75rem;
 }
 button.ghost:hover {
-  background: var(--bg);
+  background: #eff6ff;
+  border-color: var(--accent);
+}
+
+/* ----- Legal pages ----- */
+.legal {
+  max-width: 70ch;
+}
+.legal p {
+  color: var(--fg-soft);
+}
+.legal ul {
+  color: var(--fg-soft);
+  padding-left: 1.25rem;
+}
+.legal li {
+  margin: 0.25rem 0;
+}
+.legal h1 {
+  margin-bottom: 0.25rem;
+}
+.legal .last-updated {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+.legal hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 720px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .powered-by {
+    border-left: 0;
+    padding-left: 0;
+  }
 }
