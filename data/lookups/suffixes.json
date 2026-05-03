@@ -28,6 +28,8 @@
     "EU": { "labelDe": "Nur Material aus EU oder UK", "labelEn": "EU/UK material only" },
     "HT": { "labelDe": "High Temperature (+200°C bei Ventilen mit Spindel/PTFE; +180°C vorläufig bei SVA/SVU)", "labelEn": "High temperature (+200°C for spindle/PTFE valves; +180°C preliminary for SVA/SVU)" },
     "P": { "labelDe": "Parker — Schweißnaht nach ASME", "labelEn": "Parker — weld seam per ASME" },
-    "EXP": { "labelDe": "Export-Variante / explosionsgeschützt (Anfrage AWP)", "labelEn": "Export variant / explosion-proof (request AWP for spec)" }
+    "EXP": { "labelDe": "Export-Variante / explosionsgeschützt (Anfrage AWP)", "labelEn": "Export variant / explosion-proof (request AWP for spec)" },
+    ",5": { "labelDe": "Halbbar-Anpassung — Einstelldruck X,5 bar (z.B. 18,5 bar bei 458xx)", "labelEn": "Half-bar adjustment — set pressure X.5 bar (e.g. 18.5 bar on 458xx codes)" }
+
   }
 }

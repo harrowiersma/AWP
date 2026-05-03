@@ -35,6 +35,15 @@
       "fieldDe": "nicht näher spezifiziert",
       "fieldEn": "not further specified",
       "values": {}
+    },
+    "ANSI-Kit": {
+      "field": "screw_thread_system",
+      "fieldDe": "Schraubensystem",
+      "fieldEn": "Screw thread system",
+      "values": {
+        "1": { "labelDe": "Schrauben mit metrischem Gewinde", "labelEn": "screws with metric thread" },
+        "2": { "labelDe": "Schrauben mit Zollgewinde (UNC)", "labelEn": "screws with inch (UNC) thread" }
+      }
     }
   }
 }

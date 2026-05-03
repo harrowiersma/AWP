@@ -82,7 +82,9 @@
 
     "018": { "family": "DGL", "labelDe": "Druckgasleitung", "labelEn": "Pressure gas line (DGL)", "register": null },
 
-    "063": { "family": "ANSI-Kit", "labelDe": "ANSI-Flansch S+M+D-Kit (für AVR-Kombinationen)", "labelEn": "ANSI flange S+M+D kit (for AVR combinations)", "register": null }
+    "063": { "family": "ANSI-Kit", "labelDe": "ANSI-Flansch S+M+D-Kit (für AVR-Kombinationen)", "labelEn": "ANSI flange S+M+D kit (for AVR combinations)", "register": null },
+
+    "000": { "family": "Schraubverbindung", "labelDe": "Schraubverbindungs-Kit (Spannmuffe R/L + Flachdichtung)", "labelEn": "Screw-connection kit (LH/RH clamping sleeve + flat gasket)", "register": null }
   },
   "castIronVariants": {
     "_comment": "G-suffix variants. The third character 'G' marks Gusseisen (cast iron) housing. The first two digits identify the product family.",

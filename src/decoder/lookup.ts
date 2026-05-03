@@ -274,18 +274,44 @@ export function lookupSuffix(suffix: string): {
   matched?: string;
   entry?: SuffixEntry;
   remainder?: string;
+  halfBar?: number;
 } {
   if (!suffix) return { found: false };
   const values = suffixData.values as unknown as Record<string, SuffixEntry>;
-  // Try longest-first match (RMRS before RM, TÜV before T, etc.)
-  const keys = Object.keys(values).sort((a, b) => b.length - a.length);
-  // Strip a leading comma+digits like "26300C19A5A30100,5" — half-bar pressure variant — preserve as remainder.
-  const trimmed = suffix.replace(/^,\d+/, "");
-  for (const k of keys) {
-    if (trimmed.toUpperCase() === k || trimmed.toUpperCase().startsWith(k)) {
-      const remainder = trimmed.slice(k.length) || (suffix !== trimmed ? suffix.replace(trimmed, "") : "");
-      return { found: true, matched: k, entry: values[k], remainder };
+
+  // Recognise a leading comma+digit pattern like ",5" as a half-bar adjustment
+  // (e.g. 45818C12A5A20010,5 → set pressure 18.5 bar). Strip from the front and
+  // remember the value so the caller can surface it.
+  const halfMatch = /^,(\d+)(.*)$/.exec(suffix);
+  let working = suffix;
+  let halfBar: number | undefined;
+  if (halfMatch) {
+    const tenths = parseInt(halfMatch[1], 10);
+    if (!Number.isNaN(tenths) && tenths > 0 && tenths < 10) {
+      halfBar = tenths / 10;
+      working = halfMatch[2];
     }
   }
-  return { found: false, remainder: suffix };
+
+  if (!working && halfBar !== undefined) {
+    // Just a half-bar adjustment, no other suffix
+    return {
+      found: true,
+      matched: ",5",
+      entry: (values as Record<string, SuffixEntry>)[",5"],
+      remainder: "",
+      halfBar,
+    };
+  }
+
+  // Try longest-first match (RMRS before RM, TÜV before T, etc.)
+  const keys = Object.keys(values).sort((a, b) => b.length - a.length);
+  for (const k of keys) {
+    if (k.startsWith(",")) continue; // half-bar handled above
+    if (working.toUpperCase() === k || working.toUpperCase().startsWith(k)) {
+      const remainder = working.slice(k.length);
+      return { found: true, matched: k, entry: values[k], remainder, halfBar };
+    }
+  }
+  return { found: false, remainder: working, halfBar };
 }

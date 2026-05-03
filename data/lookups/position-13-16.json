@@ -40,6 +40,47 @@
       }
     },
     {
+      "_id": "ANSI-flange-kit-063-per-position",
+      "type": "per-position",
+      "match": { "pos1to3": "063" },
+      "appliesToFamilies": ["ANSI-Kit"],
+      "_doc": "Per the WV-SV sheet (S+M+D-Kit für ANSI flange combinations): Pos 12 = thread system, Pos 13 = pressure class, Pos 14 = face style. Documented values: '06303d13a5a11000' = AL-Gehäuse variant; '06300d13a5a11000' = standard ANSI 150 lbs RF.",
+      "positions": {
+        "13": {
+          "field": "ANSI-Druckklasse",
+          "fieldEn": "ANSI pressure class",
+          "values": {
+            "1": { "labelDe": "ANSI 150 lbs", "labelEn": "ANSI 150 lbs" },
+            "2": { "labelDe": "ANSI 300 lbs", "labelEn": "ANSI 300 lbs" },
+            "3": { "labelDe": "ANSI 600 lbs", "labelEn": "ANSI 600 lbs" }
+          }
+        },
+        "14": {
+          "field": "Dichtfläche",
+          "fieldEn": "Face style",
+          "values": {
+            "0": { "labelDe": "Raised Face (RF)", "labelEn": "Raised face (RF)" },
+            "1": { "labelDe": "Nut/Feder (klein)", "labelEn": "tongue/groove (small)" },
+            "3": { "labelDe": "Nut/Feder (groß)", "labelEn": "tongue/groove (large)" }
+          }
+        },
+        "15": {
+          "field": "Zubehör Eingang",
+          "fieldEn": "Inlet fittings",
+          "values": {
+            "0": { "labelDe": "ohne Zubehör am Eingang", "labelEn": "without inlet fittings" }
+          }
+        },
+        "16": {
+          "field": "Zubehör Ausgang",
+          "fieldEn": "Outlet fittings",
+          "values": {
+            "0": { "labelDe": "ohne Zubehör am Ausgang", "labelEn": "without outlet fittings" }
+          }
+        }
+      }
+    },
+    {
       "_id": "AVR-HRAR-RV-per-position-fallback",
       "type": "per-position",
       "match": {},

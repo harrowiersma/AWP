@@ -42,11 +42,44 @@ function unknownField(
   };
 }
 
+// Production-status prefix recognition — single-letter modifier in front of an
+// otherwise standard 16-character code. From ENS-System 16Steller mit
+// SonderKürzel.xlsx rows 76-80.
+const PRODUCTION_PREFIXES: Record<string, { labelDe: string; labelEn: string }> = {
+  X: {
+    labelDe: "FE-Teil mit Zubehör (eingestellt mit Y-Variante als Quelle)",
+    labelEn: "FE-Teil (finished part) with accessories (paired with Y-variant)",
+  },
+  Y: {
+    labelDe: "Kaufteil mit Zubehör (z.B. von Rühl)",
+    labelEn: "Purchased part (Kaufteil) with accessories",
+  },
+  Z: {
+    labelDe: "FE-Teil ohne Zubehör (eingestellt mit 0-Variante als Quelle)",
+    labelEn: "FE-Teil (finished part) without accessories",
+  },
+};
+
 export function decode(input: string): DecodedNumber {
   // Try sub-system formats first (DGL, BS-Kit, kits) — they don't fit the
   // standard 16-character backbone shape. Strip any known suffix first so kit
   // codes with trailing approval/export markers (e.g. ...01103EXP) still match.
-  const probe = normalize(input);
+  let probe = normalize(input);
+
+  // Peel off a single-letter production-status prefix (X/Y/Z) if it precedes a
+  // standard 17-character backbone (1 prefix + 16 backbone). Don't strip when
+  // it would leave the code below 16 chars or when the next char isn't a digit
+  // (DGL "018..." starts with a digit, kits with "1..." start with a digit, so
+  // the prefix only matches when followed by 16 more chars starting with a
+  // typical product-type digit).
+  let productionPrefix: { letter: string; labelDe: string; labelEn: string } | undefined;
+  // Threshold 14 covers the shortest legitimate code (DGL ≈ 14 chars after
+  // normalize) plus the prefix letter = 15 minimum.
+  if (probe.length >= 15 && PRODUCTION_PREFIXES[probe[0]] && /^\d/.test(probe[1])) {
+    productionPrefix = { letter: probe[0], ...PRODUCTION_PREFIXES[probe[0]] };
+    probe = probe.slice(1);
+  }
+
   let body = probe;
   let suffixHit: string | undefined;
   // Try to peel off a known suffix from the right.
@@ -60,6 +93,27 @@ export function decode(input: string): DecodedNumber {
       suffixHit = k;
       break;
     }
+  }
+
+  function attachProductionPrefix(result: DecodedNumber): DecodedNumber {
+    if (!productionPrefix) return result;
+    const note = `Production-status prefix '${productionPrefix.letter}' — ${productionPrefix.labelEn}`;
+    return {
+      ...result,
+      warnings: [note, ...result.warnings],
+      fields: {
+        ...result.fields,
+        productType: {
+          ...result.fields.productType,
+          valueDe: `[Produktionsstatus ${productionPrefix.letter}: ${productionPrefix.labelDe}] ${result.fields.productType.valueDe ?? ""}`.trim(),
+          valueEn: `[Production status ${productionPrefix.letter}: ${productionPrefix.labelEn}] ${result.fields.productType.valueEn ?? ""}`.trim(),
+          extra: {
+            ...(result.fields.productType.extra ?? {}),
+            productionPrefix: productionPrefix.letter,
+          },
+        },
+      },
+    };
   }
 
   function attachSuffix(result: DecodedNumber): DecodedNumber {
@@ -85,15 +139,15 @@ export function decode(input: string): DecodedNumber {
 
   if (isBsKit(body)) {
     const result = decodeBsKit(input, body);
-    if (result) return attachSuffix(result);
+    if (result) return attachProductionPrefix(attachSuffix(result));
   }
   if (isKit(body)) {
     const result = decodeKit(input, body);
-    if (result) return attachSuffix(result);
+    if (result) return attachProductionPrefix(attachSuffix(result));
   }
   if (isDgl(body)) {
     const result = decodeDgl(input, body);
-    if (result) return attachSuffix(result);
+    if (result) return attachProductionPrefix(attachSuffix(result));
   }
 
   const tokenResult = tokenize(input);
@@ -256,9 +310,16 @@ export function decode(input: string): DecodedNumber {
     : unknownField("11", lookups.pos11.fieldDe, lookups.pos11.fieldEn, t.pos11);
   if (!m) warnings.push(`Unknown medium code: ${t.pos11}`);
 
-  // Pos 12: handwheel/cap (family-dependent — strainers use mesh size)
+  // Pos 12: handwheel/cap (family-dependent — strainers use mesh size,
+  // ANSI-Kit uses screw thread system, etc.)
   const family = ptResult.entry?.family;
-  const familyKey = family && /^SS/.test(family) ? "SS" : family && /^RV$/.test(family) ? "RV" : family;
+  const familyKey = (() => {
+    if (!family) return undefined;
+    if (/^SS/.test(family)) return "SS";
+    if (/^RV$/.test(family)) return "RV";
+    if (family === "ANSI-Kit") return "ANSI-Kit";
+    return family;
+  })();
   const hw = lookupHandwheelCap(t.pos12, familyKey);
   const hwEntry = hw.entry as
     | { label?: string; labelDe?: string; labelEn?: string }
@@ -358,6 +419,17 @@ export function decode(input: string): DecodedNumber {
     warnings.push(`Unknown suffix: '${tokenResult.suffix}'`);
   }
 
+  // AUMA-Antrieb (electric actuator) detection — pattern xxxxx.xxA5ADxxxxA
+  // documented in the SonderKürzel sheet. When pos 9-12 is exactly "A5AD" and
+  // there is a trailing letter after the 16-char backbone, surface it as an
+  // actuator note. Trailing letter encoded as a suffix: D = AUMA SA14.2 size,
+  // A = 230V 50Hz 1-ph AC, IP68, 4-20 mA.
+  if (t.pos9 === "A" && t.pos10 === "5" && t.pos11 === "A" && t.pos12 === "D") {
+    warnings.push(
+      "AUMA actuator pattern detected (Pos 9-12 = A5AD): code carries an electric actuator (e.g. AUMA SA14.2). Pos 9-12 here encode actuator size/type rather than the standard screw/body/medium/handwheel fields. Refer to SonderKürzel sheet for the actuator-specific Pos 9-12 / suffix scheme."
+    );
+  }
+
   // HRS / HRSN family override: positions 9-16 carry HRS-specific meanings
   // (connection-table letter, ring-material × table, test-port codes, etc.)
   let finalFields = {
@@ -417,12 +489,12 @@ export function decode(input: string): DecodedNumber {
     f.medium.found &&
     (f.handwheelCap.found || familyKey === "RV");
 
-  return {
+  return attachProductionPrefix({
     input,
     normalized: tokenResult.normalized,
     valid: allFound,
     warnings,
     errors,
     fields: finalFields,
-  };
+  });
 }

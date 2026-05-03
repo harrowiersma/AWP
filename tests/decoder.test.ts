@@ -446,6 +446,66 @@ describe("decode() — Phase 6: completeness fixes", () => {
   });
 });
 
+describe("decode() — Phase 7: closing the remaining decoding gaps", () => {
+  it("ANSI flange kit 06301D13A5A11000 decodes Pos 12 as metric thread", () => {
+    // Pos 12 = 1 → metric thread (from the WV-SV S+M+D-Kit notes)
+    const r = decode("06301D13A5A11000");
+    expect(r.fields.productType.extra?.family).toBe("ANSI-Kit");
+    expect(r.fields.handwheelCap.fieldEn).toMatch(/Screw thread system/);
+    expect(r.fields.handwheelCap.valueEn).toMatch(/metric/);
+  });
+
+  it("ANSI flange kit 063 with Pos 13 = 1 decodes as ANSI 150 lbs", () => {
+    // 06300D13A5A11000 → Pos 13 = "1" → ANSI 150 lbs, Pos 14 = "0" → RF
+    const r = decode("06300D13A5A11000");
+    const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; labelEn?: string }> })?.perPosition;
+    expect(perPos).toBeDefined();
+    const pos13 = perPos!.find((p) => p.pos === "13");
+    expect(pos13?.labelEn).toMatch(/ANSI 150 lbs/);
+    const pos14 = perPos!.find((p) => p.pos === "14");
+    expect(pos14?.labelEn).toMatch(/Raised face/);
+  });
+
+  it("ANSI flange kit 063 with Pos 13 = 3 decodes as ANSI 600 lbs", () => {
+    const r = decode("06300D13A5A13000");
+    const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; labelEn?: string }> })?.perPosition;
+    const pos13 = perPos!.find((p) => p.pos === "13");
+    expect(pos13?.labelEn).toMatch(/ANSI 600 lbs/);
+  });
+
+  it("Schraubverbindungen 000-prefix code 00060F07A5A0A203 is recognised", () => {
+    const r = decode("00060F07A5A0A203");
+    expect(r.fields.productType.found).toBe(true);
+    expect(r.fields.productType.extra?.family).toBe("Schraubverbindung");
+  });
+
+  it("Production prefix Y peels and surfaces the status", () => {
+    const r = decode("Y26300C19A5A30000");
+    expect(r.fields.productType.extra?.productionPrefix).toBe("Y");
+    expect(r.fields.productType.valueEn).toMatch(/Production status Y/);
+    expect(r.warnings.some((w) => /Production-status prefix 'Y'/.test(w))).toBe(true);
+  });
+
+  it("Production prefix X on a kit code peels correctly", () => {
+    const r = decode("X15752E10.5/04103");
+    expect(r.fields.productType.extra?.productionPrefix).toBe("X");
+    expect(r.fields.productType.extra?.family).toBe("Kit");
+  });
+
+  it("Comma-decimal half-bar suffix recognised on safety-valve code", () => {
+    const r = decode("45818C12A5A20010,5");
+    expect(r.fields.suffix.found).toBe(true);
+    expect(r.fields.suffix.rawCode).toBe(",5");
+    expect(r.fields.suffix.valueEn).toMatch(/Half-bar/);
+  });
+
+  it("AUMA actuator pattern A5AD at Pos 9-12 raises a warning", () => {
+    // Synthetic code that hits the A5AD pattern at pos 9-12
+    const r = decode("26000C19A5AD0000");
+    expect(r.warnings.some((w) => /AUMA actuator pattern/.test(w))).toBe(true);
+  });
+});
+
 describe("decode() — Phase 4: EXP suffix", () => {
   it("decodes EXP suffix as export variant", () => {
     const r = decode("15752E10.5/01103EXP");
