@@ -17,6 +17,7 @@ import {
   HrsSchema,
   HrsConnectionsSchema,
   SafetyValveSchema,
+  EinsatzKitSchema,
 } from "../src/schemas/lookup";
 
 const here = (rel: string) =>
@@ -39,6 +40,7 @@ const files: Array<{ path: string; schema: { parse: (data: unknown) => unknown }
   { path: "../data/lookups/hrs.json", schema: HrsSchema },
   { path: "../data/lookups/safety-valves.json", schema: SafetyValveSchema },
   { path: "../data/lookups/hrs-connections.json", schema: HrsConnectionsSchema },
+  { path: "../data/lookups/einsatz-kit.json", schema: EinsatzKitSchema },
 ];
 
 let failures = 0;

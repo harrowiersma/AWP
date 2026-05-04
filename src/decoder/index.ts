@@ -16,6 +16,7 @@ import {
 import { isDgl, decodeDgl } from "./subsystems/dgl";
 import { isBsKit, decodeBsKit } from "./subsystems/bskit";
 import { isKit, decodeKit } from "./subsystems/kits";
+import { isEinsatzKit, decodeEinsatzKit } from "./subsystems/einsatz-kit";
 import { applyHrsOverrides } from "./subsystems/hrs-override";
 import {
   applySafetyValveOverrides,
@@ -143,6 +144,10 @@ export function decode(input: string): DecodedNumber {
   }
   if (isKit(body)) {
     const result = decodeKit(input, body);
+    if (result) return attachProductionPrefix(attachSuffix(result));
+  }
+  if (isEinsatzKit(body)) {
+    const result = decodeEinsatzKit(input, body);
     if (result) return attachProductionPrefix(attachSuffix(result));
   }
   if (isDgl(body)) {

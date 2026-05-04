@@ -212,6 +212,26 @@ export const SafetyValveSchema = z.object({
   }).passthrough(),
 });
 
+export const EinsatzKitSchema = z.object({
+  subsystem: z.literal("Einsatz-Kit"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  type: kitTable,
+  pos45: kitTable,
+  pos6: z.object({
+    values: z.record(
+      z.string(),
+      z.object({ label: z.string(), bar: z.number(), screws: z.string() })
+    ),
+  }).passthrough(),
+  pos10: z.object({
+    values: kitTable,
+  }).passthrough(),
+  pos14_ringMaterial: kitTable,
+  pos15_variant: kitTable,
+  pos16_sparePartVariant: kitTable,
+});
+
 export const HrsConnectionsSchema = z.object({
   subsystem: z.literal("HRS-Connections"),
   fieldDe: z.string(),

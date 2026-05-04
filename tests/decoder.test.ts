@@ -104,12 +104,10 @@ describe("decode() — error handling", () => {
     expect(r.errors[0]).toMatch(/Expected 16 characters/);
   });
 
-  it("16300E18.511C041 (15 chars after strip) reports the right diagnostic", () => {
+  it("16300E18.511C041 now decodes via the Einsatz-Kit subsystem (was previously flagged as malformed)", () => {
     const r = decode("16300E18.511C041");
-    expect(r.valid).toBe(false);
-    // 16 chars including the dot, 15 after strip — should call out the missing char.
-    expect(r.errors[0]).toMatch(/got 15/);
-    expect(r.errors[0]).toMatch(/1 character\(s\) appear to be missing/);
+    expect(r.errors).toEqual([]);
+    expect(r.fields.productType.extra?.family).toBe("Einsatz-Kit");
   });
 
   it("normalizes whitespace and lowercase", () => {
@@ -503,6 +501,51 @@ describe("decode() — Phase 7: closing the remaining decoding gaps", () => {
     // Synthetic code that hits the A5AD pattern at pos 9-12
     const r = decode("26000C19A5AD0000");
     expect(r.warnings.some((w) => /AUMA actuator pattern/.test(w))).toBe(true);
+  });
+});
+
+describe("decode() — Phase 8: AVR/AVB Einsatz-Kit", () => {
+  it("decodes the user-supplied 16300E18.5/11C041 example (AVB insert kit DN80 PS40)", () => {
+    const r = decode("16300E18.511C041");
+    expect(r.fields.productType.extra?.family).toBe("Einsatz-Kit");
+    expect(r.fields.productType.extra?.baseFamily).toBe("AVB");
+    expect(r.fields.productType.valueEn).toMatch(/AVB insert kit/);
+    // Pos 4-5 = 00 → Standard cover height
+    expect(r.fields.connectionType.valueEn).toMatch(/standard cover height/);
+    // Pos 6 = E → PS40 (Einsatz-Kit variant), NOT PS63 like standard
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(40);
+    expect(r.fields.pressure.valueEn).toMatch(/PS40/);
+    // Pos 7-8 = 18 → DN80
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(80);
+    // Pos 10 = 5 → steel
+    expect(r.fields.bodyMaterial.valueEn).toMatch(/steel/);
+    // Pos 14 = 0 → CR ring material
+    const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; labelEn?: string }> })?.perPosition;
+    expect(perPos).toBeDefined();
+    expect(perPos!.find((p) => p.pos === "14")?.labelEn).toMatch(/CR/);
+  });
+
+  it("decodes the screenshot example 26300E24.5110B01 (AVR DN250 FPM Einsatz)", () => {
+    const r = decode("26300E24.5110B01");
+    expect(r.fields.productType.extra?.baseFamily).toBe("AVR");
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(250);
+    const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; labelEn?: string }> })?.perPosition;
+    // Pos 14 = B → FPM
+    expect(perPos!.find((p) => p.pos === "14")?.labelEn).toMatch(/FPM/);
+    // Pos 16 = 1 → default Einsatz
+    expect(perPos!.find((p) => p.pos === "16")?.labelEn).toMatch(/insert/);
+  });
+
+  it("decodes Einsatz-Kit with AUMA actuator at Pos 4-5 = 0D", () => {
+    const r = decode("2630DE15.5111017");
+    expect(r.fields.connectionType.valueEn).toMatch(/AUMA actuator SA 14.2/);
+  });
+
+  it("Einsatz-Kit Pos 6 = E means PS40, not PS63 (the standard valve table interpretation)", () => {
+    const standard = decode("26300C19A5A30000"); // standard AVR — pos 6 = C → PS25
+    expect((standard.fields.pressure.extra as { bar?: number })?.bar).toBe(25);
+    const einsatz = decode("26300E24.5110B01"); // einsatz kit — pos 6 = E → PS40
+    expect((einsatz.fields.pressure.extra as { bar?: number })?.bar).toBe(40);
   });
 });
 

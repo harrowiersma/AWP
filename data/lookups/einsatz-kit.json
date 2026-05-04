@@ -1,0 +1,75 @@
+{
+  "subsystem": "Einsatz-Kit",
+  "fieldDe": "Kits für Einsätze AVR/AVB",
+  "fieldEn": "AVR/AVB insert (Einsatz) kits",
+  "_comment": "Spare-part / insert kits for AVR (263) and AVB (163) cover-flanged valves. Format: <3-digit family><Pos 4-5><Pos 6><Pos 7-8 DN>.<Pos 10 mat><Pos 11><Pos 12><Pos 13><Pos 14 ring><Pos 15 variant><Pos 16 spare-part>. The literal dot at Pos 9 is part of the format, not a separator. Source: internal AWP table 'Kits für Einsätze AVR/AVB' (image, 2026-05).",
+  "type": {
+    "163": { "labelDe": "AVB - Einsatz-Kit", "labelEn": "AVB insert kit" },
+    "263": { "labelDe": "AVR - Einsatz-Kit", "labelEn": "AVR insert kit" }
+  },
+  "pos45": {
+    "00": { "labelDe": "Standard-Deckelhöhe", "labelEn": "standard cover height" },
+    "10": { "labelDe": "alte DV (Deckelverlängerung)", "labelEn": "old DV (cover extension)" },
+    "A0": { "labelDe": "Neue DV (mit Einführung Gussgehäuse)", "labelEn": "new DV (cast-iron housing intro)" },
+    "0A": { "labelDe": "AUMA-Antrieb SA 07.2", "labelEn": "AUMA actuator SA 07.2" },
+    "0B": { "labelDe": "AUMA-Antrieb SA 07.6", "labelEn": "AUMA actuator SA 07.6" },
+    "0C": { "labelDe": "AUMA-Antrieb SA 10.2", "labelEn": "AUMA actuator SA 10.2" },
+    "0D": { "labelDe": "AUMA-Antrieb SA 14.2", "labelEn": "AUMA actuator SA 14.2" },
+    "0E": { "labelDe": "AUMA-Antrieb SA 14.6", "labelEn": "AUMA actuator SA 14.6" },
+    "0U": { "labelDe": "AUMA-Antrieb SA 16.2", "labelEn": "AUMA actuator SA 16.2" },
+    "0J": { "labelDe": "J+J Antrieb PS25 + passende Schrauben", "labelEn": "J+J actuator PS25 + matching screws" },
+    "1J": { "labelDe": "J+J Antrieb PS40 + passende Schrauben", "labelEn": "J+J actuator PS40 + matching screws" },
+    "2J": { "labelDe": "J+J Antrieb PS63 + passende Schrauben", "labelEn": "J+J actuator PS63 + matching screws" }
+  },
+  "pos6": {
+    "_doc": "Pressure code for AVR/AVB insert kits — DIFFERS from the standard valve table where E=PS63. Here E=PS40.",
+    "values": {
+      "E": { "label": "PS40", "bar": 40, "screws": "8.8" },
+      "B": { "label": "PS25", "bar": 25, "screws": "8.8" },
+      "F": { "label": "PS40 (A2-70)", "bar": 40, "screws": "A2-70" },
+      "K": { "label": "PS63", "bar": 63, "screws": "8.8" },
+      "L": { "label": "PS63 (A2-70)", "bar": 63, "screws": "A2-70" }
+    }
+  },
+  "pos10": {
+    "_doc": "Body material — same single-letter codes as the standard table.",
+    "values": {
+      "5": { "labelDe": "Stahl", "labelEn": "steel" },
+      "7": { "labelDe": "TTSt (Tieftemperatur-Stahl)", "labelEn": "TTSt (low-temperature steel)" },
+      "8": { "labelDe": "NIRO (Edelstahl)", "labelEn": "NIRO (stainless)" }
+    }
+  },
+  "pos14_ringMaterial": {
+    "0": { "labelDe": "CR (Chloropren)", "labelEn": "CR (chloroprene)" },
+    "B": { "labelDe": "FPM (Viton)", "labelEn": "FPM (Viton)" },
+    "C": { "labelDe": "HNBR", "labelEn": "HNBR" },
+    "F": { "labelDe": "EPDM", "labelEn": "EPDM" }
+  },
+  "pos15_variant": {
+    "0": { "labelDe": "Standard (keine Sondervariante)", "labelEn": "standard (no special variant)" },
+    "1": { "labelDe": "Standard-Variante 1", "labelEn": "standard variant 1" },
+    "2": { "labelDe": "Variante 2", "labelEn": "variant 2" },
+    "3": { "labelDe": "Variante 3", "labelEn": "variant 3" },
+    "4": { "labelDe": "Variante 4 (siehe Werkszeichnung)", "labelEn": "variant 4 (see factory drawing)" },
+    "5": { "labelDe": "Variante 5", "labelEn": "variant 5" },
+    "6": { "labelDe": "Variante 6", "labelEn": "variant 6" },
+    "7": { "labelDe": "Sitzdichtung auswechselbar", "labelEn": "exchangeable seat seal" },
+    "A": { "labelDe": "AUMA-Antrieb SA07.2 (ALT, noch mit alte DV)", "labelEn": "AUMA actuator SA07.2 (legacy, with old DV)" },
+    "B": { "labelDe": "Schrauben A2-70", "labelEn": "screws A2-70" },
+    "C": { "labelDe": "AUMA-Antrieb SA10.2 (ALT, noch mit alte DV)", "labelEn": "AUMA actuator SA10.2 (legacy, with old DV)" },
+    "D": { "labelDe": "AUMA-Antrieb SA14.1 (ALT, noch mit alte DV)", "labelEn": "AUMA actuator SA14.1 (legacy, with old DV)" },
+    "H": { "labelDe": "Isolierhülse", "labelEn": "insulating sleeve" },
+    "R": { "labelDe": "Ausführung BASF", "labelEn": "BASF variant" },
+    "W": { "labelDe": "Ausführung Wacker-Chemie", "labelEn": "Wacker-Chemie variant" }
+  },
+  "pos16_sparePartVariant": {
+    "0": { "labelDe": "Einsatz, kpl. nur für Stückliste", "labelEn": "insert, complete (parts list only)" },
+    "1": { "labelDe": "Einsatz, kpl. (Standard)", "labelEn": "insert, complete (default)" },
+    "2": { "labelDe": "Ventileinsatz, kpl. als Ersatzteil (mit Kappe)", "labelEn": "valve insert, complete spare part (with cap)" },
+    "3": { "labelDe": "Ventileinsatz, kpl. als Ersatzteil (ohne Schrauben)", "labelEn": "valve insert, complete spare part (without screws)" },
+    "4": { "labelDe": "Ventileinsatz, kpl. als Ersatzteil (mit Handrad)", "labelEn": "valve insert, complete spare part (with handwheel)" },
+    "5": { "labelDe": "ohne AUMA-Antrieb, ohne Mitnehmer", "labelEn": "without AUMA actuator, without driver" },
+    "6": { "labelDe": "ohne AUMA-Antrieb, mit Mitnehmer (bei Wechsel von alte auf neue Spindel-Vierkant)", "labelEn": "without AUMA actuator, with driver (for old-to-new spindle conversion)" },
+    "7": { "labelDe": "Ventileinsatz, kpl. als Ersatzteil (mit HR+Kappe)", "labelEn": "valve insert, complete spare part (with handwheel + cap)" }
+  }
+}
