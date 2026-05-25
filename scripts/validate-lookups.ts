@@ -18,6 +18,9 @@ import {
   HrsConnectionsSchema,
   SafetyValveSchema,
   EinsatzKitSchema,
+  TrSchema,
+  OilFilterSchema,
+  DualSvSchema,
 } from "../src/schemas/lookup";
 
 const here = (rel: string) =>
@@ -41,6 +44,9 @@ const files: Array<{ path: string; schema: { parse: (data: unknown) => unknown }
   { path: "../data/lookups/safety-valves.json", schema: SafetyValveSchema },
   { path: "../data/lookups/hrs-connections.json", schema: HrsConnectionsSchema },
   { path: "../data/lookups/einsatz-kit.json", schema: EinsatzKitSchema },
+  { path: "../data/lookups/tr.json", schema: TrSchema },
+  { path: "../data/lookups/oil-filter.json", schema: OilFilterSchema },
+  { path: "../data/lookups/dual-sv.json", schema: DualSvSchema },
 ];
 
 let failures = 0;

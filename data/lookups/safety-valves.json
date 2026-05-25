@@ -3,8 +3,19 @@
   "fieldDe": "Sicherheits-/Überström-/Öldruckregelventile",
   "fieldEn": "Safety / overflow / oil-pressure-control valves",
   "_comment": "SVA/SVU/UVA/UVU/ORV families have a different position layout than standard valves. The 16-character backbone is the same but Pos 4-5 encodes the set pressure (Einstelldruck) instead of connection type, and Pos 12 encodes connection variants instead of handwheel/cap. Source: Example part number definition AWP.pdf, page 18.3 (safety valves SVA SVU / overflow valves UVA UVU / oil pressure control valves ORV).",
-  "appliesToFamilies": ["SVA", "SVU", "UVA", "UVU", "ORV"],
-  "appliesToPos1to3Prefixes": ["44", "45"],
+  "appliesToFamilies": ["SVA", "SVU", "UVA", "UVU", "UVAA", "UVAB", "UVUA", "UVUB", "ORV", "ORVA"],
+  "appliesToPos1to3Prefixes": ["41", "42", "44", "45"],
+  "_pos45_doc": "For single safety valves (SVA/SVU 44x/45x) the Pos 4-5 value is the direct set pressure in bar (e.g. '28' = 28 bar). For overflow valves (UVA/UVB 41x, UVUA/UVUB 42x, ORVA 454) it encodes a spring range — '01' = 1-1.9 bar, '02' = 2-4.9 bar, '04' = 4-7.9 bar, '01' on ORV = 1-6 bar. The decoder displays both interpretations.",
+  "pos45_springRange_overflow": {
+    "01": { "labelDe": "Federbereich 1-1,9 bar", "labelEn": "spring range 1-1.9 bar" },
+    "02": { "labelDe": "Federbereich 2-4,9 bar", "labelEn": "spring range 2-4.9 bar" },
+    "04": { "labelDe": "Federbereich 4-7,9 bar", "labelEn": "spring range 4-7.9 bar" },
+    "08": { "labelDe": "Federbereich 8-11,9 bar", "labelEn": "spring range 8-11.9 bar" },
+    "12": { "labelDe": "Federbereich 12-15,9 bar", "labelEn": "spring range 12-15.9 bar" },
+    "16": { "labelDe": "Federbereich 16-19,9 bar", "labelEn": "spring range 16-19.9 bar" },
+    "20": { "labelDe": "Federbereich 20-24,9 bar", "labelEn": "spring range 20-24.9 bar" },
+    "25": { "labelDe": "Federbereich 25-29,9 bar", "labelEn": "spring range 25-29.9 bar" }
+  },
   "pos45_setPressure": {
     "_doc": "Set pressure code at Pos 4-5. Most codes are interpreted directly as bar value (e.g. 28 = 28 bar set pressure). Special codes may exist; the decoder prints the numeric reading and notes 'set pressure'.",
     "interpretation": "numeric-bar"

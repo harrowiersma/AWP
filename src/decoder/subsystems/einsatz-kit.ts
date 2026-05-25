@@ -66,6 +66,15 @@ export function decodeEinsatzKit(input: string, normalized: string): DecodedNumb
 
   const { typ, pos45, pos6, dn, mat, rest } = m.groups as Record<string, string>;
   // rest = pos11 + pos12 + pos13 + pos14 + pos15 + pos16
+  // Per Erik's 2026-05-19 confirmation, the position-to-meaning mapping is:
+  //   Pos 11, 12       = kit-class identifiers (not enumerated in source legend)
+  //   Pos 13           = O-ring material (0=CR, B=FPM, C=HNBR, F=EPDM)
+  //   Pos 14           = AUMA / Sitzdichtung variant (7/A/B/C/D/H/R/W; 0=default)
+  //   Pos 15           = spare-part variant (0=Stückliste, 1=default insert,
+  //                       2=Ersatzteil mit Kappe, 3=ohne Schrauben, 4=mit Handrad,
+  //                       5=ohne AUMA ohne Mitnehmer, 6=ohne AUMA mit Mitnehmer,
+  //                       7=mit HR+Kappe)
+  //   Pos 16           = trailing kit sub-identifier (often 1 = standard)
   const [c11, c12, c13, c14, c15, c16] = rest.split("");
 
   const t = data.type[typ];
@@ -147,32 +156,49 @@ export function decodeEinsatzKit(input: string, normalized: string): DecodedNumb
     }
   );
 
-  const ring = data.pos14_ringMaterial[c14];
+  // Position 13 = O-ring material (was pos 14 before Erik's confirmation)
+  const ring = data.pos14_ringMaterial[c13];
   const ringField = f(
-    "14",
+    "13",
     "Rundring-Material",
     "O-ring material",
-    c14,
+    c13,
     ring ? { de: ring.labelDe, en: ring.labelEn } : undefined
   );
 
-  const variant = data.pos15_variant[c15];
+  // Position 14 = AUMA / Sitzdichtung variant — "0" is the standard default
+  const variantTable: Record<string, { labelDe: string; labelEn: string }> = {
+    ...data.pos15_variant,
+    "0": { labelDe: "Standard (keine Sondervariante)", labelEn: "standard (no special variant)" },
+  };
+  const variant = variantTable[c14];
   const variantField = f(
-    "15",
+    "14",
     "Sitzdichtung / Antriebs-Variante",
     "Seat seal / actuator variant",
-    c15,
+    c14,
     variant ? { de: variant.labelDe, en: variant.labelEn } : undefined
   );
 
-  const sparePart = data.pos16_sparePartVariant[c16];
+  // Position 15 = spare-part variant (e.g. "4" = mit Handrad)
+  const sparePart = data.pos16_sparePartVariant[c15];
   const sparePartField = f(
-    "16",
+    "15",
     "Ersatzteil-Variante",
     "Spare-part variant",
-    c16,
+    c15,
     sparePart ? { de: sparePart.labelDe, en: sparePart.labelEn } : undefined
   );
+
+  // Position 16 = trailing sub-identifier
+  const trailing = f(
+    "16",
+    "Sub-Identifikator",
+    "Trailing sub-identifier",
+    c16,
+    { de: `Kit Sub-ID ${c16}`, en: `kit sub-ID ${c16}` }
+  );
+  void trailing;
 
   // Compose detailed connection-details summary across positions 14-16
   const summaryEn: string[] = [];
@@ -200,15 +226,15 @@ export function decodeEinsatzKit(input: string, normalized: string): DecodedNumb
       labelEn: e?.labelEn,
     });
   }
-  addPart("14", "Rundring", "O-ring", c14, ring);
-  addPart("15", "Variante", "Variant", c15, variant);
-  addPart("16", "Ersatzteil", "Spare part", c16, sparePart);
+  addPart("13", "Rundring", "O-ring", c13, ring);
+  addPart("14", "Variante", "Variant", c14, variant);
+  addPart("15", "Ersatzteil", "Spare part", c15, sparePart);
 
   const connectionDetails = f(
-    "14-16",
-    "Einsatz-Kit Optionen (Pos 14-16)",
-    "Insert-kit options (Pos 14-16)",
-    `${c14}${c15}${c16}`,
+    "13-16",
+    "Einsatz-Kit Optionen (Pos 13-16)",
+    "Insert-kit options (Pos 13-16)",
+    `${c13}${c14}${c15}${c16}`,
     {
       de: summaryDe.length ? summaryDe.join(" · ") : undefined,
       en: summaryEn.length ? summaryEn.join(" · ") : undefined,
@@ -227,8 +253,7 @@ export function decodeEinsatzKit(input: string, normalized: string): DecodedNumb
     size.found &&
     bodyMaterial.found &&
     !!ring &&
-    !!variant &&
-    !!sparePart;
+    !!sparePart; // variant defaults to "0" so it's always set
 
   return {
     input,

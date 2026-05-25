@@ -84,7 +84,53 @@
 
     "063": { "family": "ANSI-Kit", "labelDe": "ANSI-Flansch S+M+D-Kit (für AVR-Kombinationen)", "labelEn": "ANSI flange S+M+D kit (for AVR combinations)", "register": null },
 
-    "000": { "family": "Schraubverbindung", "labelDe": "Schraubverbindungs-Kit (Spannmuffe R/L + Flachdichtung)", "labelEn": "Screw-connection kit (LH/RH clamping sleeve + flat gasket)", "register": null }
+    "000": { "family": "Schraubverbindung", "labelDe": "Schraubverbindungs-Kit (Spannmuffe R/L + Flachdichtung)", "labelEn": "Screw-connection kit (LH/RH clamping sleeve + flat gasket)", "register": null },
+
+    "460": { "family": "SSO", "labelDe": "SSO - Schnellschlußventil (Ölablass)", "labelEn": "SSO - quick-closing valve (oil drainage)", "register": null },
+
+    "412": { "family": "UVAA", "labelDe": "UVAA - Überströmventil, gegendruckabhängig", "labelEn": "UVAA - overflow valve, back-pressure dependent", "register": null },
+    "414": { "family": "UVAB", "labelDe": "UVAB - Überströmventil, gegendruckabhängig (Variante B)", "labelEn": "UVAB - overflow valve, back-pressure dependent (variant B)", "register": null },
+    "422": { "family": "UVUA", "labelDe": "UVUA - Überströmventil, gegendruckunabhängig", "labelEn": "UVUA - overflow valve, back-pressure independent", "register": null },
+    "424": { "family": "UVUB", "labelDe": "UVUB - Überströmventil, gegendruckunabhängig (Variante B)", "labelEn": "UVUB - overflow valve, back-pressure independent (variant B)", "register": null },
+
+    "454": { "family": "ORVA", "labelDe": "ORVA - Öldruckregelventil", "labelEn": "ORVA - oil-pressure-regulating valve", "register": null },
+
+    "577": { "family": "OF", "labelDe": "OF - Ölfilter", "labelEn": "OF - oil filter", "register": null },
+    "580": { "family": "DOF", "labelDe": "DOF - Doppelölfilter, Filterelement EPE 361", "labelEn": "DOF - double oil filter, filter element EPE 361", "register": null },
+    "581": { "family": "DOF", "labelDe": "DOF - Doppelölfilter, Filterelement EPE 561", "labelEn": "DOF - double oil filter, filter element EPE 561", "register": null },
+    "582": { "family": "DOF", "labelDe": "DOF - Doppelölfilter, Filterelement EPE 901", "labelEn": "DOF - double oil filter, filter element EPE 901", "register": null },
+    "583": { "family": "DOF", "labelDe": "DOF - Doppelölfilter, Filterelement EPE 1401", "labelEn": "DOF - double oil filter, filter element EPE 1401", "register": null },
+    "584": { "family": "DOF", "labelDe": "DOF - Doppelölfilter, Filterelement EPE 1801", "labelEn": "DOF - double oil filter, filter element EPE 1801", "register": null },
+    "585": { "family": "DOF", "labelDe": "DOF - Doppelölfilter, Filterelement EPE 1801 (Variante)", "labelEn": "DOF - double oil filter, filter element EPE 1801 (variant)", "register": null },
+    "586": { "family": "DOF", "labelDe": "DOF - Doppelölfilter, Filterelement Mayekawa", "labelEn": "DOF - double oil filter, filter element Mayekawa", "register": null },
+
+    "470": { "family": "TR", "labelDe": "TR - Thermostatisches 3-Wege-Ventil", "labelEn": "TR - thermostatic 3-way valve", "register": null },
+    "477": { "family": "TRplus", "labelDe": "TRplus - Thermostatisches 3-Wege-Ventil (hochleistung)", "labelEn": "TRplus - thermostatic 3-way valve (high-performance)", "register": null },
+
+    "475": { "family": "SGL", "labelDe": "SGL - Schauglas (Niveaukontrolle)", "labelEn": "SGL - sight glass (level monitoring)", "register": null },
+    "476": { "family": "DA", "labelDe": "DA - Durchflussanzeiger", "labelEn": "DA - flow indicator", "register": null },
+
+    "276": { "family": "GPV", "labelDe": "GPV - Gasbetriebenes Ventil (Ölbehälter-Drainage)", "labelEn": "GPV - gas-powered valve (oil container drainage)", "register": null },
+
+    "313": { "family": "RVZ", "labelDe": "RVZ - Rückschlagventil für Flanscheinbau (Form D)", "labelEn": "RVZ - flange check valve (form D)", "register": null },
+    "315": { "family": "RVZ", "labelDe": "RVZ - Rückschlagventil für Flanscheinbau (Form 5)", "labelEn": "RVZ - flange check valve (form 5)", "register": null },
+    "316": { "family": "RVZ", "labelDe": "RVZ - Rückschlagventil für Flanscheinbau (Form 6)", "labelEn": "RVZ - flange check valve (form 6)", "register": null },
+
+    "567": { "family": "FT", "labelDe": "FT - Filtertrockner", "labelEn": "FT - filter dryer", "register": null },
+
+    "1A7": { "family": "WVR-SVA", "labelDe": "Kombination WVR + Sicherheitsventil SVA Typ 456, gegendruckabhängig (-60°C)", "labelEn": "WVR + SVA type 456 combination, back-pressure dependent (-60°C)", "register": null },
+    "1A8": { "family": "WVR-SVA", "labelDe": "Kombination WVR + Sicherheitsventil SVA Typ 455, gegendruckabhängig (-50°C)", "labelEn": "WVR + SVA type 455 combination, back-pressure dependent (-50°C)", "register": null },
+    "1D7": { "family": "WVR-SVA", "labelDe": "Kombination WVR + SVA Typ 456, zwangsgesteuert über Rollenkette", "labelEn": "WVR + SVA type 456 combination, chain-driven", "register": null },
+    "1D8": { "family": "WVR-SVA", "labelDe": "Kombination WVR + SVA Typ 455, zwangsgesteuert über Rollenkette", "labelEn": "WVR + SVA type 455 combination, chain-driven", "register": null },
+    "1H7": { "family": "WVR-AL-SVA", "labelDe": "Kombination WVR Aluminium (Blockbauweise) + SVA Typ 456", "labelEn": "WVR aluminium (block design) + SVA type 456 combination", "register": null },
+    "1H8": { "family": "WVR-AL-SVA", "labelDe": "Kombination WVR Aluminium + SVA Typ 455", "labelEn": "WVR aluminium + SVA type 455 combination", "register": null },
+    "1K7": { "family": "WVR-SVA", "labelDe": "Kombination WVR + SVA Typ 456, Temperaturbereich -60°C bis ...", "labelEn": "WVR + SVA type 456 combination, temp -60°C and up", "register": null },
+    "1L7": { "family": "WVR-SVA", "labelDe": "Kombination WVR Messanschluss + SVA Typ 456", "labelEn": "WVR with test port + SVA type 456 combination", "register": null },
+    "1M7": { "family": "WVR-AL-SVA", "labelDe": "Kombination WVR Aluminium Messanschluss + SVA Typ 456", "labelEn": "WVR aluminium with test port + SVA type 456 combination", "register": null },
+    "3A7": { "family": "WVR-SVA-BS", "labelDe": "Kombination WVR + SVA Typ 456 + Berstscheibe 90%", "labelEn": "WVR + SVA type 456 + burst disc 90% combination", "register": null },
+    "3A8": { "family": "WVR-SVA-BS", "labelDe": "Kombination WVR + SVA Typ 455 + Berstscheibe 90%", "labelEn": "WVR + SVA type 455 + burst disc 90% combination", "register": null },
+    "4D7": { "family": "WVR-SVA", "labelDe": "Kombination WVR + SVA Typ 456 zwangsgesteuert (Variante 4)", "labelEn": "WVR + SVA type 456 chain-driven (variant 4)", "register": null },
+    "4D8": { "family": "WVR-SVA", "labelDe": "Kombination WVR + SVA Typ 455 zwangsgesteuert (Variante 4)", "labelEn": "WVR + SVA type 455 chain-driven (variant 4)", "register": null }
   },
   "castIronVariants": {
     "_comment": "G-suffix variants. The third character 'G' marks Gusseisen (cast iron) housing. The first two digits identify the product family.",

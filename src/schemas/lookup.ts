@@ -212,6 +212,47 @@ export const SafetyValveSchema = z.object({
   }).passthrough(),
 });
 
+export const TrSchema = z.object({
+  subsystem: z.literal("TR"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  appliesToFamilies: z.array(z.string()),
+  pos6_pressure: z.record(z.string(), z.object({ label: z.string(), bar: z.number() })),
+  pos9_nominalTemperature: z.object({
+    values: kitTable,
+  }).passthrough(),
+});
+
+export const OilFilterSchema = z.object({
+  subsystem: z.literal("OilFilter"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  appliesToFamilies: z.array(z.string()),
+  pos11_ringMaterial: z.object({ values: kitTable }).passthrough(),
+  pos12_meshSize: z.object({
+    values: z.record(
+      z.string(),
+      z.object({
+        labelDe: z.string(),
+        labelEn: z.string(),
+        micrometers: z.number().optional(),
+      })
+    ),
+  }).passthrough(),
+});
+
+export const DualSvSchema = z.object({
+  subsystem: z.literal("DualSV"),
+  fieldDe: z.string(),
+  fieldEn: z.string(),
+  appliesToFamilies: z.array(z.string()),
+  pos6_nominalPressure: z.object({
+    values: z.record(z.string(), z.object({ label: z.string(), bar: z.number() })),
+  }).passthrough(),
+  pos78_dualDn: z.object({ values: kitTable }).passthrough(),
+  pos45_setPressure: z.object({}).passthrough(),
+});
+
 export const EinsatzKitSchema = z.object({
   subsystem: z.literal("Einsatz-Kit"),
   fieldDe: z.string(),

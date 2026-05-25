@@ -505,35 +505,32 @@ describe("decode() — Phase 7: closing the remaining decoding gaps", () => {
 });
 
 describe("decode() — Phase 8: AVR/AVB Einsatz-Kit", () => {
-  it("decodes the user-supplied 16300E18.5/11C041 example (AVB insert kit DN80 PS40)", () => {
+  it("decodes the user-supplied 16300E18.5/11C041 example as VE AVB DN80 HR PS40 HNBR", () => {
     const r = decode("16300E18.511C041");
     expect(r.fields.productType.extra?.family).toBe("Einsatz-Kit");
     expect(r.fields.productType.extra?.baseFamily).toBe("AVB");
     expect(r.fields.productType.valueEn).toMatch(/AVB insert kit/);
-    // Pos 4-5 = 00 → Standard cover height
     expect(r.fields.connectionType.valueEn).toMatch(/standard cover height/);
-    // Pos 6 = E → PS40 (Einsatz-Kit variant), NOT PS63 like standard
     expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(40);
-    expect(r.fields.pressure.valueEn).toMatch(/PS40/);
-    // Pos 7-8 = 18 → DN80
     expect((r.fields.size.extra as { dn?: number })?.dn).toBe(80);
-    // Pos 10 = 5 → steel
     expect(r.fields.bodyMaterial.valueEn).toMatch(/steel/);
-    // Pos 14 = 0 → CR ring material
     const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; labelEn?: string }> })?.perPosition;
     expect(perPos).toBeDefined();
-    expect(perPos!.find((p) => p.pos === "14")?.labelEn).toMatch(/CR/);
+    // Pos 13 = C → HNBR (per Erik's confirmation)
+    expect(perPos!.find((p) => p.pos === "13")?.labelEn).toMatch(/HNBR/);
+    // Pos 15 = 4 → mit Handrad (Erik wrote "HR")
+    expect(perPos!.find((p) => p.pos === "15")?.labelEn).toMatch(/handwheel/);
   });
 
-  it("decodes the screenshot example 26300E24.5110B01 (AVR DN250 FPM Einsatz)", () => {
+  it("decodes the screenshot example 26300E24.5110B01 (AVR DN250 Einsatz)", () => {
     const r = decode("26300E24.5110B01");
     expect(r.fields.productType.extra?.baseFamily).toBe("AVR");
     expect((r.fields.size.extra as { dn?: number })?.dn).toBe(250);
     const perPos = (r.fields.connectionDetails.extra as { perPosition?: Array<{ pos: string; labelEn?: string }> })?.perPosition;
-    // Pos 14 = B → FPM
-    expect(perPos!.find((p) => p.pos === "14")?.labelEn).toMatch(/FPM/);
-    // Pos 16 = 1 → default Einsatz
-    expect(perPos!.find((p) => p.pos === "16")?.labelEn).toMatch(/insert/);
+    // Pos 13 = 0 → CR ring (was Pos 14 in earlier wrong mapping)
+    expect(perPos!.find((p) => p.pos === "13")?.labelEn).toMatch(/CR/);
+    // Pos 14 = B → Schrauben A2-70 (was Pos 15 before)
+    expect(perPos!.find((p) => p.pos === "14")?.labelEn).toMatch(/A2-70/);
   });
 
   it("decodes Einsatz-Kit with AUMA actuator at Pos 4-5 = 0D", () => {
@@ -546,6 +543,133 @@ describe("decode() — Phase 8: AVR/AVB Einsatz-Kit", () => {
     expect((standard.fields.pressure.extra as { bar?: number })?.bar).toBe(25);
     const einsatz = decode("26300E24.5110B01"); // einsatz kit — pos 6 = E → PS40
     expect((einsatz.fields.pressure.extra as { bar?: number })?.bar).toBe(40);
+  });
+});
+
+describe("decode() — Phase 9: real material numbers from Erik Jacob (2026-05-19)", () => {
+  it("SSO: 46060C07A8A05100 → SSO SE DN8 stainless PS25", () => {
+    const r = decode("46060C07A8A05100");
+    expect(r.fields.productType.extra?.family).toBe("SSO");
+    expect(r.fields.productType.valueEn).toMatch(/SSO/);
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(8);
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(25);
+  });
+
+  it("SSO: 46000C10A5A00000 → SSO AE DN15 PS25 carbon steel", () => {
+    const r = decode("46000C10A5A00000");
+    expect(r.fields.productType.extra?.family).toBe("SSO");
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(15);
+  });
+
+  it("UVAA: 41201C10A8A00000 → UVAA AE NIRO DN15 PS25 spring 1-1.9 bar", () => {
+    const r = decode("41201C10A8A00000");
+    expect(r.fields.productType.extra?.family).toBe("UVAA");
+    expect(r.fields.connectionType.fieldEn).toMatch(/Spring range/);
+    expect(r.fields.connectionType.valueEn).toMatch(/1-1\.9 bar/);
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(15);
+  });
+
+  it("UVUB: 42404C10A5A10000 → UVUB FL DN15 PS25 spring 4-7.9 bar", () => {
+    const r = decode("42404C10A5A10000");
+    expect(r.fields.productType.extra?.family).toBe("UVUB");
+    expect(r.fields.connectionType.valueEn).toMatch(/4-7\.9 bar/);
+  });
+
+  it("ORVA: 45401C14A5C00000 → ORVA AE DN40 PS25 1-6 HNBR", () => {
+    const r = decode("45401C14A5C00000");
+    expect(r.fields.productType.extra?.family).toBe("ORVA");
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(40);
+    expect(r.fields.connectionType.fieldEn).toMatch(/Spring range/);
+  });
+
+  it("DOF: 58022D13A5A10000 → DOF FL MW10 EPE361 DN32 PS40", () => {
+    const r = decode("58022D13A5A10000");
+    expect(r.fields.productType.extra?.family).toBe("DOF");
+    expect(r.fields.productType.valueEn).toMatch(/EPE 361/);
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(32);
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(40);
+    expect(r.fields.handwheelCap.fieldEn).toMatch(/Mesh size/);
+    expect(r.fields.handwheelCap.valueEn).toMatch(/10 µm/);
+  });
+
+  it("OF: 57700C14A5D60000 → OF AE MW25 DN40 PS25 FPM", () => {
+    const r = decode("57700C14A5D60000");
+    expect(r.fields.productType.extra?.family).toBe("OF");
+    expect(r.fields.medium.fieldEn).toMatch(/Sealing material/);
+    expect(r.fields.medium.valueEn).toMatch(/FPM/);
+    expect(r.fields.handwheelCap.fieldEn).toMatch(/Mesh size/);
+  });
+
+  it("TR: 47010B19K5A00000 → TR FL NH3 DN100 PS25 NT60°C", () => {
+    const r = decode("47010B19K5A00000");
+    expect(r.fields.productType.extra?.family).toBe("TR");
+    expect(r.fields.pressure.valueEn).toMatch(/PS25/);
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(25);
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(100);
+    expect(r.fields.screwMaterial.fieldEn).toMatch(/Nominal opening temperature/);
+    expect(r.fields.screwMaterial.valueEn).toMatch(/60°C/);
+  });
+
+  it("TRplus: 47700B15H5A00000 → TR AE NH3 DN50 PS25 NT49°C", () => {
+    const r = decode("47700B15H5A00000");
+    expect(r.fields.productType.extra?.family).toBe("TRplus");
+    expect(r.fields.screwMaterial.valueEn).toMatch(/49°C/);
+  });
+
+  it("WVR-SVA: 1A710B11A5A10000 → WVR-SVAA DIN-FL DN20/32 10bar PS25", () => {
+    const r = decode("1A710B11A5A10000");
+    expect(r.fields.productType.extra?.family).toBe("WVR-SVA");
+    expect(r.fields.connectionType.fieldEn).toMatch(/Set pressure/);
+    expect((r.fields.connectionType.extra as { setPressureBar?: number })?.setPressureBar).toBe(10);
+    expect(r.fields.pressure.valueEn).toMatch(/PS25/);
+    expect(r.fields.size.valueEn).toMatch(/DN20\/32/);
+  });
+
+  it("WVR-AL-SVA: 1H720BB0D5A10000 → DN25/25 20bar PS25 AL", () => {
+    const r = decode("1H720BB0D5A10000");
+    expect(r.fields.productType.extra?.family).toBe("WVR-AL-SVA");
+    expect((r.fields.connectionType.extra as { setPressureBar?: number })?.setPressureBar).toBe(20);
+    expect(r.fields.size.valueEn).toMatch(/DN25\/25/);
+  });
+
+  it("FT: 56700C13A5A00010 → FT AE ANSI40 DN32 PS25", () => {
+    const r = decode("56700C13A5A00010");
+    expect(r.fields.productType.extra?.family).toBe("FT");
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(32);
+  });
+
+  it("SGL: 47500C12A8A20000 → SGL AE NIRO DN25 PS25", () => {
+    const r = decode("47500C12A8A20000");
+    expect(r.fields.productType.extra?.family).toBe("SGL");
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(25);
+  });
+
+  it("DA: 47623C11A5A21000 → DA FL DN20 PS25", () => {
+    const r = decode("47623C11A5A21000");
+    expect(r.fields.productType.extra?.family).toBe("DA");
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(20);
+  });
+
+  it("GPV: 27600D13A5A01100 → GPV E AE ANSI40 DN32 PS40", () => {
+    const r = decode("27600D13A5A01100");
+    expect(r.fields.productType.extra?.family).toBe("GPV");
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(40);
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(32);
+  });
+
+  it("RVZ: 31392C18A5A05500 → RVZ D DN80 mD PS25 RR-Nut HNBR", () => {
+    const r = decode("31392C18A5A05500");
+    expect(r.fields.productType.extra?.family).toBe("RVZ");
+    expect((r.fields.size.extra as { dn?: number })?.dn).toBe(80);
+    expect((r.fields.pressure.extra as { bar?: number })?.bar).toBe(25);
+  });
+
+  it("Half-bar SVU 17-char: 458165C12A5A10011 → SVUA P FL DN25 PS25 16.5 bar", () => {
+    const r = decode("458165C12A5A10011");
+    expect(r.fields.productType.extra?.family).toBe("SVU");
+    expect((r.fields.connectionType.extra as { setPressureBar?: number; halfBarExtended?: boolean })?.setPressureBar).toBe(16.5);
+    expect((r.fields.connectionType.extra as { halfBarExtended?: boolean })?.halfBarExtended).toBe(true);
+    expect(r.warnings.some((w) => /Half-bar set pressure/.test(w))).toBe(true);
   });
 });
 

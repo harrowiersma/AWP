@@ -22,6 +22,15 @@ import {
   applySafetyValveOverrides,
   isSafetyValveFamily,
 } from "./subsystems/safety-valve-override";
+import { applyTrOverrides, isTrFamily } from "./subsystems/tr-override";
+import {
+  applyOilFilterOverrides,
+  isOilFilterFamily,
+} from "./subsystems/oil-filter-override";
+import {
+  applyDualSvOverrides,
+  isDualSvFamily,
+} from "./subsystems/dual-sv-override";
 
 export type { DecodedNumber, FieldResult } from "./types";
 export { lookups } from "./lookup";
@@ -81,6 +90,30 @@ export function decode(input: string): DecodedNumber {
     probe = probe.slice(1);
   }
 
+  // Half-bar safety-valve / overflow form: 17 chars where Pos 4-6 is a 3-digit
+  // set pressure ending in "5" (= X.5 bar). Example: 458165C12A5A10011 →
+  // SVUA P FL DN25/40 PS25 16.5 bar. Erik confirmed (2026-05) this replaced
+  // the older trailing ",5" convention.
+  let halfBarFromExtended: number | undefined;
+  if (probe.length === 17 && /^(41|42|44|45|1[ADHKLM][78]|3[A-Z][78]|4[A-Z][78])/.test(probe)) {
+    const head = probe.slice(0, 3); // Pos 1-3
+    const setBlock = probe.slice(3, 6); // Pos 4-5-6 (3 digits)
+    const rest = probe.slice(6); // remaining 11 chars
+    if (/^\d{3}$/.test(setBlock) && setBlock.endsWith("5")) {
+      const integer = parseInt(setBlock.slice(0, 2), 10);
+      const fractional = parseInt(setBlock.slice(2), 10) / 10;
+      halfBarFromExtended = integer + fractional;
+      // Reconstruct a normal-length backbone by dropping the half-bar digit and
+      // promoting the first two digits to Pos 4-5. Pos 6 (originally a letter)
+      // comes from the rest's first character; here we synthesise it from the
+      // standard format by injecting a placeholder pressure letter. Because
+      // the user's example proves that Pos 6 follows Pos 4-5-6 as the next
+      // char, the reconstruction strips one digit from the middle:
+      //   "458" + "16" + "5" + "C12A5A10011" → drop "5" → "458" + "16" + "C12A5A10011"
+      probe = head + setBlock.slice(0, 2) + rest;
+    }
+  }
+
   let body = probe;
   let suffixHit: string | undefined;
   // Try to peel off a known suffix from the right.
@@ -117,6 +150,32 @@ export function decode(input: string): DecodedNumber {
     };
   }
 
+  function attachHalfBar(result: DecodedNumber): DecodedNumber {
+    if (halfBarFromExtended === undefined) return result;
+    // Re-label the set-pressure field with the precise half-bar value
+    const ct = result.fields.connectionType;
+    return {
+      ...result,
+      warnings: [
+        `Half-bar set pressure detected (17-char extended form): ${halfBarFromExtended} bar`,
+        ...result.warnings,
+      ],
+      fields: {
+        ...result.fields,
+        connectionType: {
+          ...ct,
+          valueDe: `Einstelldruck ${halfBarFromExtended.toString().replace(".", ",")} bar (erweiterte 17-stellige Form)`,
+          valueEn: `set pressure ${halfBarFromExtended} bar (17-char extended form)`,
+          extra: {
+            ...(ct.extra ?? {}),
+            setPressureBar: halfBarFromExtended,
+            halfBarExtended: true,
+          },
+        },
+      },
+    };
+  }
+
   function attachSuffix(result: DecodedNumber): DecodedNumber {
     if (!suffixHit) return result;
     const entry = (lookups.suffix.values as Record<string, { labelDe: string; labelEn: string; addedCodes?: string }>)[suffixHit];
@@ -140,19 +199,19 @@ export function decode(input: string): DecodedNumber {
 
   if (isBsKit(body)) {
     const result = decodeBsKit(input, body);
-    if (result) return attachProductionPrefix(attachSuffix(result));
+    if (result) return attachHalfBar(attachProductionPrefix(attachSuffix(result)));
   }
   if (isKit(body)) {
     const result = decodeKit(input, body);
-    if (result) return attachProductionPrefix(attachSuffix(result));
+    if (result) return attachHalfBar(attachProductionPrefix(attachSuffix(result)));
   }
   if (isEinsatzKit(body)) {
     const result = decodeEinsatzKit(input, body);
-    if (result) return attachProductionPrefix(attachSuffix(result));
+    if (result) return attachHalfBar(attachProductionPrefix(attachSuffix(result)));
   }
   if (isDgl(body)) {
     const result = decodeDgl(input, body);
-    if (result) return attachProductionPrefix(attachSuffix(result));
+    if (result) return attachHalfBar(attachProductionPrefix(attachSuffix(result)));
   }
 
   const tokenResult = tokenize(input);
@@ -466,6 +525,44 @@ export function decode(input: string): DecodedNumber {
       pos9to16
     );
     finalFields = { ...finalFields, ...overridden };
+  } else if (isDualSvFamily(family)) {
+    const overridden = applyDualSvOverrides(
+      { connectionType, pressure, size },
+      t.pos4to5,
+      t.pos6,
+      t.pos7to8
+    );
+    finalFields = { ...finalFields, ...overridden };
+    const dropConn = `Unknown connection type code: ${t.pos4to5}`;
+    const idxC = warnings.indexOf(dropConn);
+    if (idxC !== -1) warnings.splice(idxC, 1);
+    const dropSize = `Unknown size code: ${t.pos7to8}`;
+    const idxS = warnings.indexOf(dropSize);
+    if (idxS !== -1) warnings.splice(idxS, 1);
+  } else if (isOilFilterFamily(family)) {
+    const overridden = applyOilFilterOverrides(
+      { medium, handwheelCap },
+      t.pos11,
+      t.pos12
+    );
+    finalFields = { ...finalFields, ...overridden };
+    const dropMed = `Unknown medium code: ${t.pos11}`;
+    const idxM = warnings.indexOf(dropMed);
+    if (idxM !== -1) warnings.splice(idxM, 1);
+  } else if (isTrFamily(family)) {
+    const overridden = applyTrOverrides(
+      { pressure, screwMaterial },
+      t.pos6,
+      t.pos9
+    );
+    finalFields = { ...finalFields, ...overridden };
+    // Pos 6 = "B" in TR shouldn't be reported as "unknown pressure code"
+    const dropPress = `Unknown pressure code: ${t.pos6}`;
+    const idx1 = warnings.indexOf(dropPress);
+    if (idx1 !== -1) warnings.splice(idx1, 1);
+    const dropScrew = `Unknown screw material code: ${t.pos9}`;
+    const idx2 = warnings.indexOf(dropScrew);
+    if (idx2 !== -1) warnings.splice(idx2, 1);
   } else if (isSafetyValveFamily(family, t.pos1to3)) {
     // Safety valves (SVA/SVU/UVA/UVU/ORV) reinterpret Pos 4-5 as set pressure,
     // Pos 12 as connection variant, and Pos 13-16 as inlet/outlet/fittings.
@@ -473,7 +570,8 @@ export function decode(input: string): DecodedNumber {
       { connectionType, handwheelCap, connectionDetails },
       t.pos4to5,
       t.pos12,
-      t.pos13to16
+      t.pos13to16,
+      t.pos1to3
     );
     finalFields = { ...finalFields, ...overridden };
     // Drop the earlier "Unknown connection type code" warning since for safety
@@ -494,12 +592,14 @@ export function decode(input: string): DecodedNumber {
     f.medium.found &&
     (f.handwheelCap.found || familyKey === "RV");
 
-  return attachProductionPrefix({
-    input,
-    normalized: tokenResult.normalized,
-    valid: allFound,
-    warnings,
-    errors,
-    fields: finalFields,
-  });
+  return attachHalfBar(
+    attachProductionPrefix({
+      input,
+      normalized: tokenResult.normalized,
+      valid: allFound,
+      warnings,
+      errors,
+      fields: finalFields,
+    })
+  );
 }

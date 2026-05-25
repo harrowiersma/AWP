@@ -4,6 +4,7 @@ import type { FieldResult } from "../types";
 const data = svData as unknown as {
   appliesToFamilies: string[];
   appliesToPos1to3Prefixes: string[];
+  pos45_springRange_overflow?: Record<string, { labelDe: string; labelEn: string }>;
   pos12_connectionVariants: {
     values: Record<string, { labelDe: string; labelEn: string }>;
   };
@@ -15,6 +16,13 @@ const data = svData as unknown as {
   };
 };
 
+// Distinguish single safety valves (SVA/SVU, direct bar value at Pos 4-5)
+// from overflow / oil-pressure-regulating valves (UVA/UVU/ORV, spring-range
+// code at Pos 4-5).
+function isOverflowOrRegulating(pos1to3: string): boolean {
+  return /^(41|42|45[14])/.test(pos1to3);
+}
+
 export function isSafetyValveFamily(
   family: string | undefined,
   pos1to3: string
@@ -25,9 +33,37 @@ export function isSafetyValveFamily(
 
 function setPressureField(
   base: FieldResult,
-  rawCode: string
+  rawCode: string,
+  pos1to3: string
 ): FieldResult {
-  // Interpret as numeric bar value (most safety-valve set pressures are direct).
+  // Overflow / oil-pressure-regulating families (UVA/UVU/ORV) use Pos 4-5 as a
+  // spring-range code, not a direct bar value.
+  if (isOverflowOrRegulating(pos1to3) && data.pos45_springRange_overflow) {
+    const entry = data.pos45_springRange_overflow[rawCode];
+    if (entry) {
+      return {
+        ...base,
+        fieldDe: "Federbereich (Einstelldruck)",
+        fieldEn: "Spring range (set pressure)",
+        found: true,
+        valueDe: entry.labelDe,
+        valueEn: entry.labelEn,
+        extra: { springRangeCode: rawCode, raw: rawCode },
+      };
+    }
+    // Fall back to "spring-range unknown" rather than treating as a direct bar
+    return {
+      ...base,
+      fieldDe: "Federbereich (Einstelldruck)",
+      fieldEn: "Spring range (set pressure)",
+      found: false,
+      valueDe: `Federbereich-Code ${rawCode} (nicht in Tabelle)`,
+      valueEn: `spring-range code ${rawCode} (not in table)`,
+      extra: { raw: rawCode },
+    };
+  }
+
+  // Single safety valves (SVA/SVU 44x/45x except 454): direct numeric bar value.
   const num = Number.parseInt(rawCode, 10);
   if (!Number.isNaN(num)) {
     return {
@@ -134,10 +170,11 @@ export function applySafetyValveOverrides(
   },
   pos45: string,
   pos12: string,
-  pos1316: string
+  pos1316: string,
+  pos1to3: string
 ): typeof fields {
   return {
-    connectionType: setPressureField(fields.connectionType, pos45),
+    connectionType: setPressureField(fields.connectionType, pos45, pos1to3),
     handwheelCap: connectionVariantField(fields.handwheelCap, pos12),
     connectionDetails: detailsPerPosition(pos1316, fields.connectionDetails),
   };

@@ -1,0 +1,33 @@
+{
+  "subsystem": "OilFilter",
+  "fieldDe": "Ölfilter / Doppelölfilter (OF / DOF)",
+  "fieldEn": "Oil filter / double oil filter (OF / DOF)",
+  "_comment": "Sub-system override for OF (577) and DOF (580-586) families. Pos 11 encodes O-ring material (instead of medium), and Pos 12 encodes mesh size (similar to SS strainers). DOF Pos 1-3 also distinguishes the EPE filter-element type. Source: Erik Jacob email 2026-05-19.",
+  "appliesToFamilies": ["OF", "DOF"],
+  "pos11_ringMaterial": {
+    "_doc": "O-ring sealing material (not medium). Letters reuse standard medium-table letters but with different meaning here.",
+    "values": {
+      "A": { "labelDe": "NBR (Standard)", "labelEn": "NBR (standard)" },
+      "B": { "labelDe": "EPDM", "labelEn": "EPDM" },
+      "C": { "labelDe": "HNBR", "labelEn": "HNBR" },
+      "D": { "labelDe": "FPM (Viton / FKM)", "labelEn": "FPM (Viton / FKM)" },
+      "E": { "labelDe": "Chemraz / Kalrez (FFKM)", "labelEn": "Chemraz / Kalrez (FFKM)" },
+      "F": { "labelDe": "PTFE-ummantelt", "labelEn": "PTFE-encapsulated" }
+    }
+  },
+  "pos12_meshSize": {
+    "_doc": "Mesh size in µm. Values inferred from Erik's examples: '1' = MW10 (DOF), '6' = MW25 (OF). Full table to be confirmed.",
+    "values": {
+      "0": { "labelDe": "ohne Filterelement", "labelEn": "no filter element" },
+      "1": { "labelDe": "Maschenweite 10 µm", "labelEn": "mesh width 10 µm", "micrometers": 10 },
+      "2": { "labelDe": "Maschenweite 15 µm", "labelEn": "mesh width 15 µm", "micrometers": 15 },
+      "3": { "labelDe": "Maschenweite 20 µm", "labelEn": "mesh width 20 µm", "micrometers": 20 },
+      "4": { "labelDe": "Maschenweite 25 µm (Standard DOF)", "labelEn": "mesh width 25 µm (standard DOF)", "micrometers": 25 },
+      "5": { "labelDe": "Maschenweite 40 µm", "labelEn": "mesh width 40 µm", "micrometers": 40 },
+      "6": { "labelDe": "Maschenweite 25 µm (OF Standard)", "labelEn": "mesh width 25 µm (OF standard)", "micrometers": 25 },
+      "7": { "labelDe": "Maschenweite 60 µm", "labelEn": "mesh width 60 µm", "micrometers": 60 },
+      "8": { "labelDe": "Maschenweite 80 µm", "labelEn": "mesh width 80 µm", "micrometers": 80 },
+      "9": { "labelDe": "Maschenweite 100 µm", "labelEn": "mesh width 100 µm", "micrometers": 100 }
+    }
+  }
+}

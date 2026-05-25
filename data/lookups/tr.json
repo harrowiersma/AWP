@@ -1,0 +1,31 @@
+{
+  "subsystem": "TR",
+  "fieldDe": "TR / TRplus — Thermostatisches 3-Wege-Ventil",
+  "fieldEn": "TR / TRplus — thermostatic 3-way valve",
+  "_comment": "Sub-system override for TR (470) and TRplus (477) families. Differs from the standard 16-char layout at: Pos 6 — B = PS25 (not C); Pos 9 — encodes Nenntemperatur (NT), not screw material. Source: Erik Jacob email 2026-05-19.",
+  "appliesToFamilies": ["TR", "TRplus"],
+  "pos6_pressure": {
+    "B": { "label": "PS25", "bar": 25 },
+    "D": { "label": "PS40", "bar": 40 },
+    "F": { "label": "PS63", "bar": 63 }
+  },
+  "pos9_nominalTemperature": {
+    "_doc": "Pos 9 letter encodes Nenntemperatur (rated opening temperature) in °C. Letter alphabet inferred from examples; full table to be confirmed.",
+    "values": {
+      "A": { "labelDe": "NT 21°C", "labelEn": "NT 21°C" },
+      "B": { "labelDe": "NT 28°C", "labelEn": "NT 28°C" },
+      "C": { "labelDe": "NT 32°C", "labelEn": "NT 32°C" },
+      "D": { "labelDe": "NT 38°C", "labelEn": "NT 38°C" },
+      "E": { "labelDe": "NT 43°C", "labelEn": "NT 43°C" },
+      "F": { "labelDe": "NT 46°C", "labelEn": "NT 46°C" },
+      "G": { "labelDe": "NT 49°C", "labelEn": "NT 49°C" },
+      "H": { "labelDe": "NT 49°C", "labelEn": "NT 49°C" },
+      "J": { "labelDe": "NT 54°C", "labelEn": "NT 54°C" },
+      "K": { "labelDe": "NT 60°C", "labelEn": "NT 60°C" },
+      "L": { "labelDe": "NT 66°C", "labelEn": "NT 66°C" },
+      "M": { "labelDe": "NT 71°C", "labelEn": "NT 71°C" },
+      "N": { "labelDe": "NT 77°C", "labelEn": "NT 77°C" },
+      "P": { "labelDe": "NT 82°C", "labelEn": "NT 82°C" }
+    }
+  }
+}

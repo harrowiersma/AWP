@@ -1,0 +1,30 @@
+{
+  "subsystem": "DualSV",
+  "fieldDe": "Dual-Sicherheitsventil-Kombinationen",
+  "fieldEn": "Dual safety-valve combinations",
+  "_comment": "Master spec page 18.4/18.5 layout for WVR-SV / WVB-SV / WVR-AL-SV combinations. Pos 1-3 in {1A7, 1A8, 1D7, 1D8, 1H7, 1H8, 1K7, 1L7, 1M7, 3A7, 3A8, 4D7, 4D8}. Pos 4-5 = set pressure (numeric bar or range code). Pos 6 = nominal pressure (B=PS25 here, not C). Pos 7-8 may be alphanumeric for dual DN encoding (WV-DN / SV-DN). Source: Erik Jacob email 2026-05-19.",
+  "appliesToFamilies": ["WVR-SVA", "WVR-SVU", "WVB-SVA", "WVB-SVU", "WVR-AL-SVA", "WVR-AL-SVU", "WVR-SVA-BS"],
+  "pos6_nominalPressure": {
+    "_doc": "Pos 6 nominal pressure for dual combinations — combined with handwheel/cap option per master spec page 18.4.",
+    "values": {
+      "B": { "label": "PS25", "bar": 25 },
+      "D": { "label": "PS40", "bar": 40 },
+      "F": { "label": "PS63", "bar": 63 }
+    }
+  },
+  "pos78_dualDn": {
+    "_doc": "Pos 7-8 encodes the dual DN (WV inlet DN / SV outlet DN). Two-character codes; alphanumeric values used for compound encoding. Values inferred from examples; full table to be confirmed.",
+    "values": {
+      "10": { "labelDe": "DN15/15", "labelEn": "DN15/15" },
+      "11": { "labelDe": "DN20/32 (WVR DN20, SV-Austritt DN32)", "labelEn": "DN20/32 (WVR inlet DN20, SV outlet DN32)" },
+      "12": { "labelDe": "DN25/40", "labelEn": "DN25/40" },
+      "13": { "labelDe": "DN32/50", "labelEn": "DN32/50" },
+      "14": { "labelDe": "DN40/65", "labelEn": "DN40/65" },
+      "15": { "labelDe": "DN50/80", "labelEn": "DN50/80" },
+      "B0": { "labelDe": "DN25/25 (WVR DN25, gleicher Austritt)", "labelEn": "DN25/25 (WVR DN25, same outlet)" }
+    }
+  },
+  "pos45_setPressure": {
+    "_doc": "Pos 4-5 = set pressure in bar. Numeric (e.g. '10' = 10 bar, '16' = 16 bar, '20' = 20 bar). For half-bar pressures the 17-char extended form is used (see safety valves)."
+  }
+}
